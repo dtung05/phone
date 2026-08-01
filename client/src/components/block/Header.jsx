@@ -10,6 +10,7 @@ import {
   UserRound,
   ShoppingBag,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 function Header() {
   return (
@@ -50,7 +51,7 @@ function Header() {
               </div>
 
               <span className="ml-2 text-[20px] font-extrabold tracking-wide text-[#006b5a]">
-                DIDONG.COM
+                <Link to = "/">DIDONG.COM</Link>
               </span>
             </div>
             <div className="flex h-[52px] flex-1 max-w-[755px] items-center rounded-xl border border-gray-200">
@@ -72,7 +73,7 @@ function Header() {
 
               <div className="flex cursor-pointer items-center gap-2 whitespace-nowrap">
                 <UserRound size={22} />
-                <span>Tài khoản</span>
+                <Link to = 'register'>Tài khoản</Link>
               </div>
 
               <div className="relative cursor-pointer">
