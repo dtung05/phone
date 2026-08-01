@@ -12,11 +12,11 @@ const toastSlice = createSlice({
       state.message = action.payload.message;
       state.type = action.payload.type || true;
     },
-    hidToast: (state, action) => {
+    hideToast: (state, action) => {
       state.message = null;
       state.type = null;
     },
   },
 });
-export const { showToast, hidToast } = toastSlice.actions;
+export const { showToast, hideToast } = toastSlice.actions;
 export default toastSlice.reducer;
