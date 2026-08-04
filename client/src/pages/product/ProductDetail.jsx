@@ -1,7 +1,9 @@
 import { useParams } from "react-router-dom";
+import { useState } from "react";
+
 import { useProductDetailQuery } from "../../store/api/product";
 import { useGetReviewsQuery } from "../../store/api/reviewApi";
-import { useState } from "react";
+
 import ProductImages from "../../components/product/ProductImage";
 import ProductInfo from "../../components/product/ProductInfo";
 import ProductSpecification from "../../components/product/ProductSpecifications";
@@ -41,7 +43,11 @@ export default function ProductDetail() {
           <div>Loading...</div>
         ) : (
           <>
-            <ProductReviews reviews={reviews} data={product} />
+            <ProductReviews
+              reviews={reviews}
+              total={reviewResponse.total}
+              data={product}
+            />
             <Pagination
               currentPage={current_page}
               lastPage={last_page}
