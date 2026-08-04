@@ -35,7 +35,6 @@ const FormField = ({
                 error={error}
                 placeholder={placeholder}
               />
-              {/* Hiển thị câu thông báo lỗi nếu có */}
               {error && (
                 <p className="mt-1 text-xs text-red-500">{error.message}</p>
               )}

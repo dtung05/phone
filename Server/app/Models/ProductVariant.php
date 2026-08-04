@@ -11,4 +11,14 @@ class ProductVariant extends Model
     {
         return $this->belongsTo(product::class);
     }
+    protected function casts(): array
+    {
+        return [
+            'attributes' => 'array',
+            'selling_price' => 'integer',
+            'average_cost' => 'integer',
+        ];
+    }
+
+    
 }
