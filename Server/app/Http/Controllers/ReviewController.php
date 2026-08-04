@@ -42,4 +42,14 @@ class ReviewController extends Controller
             ], 500);
         }
     }
+    public function destroy($id)
+    {
+
+        $review = Review::findOrFail($id);
+        $review->delete();
+        return response()->json([
+            'message' => "Xóa thành công bình luận",
+            'type' => true,
+        ]);
+    }
 }
