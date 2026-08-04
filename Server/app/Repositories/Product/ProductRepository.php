@@ -15,6 +15,6 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     public function getProduct(String $slug)
     {
         return  $this->model->where('slug', '=', $slug)
-            ->with(['productVariants', 'reviews.user:id,full_name'])->first();
+            ->with(['productVariants'])->first();
     }
 }

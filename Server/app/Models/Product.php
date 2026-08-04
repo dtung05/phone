@@ -16,4 +16,11 @@ class Product extends Model
     {
         return $this->hasMany(Review::class);
     }
+    protected function casts(): array
+    {
+        return [
+            'images' => 'array',
+            'specifications' => 'array',  
+        ];
+    }
 }
