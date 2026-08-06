@@ -5,5 +5,6 @@ const product = [
     path: "product/:slug",
     Component: ProductDetail,
   },
+ 
 ];
 export default product;

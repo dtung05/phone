@@ -59,7 +59,7 @@ export const FormRegister = () => {
             required: "Vui lòng nhập họ và tên",
             minLength: {
               value: 10,
-              message: "Họ tên phải có ít nhất 2 ký tự",
+              message: "Họ tên phải có ít nhất 10 ký tự",
             },
           }}
         />
