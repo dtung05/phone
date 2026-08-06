@@ -5,12 +5,9 @@ export default function ProductReviews({ reviews, total = 0, data }) {
   const [deleteReview, { isLoading, error }] = useDeleteReviewMutation();
   const handleDeleteReview = async (id) => {
     if (!confirm("Bạn chắc chắn muốn xóa bình luận này?")) return;
-    try{
+    try {
       const result = await deleteReview(id);
-    }catch(error){
-      
-    }
-    
+    } catch (error) {}
   };
   return (
     <div className="mt-10 flex gap-2">

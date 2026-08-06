@@ -1,6 +1,7 @@
 import Index from "../../Index.jsx";
 import Customer from "../../layouts/Customer.jsx";
 import auth from "./auth.js";
+import order from "./order.js";
 import product from "./products.js";
 
 const customer = {
@@ -13,6 +14,7 @@ const customer = {
     },
     ...auth,
     ...product,
+    ...order,
   ],
 };
 export default customer;

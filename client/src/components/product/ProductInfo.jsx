@@ -1,23 +1,62 @@
-import { useEffect, useState } from "react";
-
+import { useEffect, useMemo, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { addProductVariant } from "../../store/slices/productVariantSlice";
 export default function ProductInfo({ data }) {
   const { product_name, product_variants } = data;
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const handleBuyNow = () => {
+    dispatch(
+      addProductVariant([
+        {
+          id: selectedVariant.id,
+          quantity,
+        },
+      ]),
+    );
+    navigate("/checkout");
+  };
+  const storages = useMemo(() => {
+    return [...new Set(product_variants.map((v) => v.attributes.storage))];
+  }, [product_variants]);
 
-  const [selectedVariant, setSelectedVariant] = useState(product_variants[0]);
+  const [selectedStorage, setSelectedStorage] = useState(storages[0]);
+
+  const [selectedVariant, setSelectedVariant] = useState(() =>
+    product_variants.find((v) => v.attributes.storage === storages[0]),
+  );
+
   const [quantity, setQuantity] = useState(1);
 
+  const colors = useMemo(() => {
+    return product_variants.filter(
+      (v) => v.attributes.storage === selectedStorage,
+    );
+  }, [product_variants, selectedStorage]);
+
+  const handleStorage = (storage) => {
+    setSelectedStorage(storage);
+
+    const variant = product_variants.find(
+      (v) => v.attributes.storage === storage,
+    );
+
+    setSelectedVariant(variant);
+  };
+  const handleColor = (variant) => {
+    setSelectedVariant(variant);
+  };
   useEffect(() => {
     if (quantity > selectedVariant.stock_quantity) {
       setQuantity(selectedVariant.stock_quantity || 1);
     }
   }, [selectedVariant]);
-
   const increaseQuantity = () => {
     if (quantity < selectedVariant.stock_quantity) {
       setQuantity((prev) => prev + 1);
     }
   };
-
   const decreaseQuantity = () => {
     if (quantity > 1) {
       setQuantity((prev) => prev - 1);
@@ -32,38 +71,45 @@ export default function ProductInfo({ data }) {
         {selectedVariant.selling_price.toLocaleString("vi-VN")}₫
       </p>
 
-      {/* Dung lượng */}
       <div className="mt-6">
         <h3 className="mb-2 font-semibold">Dung lượng</h3>
 
-        <div className="inline-flex rounded-lg border border-blue-500 bg-blue-50 px-4 py-2">
-          {selectedVariant.attributes.storage}
+        <div className="flex flex-wrap gap-3">
+          {storages.map((storage) => (
+            <button
+              key={storage}
+              onClick={() => handleStorage(storage)}
+              className={`rounded-lg border px-4 py-3 transition ${
+                selectedStorage === storage
+                  ? "border-blue-500 bg-blue-50 text-blue-600"
+                  : "border-gray-300 hover:border-blue-400"
+              }`}
+            >
+              {storage}
+            </button>
+          ))}
         </div>
       </div>
 
-      {/* Màu sắc */}
       <div className="mt-6">
         <h3 className="mb-2 font-semibold">Màu sắc</h3>
 
         <div className="flex flex-wrap gap-3">
-          {product_variants.map((variant) => (
+          {colors.map((variant) => (
             <button
               key={variant.id}
-              onClick={() => setSelectedVariant(variant)}
-              className={`rounded-lg border px-4 py-3 transition
-                ${
-                  selectedVariant.id === variant.id
-                    ? "border-blue-500 bg-blue-50 text-blue-600"
-                    : "border-gray-300 hover:border-blue-400"
-                }`}
+              onClick={() => handleColor(variant)}
+              className={`rounded-lg border px-4 py-3 transition ${
+                selectedVariant.id === variant.id
+                  ? "border-blue-500 bg-blue-50 text-blue-600"
+                  : "border-gray-300 hover:border-blue-400"
+              }`}
             >
               {variant.attributes.color}
             </button>
           ))}
         </div>
       </div>
-
-      {/* Số lượng */}
       <div className="mt-6">
         <h3 className="mb-2 font-semibold">Số lượng</h3>
 
@@ -97,7 +143,12 @@ export default function ProductInfo({ data }) {
       </p>
 
       <div className="mt-8 flex gap-3">
-        <button className="rounded-xl bg-red-600 px-8 py-4 font-medium text-white hover:bg-red-700">
+        <button
+          className="rounded-xl bg-red-600 px-8 py-4 font-medium text-white hover:bg-red-700"
+          onClick={() => {
+            handleBuyNow();
+          }}
+        >
           Mua ngay
         </button>
 
