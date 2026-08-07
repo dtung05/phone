@@ -10,7 +10,7 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-
+use App\Models\Order;
 class User extends Authenticatable implements JWTSubject
 {
     /** @use HasFactory<UserFactory> */
@@ -26,7 +26,10 @@ class User extends Authenticatable implements JWTSubject
         'email',
         'password',
     ];
-
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
     /**
      * The attributes that should be hidden for serialization.
      *

@@ -22,4 +22,12 @@ class ProductVariantRepo extends BaseRepository implements ProductVariantRepoInt
         return  $this->model->with('product:id,product_name,thumbnail')
             ->whereIn('id', $ids)->select('id', 'product_id', 'selling_price', 'attributes')->get();
     }
+    public function decreaseStock($productVariant)
+    {
+        foreach ($productVariant as $item) {
+            $this->model
+                ->findId($item['id'])
+                ->decrement('stock_quantity', $item['quantity']);
+        }
+    }
 }

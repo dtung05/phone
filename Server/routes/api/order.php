@@ -5,4 +5,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:api')->group(function () {
     Route::post("/checkout", [OrderController::class, 'checkout']);
+
+    Route::post("/orders", [OrderController::class, 'store']);
 });
