@@ -10,7 +10,7 @@ const toastSlice = createSlice({
   reducers: {
     showToast: (state, action) => {
       state.message = action.payload.message;
-      state.type = action.payload.type || true;
+      state.type = action.payload.type || "success";
     },
     hideToast: (state, action) => {
       state.message = null;

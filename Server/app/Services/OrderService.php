@@ -5,6 +5,7 @@ namespace app\Services;
 use App\Repositories\Order\OrderRepositoryInterface;
 use App\Repositories\ProductVariant\ProductVariantRepoInter;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class OrderService
 {
@@ -15,7 +16,7 @@ class OrderService
         $this->productVariantRepo  = $productVariantRepo;
         $this->orderRepo = $orderRepo;
     }
-
+    // trả về true nếu số lượng mua > số lượng kho 
     public function hasEnoughStock($ids, $productVariant)
     {
         $quantityRepo = $this->productVariantRepo->getQuantitys($ids);
@@ -50,11 +51,11 @@ class OrderService
         $ids = array_column($data['idQuantities'], 'id');
         //KIểm tra số lượng
         if ($this->hasEnoughStock($ids, $data['idQuantities'])) {
-            return false;
+            throw new \Exception('Số lượng sản phẩm không đủ');
         }
         $quantityMap = array_column($data['idQuantities'], 'quantity', 'id');
 
-        $productInfomation = DB::transaction(function () use ($data, $ids, $quantityMap, $idUser) {
+        DB::transaction(function () use ($data, $ids, $quantityMap, $idUser) {
             //Trừ số lượng trong kho
             $this->productVariantRepo->decreaseStock($data['idQuantities']);
 
@@ -69,11 +70,12 @@ class OrderService
             }
             unset($item);
             // Tạo đơn hàng
-           
+
             $order = $this->orderRepo->createOrder($data, $idUser, $total_amount, $productInfomation);
-           
-            return $order;
         });
-        return $productInfomation;
+        return true;
+    }
+    public function index($idUser,$quantity){
+        return $this->orderRepo->getMyOrders($idUser, $quantity);
     }
 }

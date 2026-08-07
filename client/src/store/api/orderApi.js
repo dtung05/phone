@@ -4,7 +4,14 @@ const orderApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     checkout: builder.mutation({
       query: (data) => ({
-        url: "checkout/",
+        url: "checkout",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    addOrder: builder.mutation({
+      query: (data) => ({
+        url: "orders",
         method: "POST",
         body: data,
       }),
@@ -12,4 +19,4 @@ const orderApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useCheckoutMutation } = orderApi;
+export const { useCheckoutMutation, useAddOrderMutation } = orderApi;
