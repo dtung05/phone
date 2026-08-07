@@ -34,16 +34,29 @@ class OrderController extends Controller
             'products' => $check,
         ];
     }
+    // trang giao diện đơn hàng của user
     public function index()
     {
-        //
+        $orders = $this->orderService->index(auth()->id(), 10);
+        return response()->json($orders);
     }
 
     //    Tạo đơn hàng
     public function store(OrderCreateValidation $request)
     {
         $request->validated();
-        return response()->json($this->orderService->createOrder($request->all(), Auth::id()));
+        try {
+            $this->orderService->createOrder($request->all(), Auth::id());
+            return response()->json([
+                'message' => "Tạo đơn hàng thành công",
+                'type' => 'success',
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+                'type' => 'error'
+            ], 400);
+        }
     }
 
     /**

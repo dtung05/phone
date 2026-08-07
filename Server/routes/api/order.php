@@ -7,4 +7,5 @@ Route::middleware('auth:api')->group(function () {
     Route::post("/checkout", [OrderController::class, 'checkout']);
 
     Route::post("/orders", [OrderController::class, 'store']);
+    Route::get('/orders', [OrderController::class, 'index']);
 });

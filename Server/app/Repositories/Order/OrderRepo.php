@@ -35,6 +35,12 @@ class OrderRepo extends BaseRepository implements OrderRepositoryInterface
                 'total_amount' => $product['total_amount'],
             ]);
         }
-        return $order->with('orderItems')->get();
+        return $order->load('orderItems');
+    }
+    public function getMyOrders($idUser, $quantity)
+    {
+        return  $this->model->with('orderItems')
+            ->where('user_id', $idUser)->latest()
+            ->paginate($quantity);
     }
 }
