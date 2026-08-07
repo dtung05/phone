@@ -56,7 +56,7 @@ class OrderService
 
         $productInfomation = DB::transaction(function () use ($data, $ids, $quantityMap, $idUser) {
             //Trừ số lượng trong kho
-            // $this->productVariantRepo->decreaseStock($data['idQuantities']);
+            $this->productVariantRepo->decreaseStock($data['idQuantities']);
 
             // Lấy ra thông tin sản phẩm
             $productInfomation = $this->productVariantRepo->getProductVariants($ids);
