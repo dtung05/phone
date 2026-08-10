@@ -37,9 +37,16 @@ class OrderRepo extends BaseRepository implements OrderRepositoryInterface
         }
         return $order->load('orderItems');
     }
-    public function getMyOrders($idUser, $quantity)
+    public function getMyOrders($idUser, $quantity, $status)
     {
-        return  $this->model->with('orderItems')
+        $statuss = ['Chờ xử lý', 'Đã xác nhận', 'Đang giao', 'Thành công', 'Đã hủy'];
+   
+        if (in_array($status, $statuss)) {
+            return  $this->model->with('orderItems')
+                ->where('user_id', $idUser)->where('order_status', $status)->latest()
+                ->paginate($quantity);
+        }
+        return $this->model->with('orderItems')
             ->where('user_id', $idUser)->latest()
             ->paginate($quantity);
     }
