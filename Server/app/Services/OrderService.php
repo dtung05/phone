@@ -49,16 +49,12 @@ class OrderService
     {
 
         $ids = array_column($data['idQuantities'], 'id');
-        //KIểm tra số lượng
-        if ($this->hasEnoughStock($ids, $data['idQuantities'])) {
-            throw new \Exception('Số lượng sản phẩm không đủ');
-        }
+        
         $quantityMap = array_column($data['idQuantities'], 'quantity', 'id');
 
         DB::transaction(function () use ($data, $ids, $quantityMap, $idUser) {
             //Trừ số lượng trong kho
             $this->productVariantRepo->decreaseStock($data['idQuantities']);
-
             // Lấy ra thông tin sản phẩm
             $productInfomation = $this->productVariantRepo->getProductVariants($ids);
             $total_amount = 0;

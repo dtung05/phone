@@ -6,6 +6,7 @@ use App\Models\ProductVariant;
 use App\Repositories\BaseRepository;
 
 use App\Repositories\ProductVariant\ProductVariantRepoIner;
+use Exception;
 
 class ProductVariantRepo extends BaseRepository implements ProductVariantRepoInter
 {
@@ -24,11 +25,17 @@ class ProductVariantRepo extends BaseRepository implements ProductVariantRepoInt
     }
     public function decreaseStock($productVariant)
     {
-
         foreach ($productVariant as $item) {
-            $this->model
-                ->find($item['id'])
-                ->decrement('stock_quantity', $item['quantity']);
+            $product = $this->model
+                ->where('id', $item['id'])
+                ->lockForUpdate()
+                ->first();
+            // Check số lượng
+            if ($product->stock_quantity < $item['quantity']) {
+                throw new Exception("Số lượng sản phẩm không đủ");
+            }
+            //Trừ sản phẩm 
+            $product->decrement('stock_quantity', $item['quantity']);
         }
     }
 }
