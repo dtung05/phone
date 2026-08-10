@@ -16,7 +16,14 @@ const orderApi = baseApi.injectEndpoints({
         body: data,
       }),
     }),
+    getOrders: builder.query({
+      query: ({ status, page }) => ({
+        url: `orders?status=${status}&page=${page}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useCheckoutMutation, useAddOrderMutation } = orderApi;
+export const { useCheckoutMutation, useAddOrderMutation, useGetOrdersQuery } =
+  orderApi;

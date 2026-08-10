@@ -75,7 +75,9 @@ class OrderService
         });
         return true;
     }
-    public function index($idUser,$quantity){
-        return $this->orderRepo->getMyOrders($idUser, $quantity);
+    public function index($idUser, $quantity)
+    {
+        $status = request()->query('status');
+        return $this->orderRepo->getMyOrders($idUser, $quantity, $status);
     }
 }
