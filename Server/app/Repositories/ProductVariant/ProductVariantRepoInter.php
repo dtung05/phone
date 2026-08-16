@@ -10,4 +10,6 @@ interface ProductVariantRepoInter extends RepositoryInterface
     public function getProductVariants($ids);
 
     public function decreaseStock($productVariant);
+    public function increaseStock($orderItems);
+   
 }
