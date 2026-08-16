@@ -38,4 +38,15 @@ class ProductVariantRepo extends BaseRepository implements ProductVariantRepoInt
             $product->decrement('stock_quantity', $item['quantity']);
         }
     }
+    public function increaseStock($orderItems)
+    {
+        foreach ($orderItems as $item) {
+            $product = $this->model
+                ->where('id', $item->product_variant_id)
+                ->lockForUpdate()
+                ->first();
+
+            $product->increment('stock_quantity', $item->quantity);
+        }
+    }
 }

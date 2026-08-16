@@ -28,7 +28,6 @@ class OrderController extends Controller
                 'message' => "Số lượng mua không hợp lệ"
             ];
         }
-
         return [
             'type' => 'success',
             'products' => $check,
@@ -78,8 +77,25 @@ class OrderController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function cancelOrder(string $id)
     {
-        //
+        try {
+            $result = $this->orderService->cancelOrder($id);
+            if ($result) {
+                return response()->json([
+                    "type" => "success",
+                    "message" => "Hủy đơn hàng thành công"
+                ]);
+            }
+            return response()->json([
+                "type" => "warning",
+                "message" => "Đơn hàng không thể hủy"
+            ]);
+        } catch (\Exception $error) {
+            return response()->json([
+                "type" => "error",
+                "message" => $error->getMessage()
+            ]);
+        }
     }
 }

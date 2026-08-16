@@ -49,7 +49,7 @@ class OrderService
     {
 
         $ids = array_column($data['idQuantities'], 'id');
-        
+
         $quantityMap = array_column($data['idQuantities'], 'quantity', 'id');
 
         DB::transaction(function () use ($data, $ids, $quantityMap, $idUser) {
@@ -75,5 +75,21 @@ class OrderService
     {
         $status = request()->query('status');
         return $this->orderRepo->getMyOrders($idUser, $quantity, $status);
+    }
+
+    public function cancelOrder($id)
+    {
+        $order = $this->orderRepo->findOrderWithItems($id);
+        if ($order->order_status != "Chờ xử lý") {
+            return false;
+        }
+        $orderItems = $order->orderItems;
+        return DB::transaction(function () use ($orderItems, $order) {
+            
+            $this->productVariantRepo->increaseStock($orderItems);
+            $order->order_status = 'Đã hủy';
+            $order->save();
+            return true;
+        });
     }
 }

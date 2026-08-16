@@ -40,7 +40,7 @@ class OrderRepo extends BaseRepository implements OrderRepositoryInterface
     public function getMyOrders($idUser, $quantity, $status)
     {
         $statuss = ['Chờ xử lý', 'Đã xác nhận', 'Đang giao', 'Thành công', 'Đã hủy'];
-   
+
         if (in_array($status, $statuss)) {
             return  $this->model->with('orderItems')
                 ->where('user_id', $idUser)->where('order_status', $status)->latest()
@@ -49,5 +49,18 @@ class OrderRepo extends BaseRepository implements OrderRepositoryInterface
         return $this->model->with('orderItems')
             ->where('user_id', $idUser)->latest()
             ->paginate($quantity);
+    }
+
+    public function cancelOrder($id)
+    {
+        return $this->model
+            ->where('id', $id)
+            ->update([
+                'order_status' => 'Đã hủy'
+            ]);
+    }
+    public function findOrderWithItems($id)
+    {
+        return $this->model->with('orderItems')->findOrFail($id);
     }
 }

@@ -8,4 +8,5 @@ Route::middleware('auth:api')->group(function () {
 
     Route::post("/orders", [OrderController::class, 'store']);
     Route::get('/orders', [OrderController::class, 'index']);
+    Route::PATCH('/orders/{id}', [OrderController::class, 'cancelOrder']);
 });
