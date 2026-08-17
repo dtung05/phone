@@ -2,10 +2,13 @@ import { useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { addProductVariant } from "../../store/slices/productVariantSlice";
+import { useAddCartMutation } from "../../store/api/cartApi";
+import { showToast } from "../../store/slices/toastSlice";
 export default function ProductInfo({ data }) {
   const { product_name, product_variants } = data;
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  // xử lý đặt hàng
   const handleBuyNow = () => {
     dispatch(
       addProductVariant([
@@ -17,6 +20,22 @@ export default function ProductInfo({ data }) {
     );
     navigate("/checkout");
   };
+
+  // xử lý thêm giỏ hàng
+  const [addCart, { isLoading }] = useAddCartMutation();
+  const handleAddCart = async () => {
+    const result = await addCart({
+      product_variant_id: selectedVariant.id,
+      quantity,
+    }).unwrap();
+    dispatch(
+      showToast({
+        message: result.message,
+        type: result.type,
+      }),
+    );
+  };
+
   const storages = useMemo(() => {
     return [...new Set(product_variants.map((v) => v.attributes.storage))];
   }, [product_variants]);
@@ -152,8 +171,12 @@ export default function ProductInfo({ data }) {
           Mua ngay
         </button>
 
-        <button className="rounded-xl border px-8 py-4 font-medium hover:bg-gray-100">
-          Thêm giỏ hàng
+        <button
+          disabled={isLoading}
+          onClick={handleAddCart}
+          className="rounded-xl border px-8 py-4 font-medium hover:bg-gray-100 disabled:opacity-50"
+        >
+          {isLoading ? "Đang thêm..." : "Thêm giỏ hàng"}
         </button>
       </div>
     </div>
