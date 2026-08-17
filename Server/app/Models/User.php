@@ -11,16 +11,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Order;
+use App\Models\Cart;
+
 class User extends Authenticatable implements JWTSubject
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
+
     protected $fillable = [
         'full_name',
         'email',
@@ -30,21 +28,17 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(Order::class);
     }
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
+    public function carts()
+    {
+        return $this->hasMany(Cart::class);
+    }
+
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
+
     protected function casts(): array
     {
         return [
@@ -58,11 +52,7 @@ class User extends Authenticatable implements JWTSubject
         return $this->getKey();
     }
 
-    /**
-     * Return a key value array, containing any custom claims to be added to the JWT.
-     *
-     * @return array
-     */
+
     public function getJWTCustomClaims()
     {
         return [];

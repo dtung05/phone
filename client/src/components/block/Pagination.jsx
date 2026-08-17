@@ -1,6 +1,5 @@
 export default function Pagination({ currentPage, lastPage, onPageChange }) {
   if (lastPage <= 1) return null;
-
   return (
     <div className="flex justify-center gap-2 mt-6">
       <button
@@ -13,7 +12,6 @@ export default function Pagination({ currentPage, lastPage, onPageChange }) {
 
       {Array.from({ length: lastPage }, (_, index) => {
         const page = index + 1;
-
         return (
           <button
             key={page}

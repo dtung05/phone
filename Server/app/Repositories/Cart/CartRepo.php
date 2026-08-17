@@ -1,0 +1,47 @@
+<?php
+
+namespace App\Repositories\Cart;
+
+use App\Models\Cart;
+use App\Repositories\BaseRepository;
+
+use App\Repositories\Cart\CartRepoInter;
+use Exception;
+use Illuminate\Support\Facades\DB;
+
+class CartRepo  extends BaseRepository implements CartRepoInter
+{
+    public function getModel()
+    {
+        return Cart::class;
+    }
+    public function addCart($idUser, $product, $stockQuantity)
+    {
+        return  DB::transaction(
+            function () use ($idUser, $product, $stockQuantity) {
+                if ($product['quantity'] > $stockQuantity) {
+                    throw new Exception('Số lượng sản phẩm không đủ');
+                }
+                $cart = $this->model
+                    ->where('user_id', $idUser)
+                    ->first();
+                if (!$cart) {
+                    $cart = $this->model->create([
+                        'user_id' => $idUser
+                    ]);
+                }
+                $item = $cart->cartItems()->where('product_variant_id', $product['product_variant_id'])->first();
+                if ($item) {
+                    $item->quantity += $product['quantity'];
+                    if ($item->quantity > $stockQuantity) {
+                        throw new Exception('Số lượng sản phẩm không đủ');
+                    }
+                    $item->save();
+                    return $item;
+                } else {
+                    return  $cart->cartItems()->create($product);
+                }
+            }
+        );
+    }
+}
