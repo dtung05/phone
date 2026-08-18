@@ -20,7 +20,7 @@ class OrderService
     public function hasEnoughStock($ids, $productVariant)
     {
         $quantityRepo = $this->productVariantRepo->getQuantitys($ids);
-
+        
         foreach ($productVariant as $item) {
             $id = $item['id'];
             if ($item['quantity'] > $quantityRepo[$id]) {
@@ -31,7 +31,6 @@ class OrderService
     }
     public function checkout($productVariant)
     {
-
         $ids = array_column($productVariant, 'id');
         if ($this->hasEnoughStock($ids, $productVariant)) {
             return false;

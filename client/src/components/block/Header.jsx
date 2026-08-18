@@ -51,7 +51,7 @@ function Header() {
               </div>
 
               <span className="ml-2 text-[20px] font-extrabold tracking-wide text-[#006b5a]">
-                <Link to = "/">DIDONG.COM</Link>
+                <Link to="/">DIDONG.COM</Link>
               </span>
             </div>
             <div className="flex h-[52px] flex-1 max-w-[755px] items-center rounded-xl border border-gray-200">
@@ -73,15 +73,12 @@ function Header() {
 
               <div className="flex cursor-pointer items-center gap-2 whitespace-nowrap">
                 <UserRound size={22} />
-                <Link to = 'register'>Tài khoản</Link>
+                <Link to="register">Tài khoản</Link>
               </div>
 
-              <div className="relative cursor-pointer">
-                <ShoppingBag size={28} />
-
-                <span className="absolute -right-3 -top-3 flex h-7 w-7 items-center justify-center rounded-full bg-[#ff4057] text-sm font-bold text-white">
-                  0
-                </span>
+              <div className="flex cursor-pointer items-center gap-2 whitespace-nowrap">
+                <ShoppingBag size={22} />
+                <Link to="/carts">Giỏ hàng</Link>
               </div>
             </div>
           </div>

@@ -22,7 +22,8 @@ class CartController extends Controller
      */
     public function index()
     {
-        //
+        $cart = $this->cartRepo->getMyCart(Auth()->id());
+        return response()->json($cart);
     }
 
     // Thêm sản phẩm vào giỏ
