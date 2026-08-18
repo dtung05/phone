@@ -35,6 +35,8 @@ const Checkout = () => {
               type: "error",
             }),
           );
+          navigate(-1);
+          return;
         }
         setProducts(result.products);
       } catch (error) {
@@ -43,9 +45,7 @@ const Checkout = () => {
     };
     fetchCheckout();
   }, [productVariant]);
-
   if (isLoading) return <Loading />;
-
   const totalPrice = products.reduce(
     (sum, item) => sum + item.selling_price * item.quantity,
     0,

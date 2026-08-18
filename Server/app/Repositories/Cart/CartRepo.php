@@ -44,4 +44,15 @@ class CartRepo  extends BaseRepository implements CartRepoInter
             }
         );
     }
+    public function getMyCart($idUser)
+    {
+        return $this->model
+            ->where('user_id', $idUser)
+            ->with([
+                'cartItems:id,cart_id,product_variant_id,quantity',
+                'cartItems.productVariant:id,product_id,attributes,selling_price,stock_quantity',
+                'cartItems.productVariant.product:id,product_name,slug,thumbnail',
+            ])
+            ->get();
+    }
 }

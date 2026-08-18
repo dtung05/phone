@@ -10,7 +10,14 @@ const cartApi = baseApi.injectEndpoints({
         body: data,
       }),
     }),
+    // xem giỏ hàng
+    getCart: builder.query({
+      query: () => ({
+        url: "carts",
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useAddCartMutation } = cartApi;
+export const { useAddCartMutation, useGetCartQuery } = cartApi;

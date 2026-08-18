@@ -39,15 +39,11 @@ export default function ProductInfo({ data }) {
   const storages = useMemo(() => {
     return [...new Set(product_variants.map((v) => v.attributes.storage))];
   }, [product_variants]);
-
   const [selectedStorage, setSelectedStorage] = useState(storages[0]);
-
   const [selectedVariant, setSelectedVariant] = useState(() =>
     product_variants.find((v) => v.attributes.storage === storages[0]),
   );
-
   const [quantity, setQuantity] = useState(1);
-
   const colors = useMemo(() => {
     return product_variants.filter(
       (v) => v.attributes.storage === selectedStorage,
