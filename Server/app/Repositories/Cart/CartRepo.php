@@ -55,4 +55,19 @@ class CartRepo  extends BaseRepository implements CartRepoInter
             ])
             ->get();
     }
+    public function deleteCartItem($idUser, $id)
+    {
+        $cart = $this->model->where('user_id', $idUser)->first();
+        if ($cart) {
+            $item = $cart->cartItems()
+                ->where('id', $id)
+                ->first();
+            if ($item) {
+                $item->delete();
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
 }

@@ -1,5 +1,8 @@
 import React, { useState, useMemo } from "react";
-import { useGetCartQuery } from "../../store/api/cartApi";
+import {
+  useDestroyCartMutation,
+  useGetCartQuery,
+} from "../../store/api/cartApi";
 import Loading from "../../components/block/Loading";
 import { ShoppingCart, ChevronRight, ArrowLeft } from "lucide-react";
 import { addProductVariant } from "../../store/slices/productVariantSlice";
@@ -7,8 +10,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ListCart from "../../components/cart/ListCart";
 import ConfirmCart from "../../components/cart/ConfirmCart";
-
-
+import { showToast } from "../../store/slices/toastSlice";
 
 const MyCart = () => {
   const dispatch = useDispatch();
@@ -20,12 +22,13 @@ const MyCart = () => {
 
   const [items, setItems] = useState([]);
   const [selectedIds, setSelectedIds] = useState([]);
-
+  const [destroyCart, { isLoading: isRemoveLoading, error: removeError }] =
+    useDestroyCartMutation();
   React.useEffect(() => {
-    if (initialItems.length > 0) {
+    
       setItems(initialItems);
       setSelectedIds(initialItems.map((i) => i.id));
-    }
+    
   }, [data]);
 
   const selectedItems = useMemo(
@@ -76,11 +79,28 @@ const MyCart = () => {
     );
   };
   // xóa sản phẩm khỏi giỏ
-  const removeItem = (id) => {
-    setItems((prev) => prev.filter((item) => item.id !== id));
-    setSelectedIds((prev) => prev.filter((x) => x !== id));
+  const removeItem = async (id) => {
+    if (!confirm("Xác nhận xóa đơn hàng?")) {
+      return;
+    }
+    try {
+      const result = await destroyCart(id).unwrap();
+      dispatch(
+        showToast({
+          message: result.message,
+          type: result.type,
+        }),
+      );
+    }catch (removeError) {
+    dispatch(
+      showToast({
+        message: removeError.data?.message || "Xóa sản phẩm thất bại",
+        type: removeError.data?.type || "error",
+      }),
+      );
+    }
   };
-
+  // Xử lý đặt hàng
   const handleCheckout = () => {
     if (selectedItems.length === 0) return;
     console.log(selectedItems);

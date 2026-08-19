@@ -9,6 +9,7 @@ const cartApi = baseApi.injectEndpoints({
         method: "post",
         body: data,
       }),
+      invalidatesTags: ["Cart"],
     }),
     // xem giỏ hàng
     getCart: builder.query({
@@ -16,8 +17,18 @@ const cartApi = baseApi.injectEndpoints({
         url: "carts",
         method: "GET",
       }),
+      providesTags: ["Cart"],
+    }),
+    // Xóa giỏ hàng
+    destroyCart: builder.mutation({
+      query: (id) => ({
+        url: `carts/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Cart"],
     }),
   }),
 });
 
-export const { useAddCartMutation, useGetCartQuery } = cartApi;
+export const { useAddCartMutation, useGetCartQuery, useDestroyCartMutation } =
+  cartApi;

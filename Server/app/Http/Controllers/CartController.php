@@ -65,6 +65,23 @@ class CartController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $result = $this->cartRepo->deleteCartItem(Auth()->id(), $id);
+            if ($result) {
+                return response()->json([
+                    'message' => "Xóa sản phẩm thành công",
+                    'type' => "success"
+                ], 200);
+            }
+            return response()->json([
+                'message' => "Không tìm thấy sản phẩm cần xóa",
+                'type' => "error"
+            ], 404);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+                'type' => 'error',
+            ], 500);
+        }
     }
 }
