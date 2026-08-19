@@ -1,16 +1,19 @@
 <?php
+
 namespace App\Repositories;
 
-    interface RepositoryInterface{
-    
+interface RepositoryInterface
+{
 
-        function getAll();
 
-        function find($id);
+    function getAll();
 
-        function update($id , $attributes = []);
+    function find($id);
 
-        function create($attribuites = []);
+    function update($id, $attributes = []);
 
-        function delete($id);
-    }
+    function create($attribuites = []);
+
+    function delete($id);
+   
+}
