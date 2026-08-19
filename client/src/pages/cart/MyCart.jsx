@@ -2,6 +2,7 @@ import React, { useState, useMemo } from "react";
 import {
   useDestroyCartMutation,
   useGetCartQuery,
+  useUpdateCartMutation,
 } from "../../store/api/cartApi";
 import Loading from "../../components/block/Loading";
 import { ShoppingCart, ChevronRight, ArrowLeft } from "lucide-react";
@@ -13,6 +14,7 @@ import ConfirmCart from "../../components/cart/ConfirmCart";
 import { showToast } from "../../store/slices/toastSlice";
 
 const MyCart = () => {
+  const updateTimer = React.useRef(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { data, isLoading, error } = useGetCartQuery();
@@ -25,10 +27,8 @@ const MyCart = () => {
   const [destroyCart, { isLoading: isRemoveLoading, error: removeError }] =
     useDestroyCartMutation();
   React.useEffect(() => {
-    
-      setItems(initialItems);
-      setSelectedIds(initialItems.map((i) => i.id));
-    
+    setItems(initialItems);
+    setSelectedIds(initialItems.map((i) => i.id));
   }, [data]);
 
   const selectedItems = useMemo(
@@ -45,7 +45,7 @@ const MyCart = () => {
       ),
     [selectedItems],
   );
-
+  const [updateCart] = useUpdateCartMutation();
   if (isLoading) return <Loading />;
   if (error)
     return (
@@ -67,17 +67,31 @@ const MyCart = () => {
   };
 
   // Cập nhật số lượng sản phẩm
-  const updateQuantity = (id, delta) => {
-    setItems((prev) =>
-      prev.map((item) => {
-        if (item.id === id) {
-          const newQty = item.quantity + delta;
-          return { ...item, quantity: newQty > 0 ? newQty : 1 };
-        }
-        return item;
-      }),
+  const updateQuantity = async (id, delta) => {
+    const item = items.find((item) => item.id === id);
+    if (!item) return;
+    const newQty = Math.min(
+      item.product_variant.stock_quantity,
+      Math.max(1, item.quantity + delta),
     );
+    // cập nhật UI ngay
+    setItems((prev) =>
+      prev.map((item) =>
+        item.id === id ? { ...item, quantity: newQty } : item,
+      ),
+    );
+    // Hủy timer trước đó
+    clearTimeout(updateTimer.current);
+
+    // Chờ 2 giây kể từ lần click cuối
+    updateTimer.current = setTimeout(() => {
+      updateCart({
+        id,
+        quantity: newQty,
+      }).unwrap();
+    }, 300);
   };
+
   // xóa sản phẩm khỏi giỏ
   const removeItem = async (id) => {
     if (!confirm("Xác nhận xóa đơn hàng?")) {
@@ -91,12 +105,12 @@ const MyCart = () => {
           type: result.type,
         }),
       );
-    }catch (removeError) {
-    dispatch(
-      showToast({
-        message: removeError.data?.message || "Xóa sản phẩm thất bại",
-        type: removeError.data?.type || "error",
-      }),
+    } catch (removeError) {
+      dispatch(
+        showToast({
+          message: removeError.data?.message || "Xóa sản phẩm thất bại",
+          type: removeError.data?.type || "error",
+        }),
       );
     }
   };

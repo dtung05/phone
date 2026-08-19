@@ -70,4 +70,23 @@ class CartRepo  extends BaseRepository implements CartRepoInter
         }
         return false;
     }
+
+    public function updateCartItem($idUser, $id, $quantity)
+    {
+        $cart = $this->model
+            ->where('user_id', $idUser)
+            ->first();
+        if (!$cart) {
+            return false;
+        }
+        $item = $cart->cartItems()
+            ->where('id', $id)
+            ->first();
+        if (!$item) {
+            return false;
+        }
+        $item->quantity = $quantity;
+        $item->save();
+        return true;
+    }
 }
