@@ -57,7 +57,13 @@ class CartController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'quantity' => 'required|integer|min:1',
+        ], [
+            'required'=>"Thiếu số lượng",
+            'min' => "Số lượng nhỏ nhất là 1",
+        ]);
+        return $this->cartRepo->updateCartItem(Auth()->id(), $id, $request->quantity);
     }
 
     /**
