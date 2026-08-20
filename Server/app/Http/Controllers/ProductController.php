@@ -8,10 +8,18 @@ use App\Repositories\Product\ProductRepositoryInterface;
 
 class ProductController extends Controller
 {
+    protected $productRepo ;
+    public function __construct(ProductRepositoryInterface $productRepo){
+        $this->productRepo = $productRepo;
+    }
 
-    public function productDetail(String $slug, ProductRepositoryInterface $ProductRepo)
-    {   $data = $ProductRepo->getProduct($slug);
+    public function productDetail(String $slug)
+    {   $data = $this->productRepo->getProduct($slug);
         return response()->json($data);
+    }
+    public function productSearch(Request $request){
+        $result = $this->productRepo->productSearch($request->search);
+        return response()->json($result);
     }
     public function index()
     {

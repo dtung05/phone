@@ -17,4 +17,17 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         return  $this->model->where('slug', '=', $slug)
             ->with(['productVariants'])->first();
     }
+    public function productSearch($name)
+    {
+        return $this->model
+            ->where('product_name', 'like', "%{$name}%")
+            ->select(
+                'id',
+                'product_name',
+                'slug',
+                'thumbnail',
+                'discount_perventage'
+            )->withMin('productVariants as min_price', 'selling_price')
+            ->paginate(10);
+    }
 }

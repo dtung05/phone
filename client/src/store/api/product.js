@@ -9,7 +9,13 @@ const productApi = baseApi.injectEndpoints({
       }),
       providesTags: ["Reviews"],
     }),
+    productSearch: builder.query({
+      query: ({ name, page }) => ({
+        url: `products?search=${name}&page=${page}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useProductDetailQuery } = productApi;
+export const { useProductDetailQuery, useProductSearchQuery } = productApi;
