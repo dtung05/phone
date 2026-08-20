@@ -5,12 +5,12 @@ import {
   Repeat2,
   Phone,
   Package,
-  Search,
   MapPin,
   UserRound,
   ShoppingBag,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import FormSearch from "../product/FormSearch";
 
 function Header() {
   return (
@@ -54,17 +54,7 @@ function Header() {
                 <Link to="/">DIDONG.COM</Link>
               </span>
             </div>
-            <div className="flex h-[52px] flex-1 max-w-[755px] items-center rounded-xl border border-gray-200">
-              <input
-                type="text"
-                placeholder="Hôm nay bạn muốn tìm kiếm gì?"
-                className="h-full flex-1 rounded-xl px-5 text-sm outline-none placeholder:text-gray-400"
-              />
-              <button className="flex h-[30px] items-center gap-2 border-l border-gray-200 px-5 text-[#009b7a]">
-                <Search size={22} />
-                <span className="text-base">Tìm kiếm</span>
-              </button>
-            </div>
+            <FormSearch />
             <div className="ml-auto flex items-center gap-8 text-[#009b7a]">
               <div className="flex cursor-pointer items-center gap-2 whitespace-nowrap">
                 <MapPin size={23} />
