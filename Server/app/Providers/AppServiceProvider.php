@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Repositories\Brand\BrandRepo;
+use App\Repositories\Brand\BrandRepoInter;
 use App\Repositories\Cart\CartRepo;
 use App\Repositories\Cart\CartRepoInter;
 use App\Repositories\Order\OrderRepo;
@@ -41,6 +43,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(
             CartRepoInter::class,
             CartRepo::class
+        );
+        $this->app->singleton(
+            BrandRepoInter::class,
+            BrandRepo::class
         );
     }
 
