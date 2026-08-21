@@ -11,8 +11,11 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import FormSearch from "../product/FormSearch";
+import { useGetBrandsQuery } from "../../store/api/brandApi";
 
 function Header() {
+  const { data: brands = [] } = useGetBrandsQuery();
+
   return (
     <header className="w-full">
       <div className="h-[50px] bg-[#d9f7eb]">
@@ -26,7 +29,9 @@ function Header() {
 
           <div className="flex items-center gap-3">
             <Repeat2 size={28} />
-            <span className="font-semibold">CAM KẾT LỖI ĐỔI LIỀN (*)</span>
+            <span className="font-semibold">
+              CAM KẾT LỖI ĐỔI LIỀN (*)
+            </span>
           </div>
 
           <div className="flex items-center gap-3">
@@ -36,13 +41,16 @@ function Header() {
 
           <div className="flex items-center gap-3">
             <Package size={27} />
-            <span className="font-semibold">MIỄN PHÍ VẬN CHUYỂN TOÀN QUỐC</span>
+            <span className="font-semibold">
+              MIỄN PHÍ VẬN CHUYỂN TOÀN QUỐC
+            </span>
           </div>
 
           <ChevronRight size={28} />
         </div>
       </div>
-      <div className="border-b border-gray-100 bg-white pl-13 pr-13">
+
+      <div className="border-b border-gray-100 bg-white px-13">
         <div className="mx-auto max-w-[1500px] px-5">
           <div className="flex h-[78px] items-center gap-4">
             <div className="flex w-[285px] shrink-0 items-center">
@@ -60,17 +68,43 @@ function Header() {
                 <MapPin size={23} />
                 <span>Tìm siêu thị</span>
               </div>
-
               <div className="flex cursor-pointer items-center gap-2 whitespace-nowrap">
                 <UserRound size={22} />
-                <Link to="register">Tài khoản</Link>
+                <Link to="/register">Tài khoản</Link>
               </div>
-
               <div className="flex cursor-pointer items-center gap-2 whitespace-nowrap">
                 <ShoppingBag size={22} />
                 <Link to="/carts">Giỏ hàng</Link>
               </div>
+
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* BRAND MENU */}
+      <div className="border-b border-gray-200 bg-white">
+        <div className="mx-auto max-w-[1500px] px-5">
+          <div className="flex h-[52px] items-center gap-2 overflow-x-auto scrollbar-hide">
+
+   
+            <Link
+              to="/products"
+              className="shrink-0 rounded-lg px-5 py-2 font-semibold text-[#009b7a] transition hover:bg-[#d9f7eb]"
+            >
+              Tất cả
+            </Link>
+
+            {brands.map((brand) => (
+              <Link
+                key={brand.id}
+                to={`/products?brand=${brand.id}`}
+                className="shrink-0 rounded-lg px-5 py-2 font-medium text-gray-700 transition hover:bg-[#d9f7eb] hover:text-[#009b7a]"
+              >
+                {brand.name}
+              </Link>
+            ))}
+
           </div>
         </div>
       </div>
