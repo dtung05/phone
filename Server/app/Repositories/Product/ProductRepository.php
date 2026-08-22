@@ -5,6 +5,7 @@ namespace App\Repositories\Product;
 use App\Models\Product;
 use App\Models\Review;
 use App\Repositories\BaseRepository;
+use Override;
 
 class ProductRepository extends BaseRepository implements ProductRepositoryInterface
 {
@@ -21,6 +22,19 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     {
         return $this->model
             ->where('product_name', 'like', "%{$name}%")
+            ->select(
+                'id',
+                'product_name',
+                'slug',
+                'thumbnail',
+                'discount_perventage'
+            )->withMin('productVariants as min_price', 'selling_price')
+            ->paginate(10);
+    }
+
+    public function getProductsByBrand($id)
+    {
+        return $this->model->where('brand_id', $id)
             ->select(
                 'id',
                 'product_name',

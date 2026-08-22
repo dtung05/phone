@@ -7,6 +7,7 @@ use App\Http\Controllers\ReviewController;
 Route::get('/products', [ProductController::class, 'productSearch']);
 Route::get('/products/{slug}', [ProductController::class, 'productDetail']);
 
+Route::get("brands/{brand}/products", [ProductController::class, 'productsByBrand']);
 //Đánh giá sản phẩm
 
 
