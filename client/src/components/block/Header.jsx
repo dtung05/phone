@@ -29,9 +29,7 @@ function Header() {
 
           <div className="flex items-center gap-3">
             <Repeat2 size={28} />
-            <span className="font-semibold">
-              CAM KẾT LỖI ĐỔI LIỀN (*)
-            </span>
+            <span className="font-semibold">CAM KẾT LỖI ĐỔI LIỀN (*)</span>
           </div>
 
           <div className="flex items-center gap-3">
@@ -41,9 +39,7 @@ function Header() {
 
           <div className="flex items-center gap-3">
             <Package size={27} />
-            <span className="font-semibold">
-              MIỄN PHÍ VẬN CHUYỂN TOÀN QUỐC
-            </span>
+            <span className="font-semibold">MIỄN PHÍ VẬN CHUYỂN TOÀN QUỐC</span>
           </div>
 
           <ChevronRight size={28} />
@@ -76,18 +72,14 @@ function Header() {
                 <ShoppingBag size={22} />
                 <Link to="/carts">Giỏ hàng</Link>
               </div>
-
             </div>
           </div>
         </div>
       </div>
 
-      {/* BRAND MENU */}
       <div className="border-b border-gray-200 bg-white">
         <div className="mx-auto max-w-[1500px] px-5">
           <div className="flex h-[52px] items-center gap-2 overflow-x-auto scrollbar-hide">
-
-   
             <Link
               to="/products"
               className="shrink-0 rounded-lg px-5 py-2 font-semibold text-[#009b7a] transition hover:bg-[#d9f7eb]"
@@ -98,13 +90,12 @@ function Header() {
             {brands.map((brand) => (
               <Link
                 key={brand.id}
-                to={`/products?brand=${brand.id}`}
+                to={`brands/${brand.id}/products`}
                 className="shrink-0 rounded-lg px-5 py-2 font-medium text-gray-700 transition hover:bg-[#d9f7eb] hover:text-[#009b7a]"
               >
                 {brand.name}
               </Link>
             ))}
-
           </div>
         </div>
       </div>

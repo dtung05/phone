@@ -21,6 +21,12 @@ const productApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+    getProductsByBrand: builder.query({
+      query: ({ brand, page }) => ({
+        url: `brands/${brand}/products?page=${page}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -28,4 +34,5 @@ export const {
   useProductListQuery,
   useProductDetailQuery,
   useProductSearchQuery,
+  useGetProductsByBrandQuery,
 } = productApi;

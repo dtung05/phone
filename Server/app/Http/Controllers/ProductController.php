@@ -8,18 +8,29 @@ use App\Repositories\Product\ProductRepositoryInterface;
 
 class ProductController extends Controller
 {
-    protected $productRepo ;
-    public function __construct(ProductRepositoryInterface $productRepo){
+    protected $productRepo;
+    public function __construct(ProductRepositoryInterface $productRepo)
+    {
         $this->productRepo = $productRepo;
     }
-
+    // lấy ra chi tiết sản phẩm
     public function productDetail(String $slug)
-    {   $data = $this->productRepo->getProduct($slug);
+    {
+        $data = $this->productRepo->getProduct($slug);
         return response()->json($data);
     }
-    public function productSearch(Request $request){
+    // tra cứu sản phẩm
+    public function productSearch(Request $request)
+    {
         $result = $this->productRepo->productSearch($request->search);
         return response()->json($result);
+    }
+    //TÌm sản phẩm theo brand
+    public function productsByBrand(int $brand)
+    {
+     
+        $result = $this->productRepo->getProductsByBrand($brand);
+        return  response()->json($result);
     }
     public function index()
     {
