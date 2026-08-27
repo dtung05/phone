@@ -1,10 +1,11 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import FormField from "../../FormField";
 import TextInput from "../../inputs/TextInput";
 import { useLoginMutation } from "../../../store/api/authApi";
 export const FormLogin = () => {
+  const navigate = useNavigate();
   const { handleSubmit, control, watch, setError } = useForm({
     defaultValues: {
       email: "",
@@ -18,6 +19,7 @@ export const FormLogin = () => {
     try {
       const result = await useLogin(data).unwrap();
       localStorage.setItem("access_token", result.access_token);
+      window.location.href = "/";
     } catch (error) {
       const errors = error?.data?.errors;
       if (errors) {
