@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="vi">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Quản Lý Phiếu Bán & Thu Tiền</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        />
+    </head>
+    <body class="bg-gray-100 font-sans text-gray-800 p-6">
+        <div class="max-w-7xl mx-auto space-y-10">
+            <!-- ==================== MÀN HÌNH 1: DANH SÁCH PHIẾU BÁN ==================== -->
+            <section class="bg-white rounded-xl shadow-md p-6">
+                <div
+                    class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6"
+                >
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-800">
+                            Danh Sách Phiếu Bán
+                        </h1>
+                        <p class="text-sm text-gray-500">
+                            Quản lý các giao dịch bán và theo dõi công nợ
+                        </p>
+                    </div>
+                    <button
+                        class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-4 py-2 rounded-lg flex items-center gap-2 transition"
+                    >
+                        <i class="fa-solid fa-plus"></i> Tạo phiếu bán mới
+                    </button>
+                </div>
+
+                <!-- Filters -->
+                <div
+                    class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6 bg-gray-50 p-4 rounded-lg border border-gray-100"
+                >
+                    <div class="relative">
+                        <i
+                            class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-gray-400"
+                        ></i>
+                        <input
+                            type="text"
+                            placeholder="Tìm theo Mã PB, Khách hàng..."
+                            class="w-full pl-9 pr-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                        />
+                    </div>
+                    <select
+                        class="border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white"
+                    >
+                        <option value="">-- Tất cả trạng thái --</option>
+                        <option value="no">Còn nợ</option>
+                        <option value="het">Trả hết</option>
+                    </select>
+                    <input
+                        type="date"
+                        class="border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white"
+                    />
+                    <button
+                        class="bg-gray-800 text-white font-medium py-2 rounded-md hover:bg-gray-900 transition text-sm"
+                    >
+                        <i class="fa-solid fa-filter mr-1"></i> Lọc dữ liệu
+                    </button>
+                </div>
+
+                <!-- Table -->
+                <div class="overflow-x-auto rounded-lg border border-gray-200">
+                    <table class="w-full text-left text-sm text-gray-600">
+                        <thead
+                            class="bg-gray-100 text-gray-700 uppercase text-xs font-semibold"
+                        >
+                            <tr>
+                                <th class="px-4 py-3">Mã PB</th>
+                                <th class="px-4 py-3">Khách hàng</th>
+                                <th class="px-4 py-3">Ngày bán</th>
+                                <th class="px-4 py-3 text-center">
+                                    Số lượng (con)
+                                </th>
+                                <th class="px-4 py-3 text-center">
+                                    Khối lượng (kg)
+                                </th>
+                                <th class="px-4 py-3 text-right">
+                                    Tổng tiền (VNĐ)
+                                </th>
+                                <th class="px-4 py-3 text-center">
+                                    Trạng thái
+                                </th>
+                                <th class="px-4 py-3 text-center">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200 bg-white">
+                            <tr class="hover:bg-gray-50">
+                                <td
+                                    class="px-4 py-3 font-semibold text-emerald-600"
+                                >
+                                    PB001
+                                </td>
+                                <td class="px-4 py-3 font-medium text-gray-900">
+                                    Vũ Đức Tùng
+                                </td>
+                                <td class="px-4 py-3">24/08/2026</td>
+                                <td class="px-4 py-3 text-center">15</td>
+                                <td class="px-4 py-3 text-center">1,450.0</td>
+                                <td class="px-4 py-3 text-right font-semibold">
+                                    94,250,000
+                                </td>
+                                <td class="px-4 py-3 text-center">
+                                    <span
+                                        class="bg-red-100 text-red-700 font-medium px-2.5 py-1 rounded-full text-xs"
+                                        >Còn nợ (34.25tr)</span
+                                    >
+                                </td>
+                                <td class="px-4 py-3 text-center space-x-2">
+                                    <button
+                                        class="text-blue-600 hover:text-blue-800 p-1"
+                                        title="Xem chi tiết"
+                                    >
+                                        <i class="fa-regular fa-eye"></i>
+                                    </button>
+                                    <button
+                                        class="bg-emerald-100 text-emerald-700 hover:bg-emerald-200 font-medium px-2.5 py-1 rounded text-xs transition"
+                                    >
+                                        <i
+                                            class="fa-solid fa-hand-holding-dollar mr-1"
+                                        ></i>
+                                        Thu tiền
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- ==================== MÀN HÌNH 2: CHI TIẾT PHIẾU BÁN ==================== -->
+            <section class="bg-white rounded-xl shadow-md p-6 space-y-6">
+                <!-- Header Màn hình Chi tiết -->
+                <div
+                    class="flex flex-col md:flex-row md:items-center justify-between border-b pb-4 gap-4"
+                >
+                    <div>
+                        <div class="flex items-center gap-3">
+                            <h2 class="text-2xl font-bold text-gray-800">
+                                Phiếu Bán: #PB001
+                            </h2>
+                            <span
+                                class="bg-red-100 text-red-700 font-semibold px-3 py-1 rounded-full text-xs"
+                                >Còn nợ</span
+                            >
+                        </div>
+                        <p class="text-sm text-gray-500 mt-1">
+                            Khởi tạo ngày 24/08/2026 bởi Nhân viên:
+                            <strong>Trần Văn B (NV002)</strong>
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button
+                            class="border border-gray-300 text-gray-700 hover:bg-gray-50 px-3 py-2 rounded-lg text-sm font-medium transition flex items-center gap-1.5"
+                        >
+                            <i class="fa-solid fa-print"></i> In phiếu
+                        </button>
+                        <button
+                            class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-1.5 shadow-sm"
+                        >
+                            <i class="fa-solid fa-hand-holding-dollar"></i> Lập
+                            phiếu thu
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Thông tin chung & Tóm tắt thanh toán -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Thông tin khách hàng -->
+                    <div
+                        class="bg-gray-50 p-4 rounded-lg border border-gray-100 space-y-2 text-sm"
+                    >
+                        <h3
+                            class="font-bold text-gray-700 border-b pb-2 flex items-center gap-2"
+                        >
+                            <i class="fa-solid fa-user text-emerald-600"></i>
+                            Thông tin khách hàng
+                        </h3>
+                        <p>
+                            <span class="text-gray-500">Tên khách:</span>
+                            <strong>Vũ Đức Tùng</strong>
+                        </p>
+                        <p><span class="text-gray-500">Mã KH:</span> KH012</p>
+                        <p>
+                            <span class="text-gray-500">Số điện thoại:</span>
+                            0987.654.321
+                        </p>
+                        <p>
+                            <span class="text-gray-500">Địa chỉ:</span> 31 Dịch
+                            Vọng Hậu, Cầu Giấy,Hà Nội
+                        </p>
+                    </div>
+
+                    <!-- Tóm tắt số liệu hàng -->
+                    <div
+                        class="bg-gray-50 p-4 rounded-lg border border-gray-100 space-y-2 text-sm"
+                    >
+                        <h3
+                            class="font-bold text-gray-700 border-b pb-2 flex items-center gap-2"
+                        >
+                            <i
+                                class="fa-solid fa-boxes-packing text-emerald-600"
+                            ></i>
+                            Tong quan heo ban
+                        </h3>
+                        <p>
+                            <span class="text-gray-500">Tổng số lượng:</span>
+                            <strong>15 con</strong>
+                        </p>
+                        <p>
+                            <span class="text-gray-500">Tổng khối lượng:</span>
+                            <strong>1,450.0 kg</strong>
+                        </p>
+                        <p>
+                            <span class="text-gray-500">Trung bình:</span> 96.6
+                            kg/con
+                        </p>
+                        <p>
+                            <span class="text-gray-500">Ghi chú:</span>
+                            <span class="italic text-gray-600"
+                                >Giao hàng đợt 1 buổi sáng</span
+                            >
+                        </p>
+                    </div>
+
+                    <!-- Thanh toán & Công nợ -->
+                    <div
+                        class="bg-emerald-50/50 p-4 rounded-lg border border-emerald-100 space-y-2 text-sm"
+                    >
+                        <h3
+                            class="font-bold text-emerald-800 border-b border-emerald-200 pb-2 flex items-center gap-2"
+                        >
+                            <i class="fa-solid fa-wallet text-emerald-600"></i>
+                            Thanh toán
+                        </h3>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Tổng tiền hàng:</span>
+                            <strong class="text-gray-900 text-base"
+                                >94,250,000 đ</strong
+                            >
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Đã thanh toán:</span>
+                            <strong class="text-emerald-700"
+                                >60,000,000 đ</strong
+                            >
+                        </div>
+                        <div
+                            class="flex justify-between pt-2 border-t border-emerald-200"
+                        >
+                            <span class="font-semibold text-gray-700"
+                                >Còn nợ:</span
+                            >
+                            <strong class="text-red-600 text-base"
+                                >34,250,000 đ</strong
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bảng 1: Chi tiết phân bổ chuồng (chi_tiet_ban) -->
+                <div>
+                    <h3
+                        class="text-base font-bold text-gray-800 mb-3 flex items-center gap-2"
+                    >
+                        <i class="fa-solid fa-list text-gray-500"></i> Chi Tiết
+                        Hàng Bán (Theo phân bổ chuồng)
+                    </h3>
+                    <div
+                        class="overflow-x-auto rounded-lg border border-gray-200"
+                    >
+                        <table class="w-full text-left text-sm text-gray-600">
+                            <thead
+                                class="bg-gray-100 text-gray-700 text-xs uppercase font-semibold"
+                            >
+                                <tr>
+                                    <th class="px-4 py-2.5">STT</th>
+                                    <th class="px-4 py-2.5">
+                                        Mã Phân Bổ Chuồng
+                                    </th>
+                                    <th class="px-4 py-2.5 text-center">
+                                        Số lượng (con)
+                                    </th>
+                                    <th class="px-4 py-2.5 text-center">
+                                        Khối lượng (kg)
+                                    </th>
+                                    <th class="px-4 py-2.5 text-right">
+                                        Đơn giá (đ/kg)
+                                    </th>
+                                    <th class="px-4 py-2.5 text-right">
+                                        Thành tiền (VNĐ)
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200 bg-white">
+                                <tr>
+                                    <td class="px-4 py-3">1</td>
+                                    <td
+                                        class="px-4 py-3 font-medium text-gray-800"
+                                    >
+                                        PBC-001 (Chuồng A1)
+                                    </td>
+                                    <td class="px-4 py-3 text-center">10</td>
+                                    <td class="px-4 py-3 text-center">970.0</td>
+                                    <td class="px-4 py-3 text-right">65,000</td>
+                                    <td
+                                        class="px-4 py-3 text-right font-semibold text-gray-900"
+                                    >
+                                        63,050,000
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3">2</td>
+                                    <td
+                                        class="px-4 py-3 font-medium text-gray-800"
+                                    >
+                                        PBC-004 (Chuồng B2)
+                                    </td>
+                                    <td class="px-4 py-3 text-center">5</td>
+                                    <td class="px-4 py-3 text-center">480.0</td>
+                                    <td class="px-4 py-3 text-right">65,000</td>
+                                    <td
+                                        class="px-4 py-3 text-right font-semibold text-gray-900"
+                                    >
+                                        31,200,000
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot
+                                class="bg-gray-50 font-semibold text-gray-800 border-t"
+                            >
+                                <tr>
+                                    <td
+                                        colspan="2"
+                                        class="px-4 py-2.5 text-right"
+                                    >
+                                        Tổng cộng:
+                                    </td>
+                                    <td class="px-4 py-2.5 text-center">15</td>
+                                    <td class="px-4 py-2.5 text-center">
+                                        1,450.0
+                                    </td>
+                                    <td class="px-4 py-2.5"></td>
+                                    <td
+                                        class="px-4 py-2.5 text-right text-emerald-700"
+                                    >
+                                        94,250,000 đ
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Bảng 2: Lịch sử phiếu thu tiền -->
+                <div>
+                    <h3
+                        class="text-base font-bold text-gray-800 mb-3 flex items-center gap-2"
+                    >
+                        <i
+                            class="fa-solid fa-clock-rotate-left text-gray-500"
+                        ></i>
+                        Lịch Sử Thanh Toán (Phiếu Thu)
+                    </h3>
+                    <div
+                        class="overflow-x-auto rounded-lg border border-gray-200"
+                    >
+                        <table class="w-full text-left text-sm text-gray-600">
+                            <thead
+                                class="bg-gray-100 text-gray-700 text-xs uppercase font-semibold"
+                            >
+                                <tr>
+                                    <th class="px-4 py-2.5">Mã Phiếu Thu</th>
+                                    <th class="px-4 py-2.5">Ngày thu</th>
+                                    <th class="px-4 py-2.5">Phương thức</th>
+                                    <th class="px-4 py-2.5 text-right">
+                                        Số tiền thu
+                                    </th>
+                                    <th class="px-4 py-2.5">Ghi chú</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200 bg-white">
+                                <tr>
+                                    <td
+                                        class="px-4 py-3 font-semibold text-emerald-600"
+                                    >
+                                        PT008
+                                    </td>
+                                    <td class="px-4 py-3">24/08/2026</td>
+                                    <td class="px-4 py-3">
+                                        <span
+                                            class="bg-blue-50 text-blue-700 px-2 py-0.5 rounded text-xs"
+                                            >Chuyển khoản</span
+                                        >
+                                    </td>
+                                    <td
+                                        class="px-4 py-3 text-right font-semibold text-emerald-700"
+                                    >
+                                        60,000,000 đ
+                                    </td>
+                                    <td class="px-4 py-3 text-gray-500">
+                                        Thanh toán đợt 1 đặt cọc
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== MÀN HÌNH 3: TẠO PHIẾU THU ==================== -->
+            <section
+                class="bg-white rounded-xl shadow-md p-6 max-w-3xl mx-auto"
+            >
+                <div class="border-b pb-4 mb-6">
+                    <h2
+                        class="text-xl font-bold text-gray-800 flex items-center gap-2"
+                    >
+                        <i class="fa-solid fa-receipt text-emerald-600"></i> Lập
+                        Phiếu Thu Mới
+                    </h2>
+                    <p class="text-sm text-gray-500">
+                        Ghi nhận thanh toán từ khách hàng cho phiếu bán
+                    </p>
+                </div>
+
+                <form class="space-y-6">
+                    <div>
+                        <label
+                            class="block text-sm font-medium text-gray-700 mb-1"
+                            >Chọn phiếu bán / Khách hàng còn nợ
+                            <span class="text-red-500">*</span></label
+                        >
+                        <select
+                            class="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                        >
+                            <option value="">-- Chọn phiếu bán --</option>
+                            <option value="PB001" selected>
+                                PB001 - Vũ Đức Tùng - Nợ: 34,250,000 đ
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label
+                                class="block text-sm font-medium text-gray-700 mb-1"
+                                >Số tiền thu (VNĐ)
+                                <span class="text-red-500">*</span></label
+                            >
+                            <input
+                                type="number"
+                                value="34250000"
+                                class="w-full border border-gray-300 rounded-lg p-2.5 text-sm font-semibold text-emerald-700 focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                            />
+                        </div>
+                        <div>
+                            <label
+                                class="block text-sm font-medium text-gray-700 mb-1"
+                                >Ngày thu
+                                <span class="text-red-500">*</span></label
+                            >
+                            <input
+                                type="date"
+                                value="2026-08-24"
+                                class="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                            />
+                        </div>
+                    </div>
+
+                    <div>
+                        <label
+                            class="block text-sm font-medium text-gray-700 mb-2"
+                            >Phương thức thanh toán
+                            <span class="text-red-500">*</span></label
+                        >
+                        <div class="flex gap-6 text-sm">
+                            <label
+                                class="flex items-center gap-2 cursor-pointer"
+                            >
+                                <input
+                                    type="radio"
+                                    name="phuong_thuc"
+                                    class="text-emerald-600 focus:ring-emerald-500"
+                                />
+                                <span>Tiền mặt</span>
+                            </label>
+                            <label
+                                class="flex items-center gap-2 cursor-pointer"
+                            >
+                                <input
+                                    type="radio"
+                                    name="phuong_thuc"
+                                    checked
+                                    class="text-emerald-600 focus:ring-emerald-500"
+                                />
+                                <span>Chuyển khoản</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label
+                            class="block text-sm font-medium text-gray-700 mb-1"
+                            >Ghi chú</label
+                        >
+                        <textarea
+                            rows="3"
+                            placeholder="Nhập ghi chú thu tiền..."
+                            class="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                        >
+Thu nốt tiền công nợ còn thiếu</textarea
+                        >
+                    </div>
+
+                    <div class="flex justify-end gap-3 pt-4 border-t">
+                        <button
+                            type="button"
+                            class="px-5 py-2.5 border rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition"
+                        >
+                            Hủy bỏ
+                        </button>
+                        <button
+                            type="submit"
+                            class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium rounded-lg transition shadow-sm"
+                        >
+                            Lưu phiếu thu
+                        </button>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </body>
+</html>

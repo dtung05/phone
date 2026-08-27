@@ -4,7 +4,7 @@ import ProductsByBrand from "../../pages/product/ProductsByBrand";
 
 const product = [
   {
-    path: "product/:slug",
+    path: "products/:slug",
     Component: ProductDetail,
   },
   {

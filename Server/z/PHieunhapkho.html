@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản Lý Nhập Kho - Hệ Thống Quản Lý Vật Tư</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-100 font-sans text-slate-800 p-6">
+
+  <div class="max-w-7xl mx-auto space-y-10">
+
+    <!-- ==================== FORM TẠO PHIẾU NHẬP KHO MỚI ==================== -->
+    <section class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+      <div class="border-b border-slate-200 pb-4 mb-6 flex justify-between items-center">
+        <div>
+          <h1 class="text-2xl font-bold text-slate-800 flex items-center gap-2">
+            <i class="fa-solid fa-boxes-packing text-sky-600"></i> Lập Phiếu Nhập Kho Mới
+          </h1>
+          <p class="text-sm text-slate-500 mt-1">Ghi nhận vật tư, thức ăn, thuốc thú y nhập từ Nhà cung cấp</p>
+        </div>
+        <span class="bg-sky-50 text-sky-700 font-semibold px-3 py-1 rounded-full text-xs border border-sky-200">
+          Mã dự kiến: PNK-2026/08-014
+        </span>
+      </div>
+
+      <form class="space-y-6">
+        <!-- Thông tin chung (Phiêu nhập kho Master) -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 bg-slate-50 p-4 rounded-lg border border-slate-200">
+          <!-- nha_cung_cap_id -->
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">Nhà Cung Cấp <span class="text-red-500">*</span></label>
+            <select class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none bg-white">
+              <option value="">-- Chọn nhà cung cấp --</option>
+              <option value="NCC-003" selected>NCC-003: C.P. Việt Nam</option>
+              <option value="NCC-001">NCC-001: Tập đoàn De Heus</option>
+              <option value="NCC-002">NCC-002: Công ty Thuốc Thú Y Japfa</option>
+            </select>
+          </div>
+
+          <!-- nhan_vien_id & ngay_nhap -->
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">Nhân Viên Nhập Kho <span class="text-red-500">*</span></label>
+            <input type="text" value="NV-008: Nguyễn Văn Hoàng" readonly class="w-full border border-slate-300 rounded-lg p-2.5 text-sm bg-slate-100 font-medium text-slate-700">
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">Ngày Nhập Kho <span class="text-red-500">*</span></label>
+            <input type="date" value="2026-08-24" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none bg-white">
+          </div>
+
+          <!-- ghi_chu -->
+          <div class="md:col-span-3">
+            <label class="block text-sm font-semibold text-slate-700 mb-1">Ghi Chú Nhập Kho</label>
+            <input type="text" placeholder="Nhập ghi chú (VD: Nhập kho định kỳ đợt 2 tháng 8)..." value="Nhập kho đợt 2 tháng 08 - Thức ăn chăn nuôi & Thuốc thú y định kỳ" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none bg-white">
+          </div>
+        </div>
+
+        <!-- Bảng Chi Tiết Nhập Kho (Chi_Tiet_Nhap_Kho array) -->
+        <div>
+          <div class="flex justify-between items-center mb-3">
+            <h3 class="text-base font-bold text-slate-800 flex items-center gap-2">
+              <i class="fa-solid fa-list-check text-slate-500"></i> Danh Sách Vật Tư Nhập (Chi_Tiet_Nhap_Kho)
+            </h3>
+            <button type="button" class="bg-sky-100 text-sky-700 hover:bg-sky-200 text-xs font-semibold px-3 py-2 rounded-lg transition flex items-center gap-1">
+              <i class="fa-solid fa-plus"></i> Thêm Dòng Vật Tư
+            </button>
+          </div>
+
+          <div class="overflow-x-auto rounded-lg border border-slate-200">
+            <table class="w-full text-left text-sm text-slate-600">
+              <thead class="bg-slate-100 text-slate-700 uppercase text-xs font-semibold">
+                <tr>
+                  <th class="px-4 py-3 text-center" style="width: 50px;">STT</th>
+                  <th class="px-4 py-3" style="width: 280px;">Vật Tư (`vat_tu_id`)</th>
+                  <th class="px-4 py-3 text-center" style="width: 110px;">Đơn Vị (`don_vi`)</th>
+                  <th class="px-4 py-3 text-center" style="width: 120px;">Số Lượng (`so_luong`)</th>
+                  <th class="px-4 py-3 text-right" style="width: 160px;">Đơn Giá (`don_gia`)</th>
+                  <th class="px-4 py-3 text-right" style="width: 180px;">Thành Tiền (`thanh_tien`)</th>
+                  <th class="px-4 py-3 text-center" style="width: 60px;">Xóa</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200 bg-white">
+                <!-- Item 1 -->
+                <tr>
+                  <td class="px-4 py-3 text-center font-medium">1</td>
+                  <td class="px-4 py-3">
+                    <select class="w-full border border-slate-300 rounded p-2 text-xs focus:ring-1 focus:ring-sky-500">
+                      <option selected>VT-CGF-551 | Cám hỗn hợp lợn thịt 551</option>
+                      <option>VT-CGF-552 | Cám hỗn hợp lợn con 552</option>
+                    </select>
+                  </td>
+                  <td class="px-4 py-3"><input type="text" value="Bao" class="w-full border border-slate-300 rounded p-2 text-xs text-center"></td>
+                  <td class="px-4 py-3"><input type="number" value="150" class="w-full border border-slate-300 rounded p-2 text-xs text-center font-semibold"></td>
+                  <td class="px-4 py-3"><input type="number" value="380000" class="w-full border border-slate-300 rounded p-2 text-xs text-right font-semibold"></td>
+                  <td class="px-4 py-3 text-right font-bold text-slate-800">57,000,000 đ</td>
+                  <td class="px-4 py-3 text-center"><button type="button" class="text-red-500 hover:text-red-700"><i class="fa-regular fa-trash-can"></i></button></td>
+                </tr>
+
+                <!-- Item 2 -->
+                <tr>
+                  <td class="px-4 py-3 text-center font-medium">2</td>
+                  <td class="px-4 py-3">
+                    <select class="w-full border border-slate-300 rounded p-2 text-xs focus:ring-1 focus:ring-sky-500">
+                      <option>VT-CGF-551 | Cám hỗn hợp lợn thịt 551</option>
+                      <option selected>VT-CGF-552 | Cám hỗn hợp lợn con 552</option>
+                    </select>
+                  </td>
+                  <td class="px-4 py-3"><input type="text" value="Bao" class="w-full border border-slate-300 rounded p-2 text-xs text-center"></td>
+                  <td class="px-4 py-3"><input type="number" value="80" class="w-full border border-slate-300 rounded p-2 text-xs text-center font-semibold"></td>
+                  <td class="px-4 py-3"><input type="number" value="420000" class="w-full border border-slate-300 rounded p-2 text-xs text-right font-semibold"></td>
+                  <td class="px-4 py-3 text-right font-bold text-slate-800">33,600,000 đ</td>
+                  <td class="px-4 py-3 text-center"><button type="button" class="text-red-500 hover:text-red-700"><i class="fa-regular fa-trash-can"></i></button></td>
+                </tr>
+
+                <!-- Item 3 -->
+                <tr>
+                  <td class="px-4 py-3 text-center font-medium">3</td>
+                  <td class="px-4 py-3">
+                    <select class="w-full border border-slate-300 rounded p-2 text-xs focus:ring-1 focus:ring-sky-500">
+                      <option selected>VT-MED-012 | Amoxicillin 50% bột (Chai 1kg)</option>
+                    </select>
+                  </td>
+                  <td class="px-4 py-3"><input type="text" value="Chai" class="w-full border border-slate-300 rounded p-2 text-xs text-center"></td>
+                  <td class="px-4 py-3"><input type="number" value="20" class="w-full border border-slate-300 rounded p-2 text-xs text-center font-semibold"></td>
+                  <td class="px-4 py-3"><input type="number" value="650000" class="w-full border border-slate-300 rounded p-2 text-xs text-right font-semibold"></td>
+                  <td class="px-4 py-3 text-right font-bold text-slate-800">13,000,000 đ</td>
+                  <td class="px-4 py-3 text-center"><button type="button" class="text-red-500 hover:text-red-700"><i class="fa-regular fa-trash-can"></i></button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tổng tiền & Submit -->
+        <div class="flex flex-col md:flex-row justify-between items-center pt-4 border-t border-slate-200 gap-4">
+          <div class="text-slate-600 text-sm">
+            Tổng số loại vật tư: <strong class="text-slate-900">3 vật tư</strong>
+          </div>
+          <div class="flex items-center gap-6">
+            <div class="text-right">
+              <span class="text-xs text-slate-500 uppercase font-semibold block">Tổng Tiền Nhập Kho (`tong_tien`)</span>
+              <span class="text-2xl font-extrabold text-sky-700">103,600,000 VNĐ</span>
+            </div>
+            <div class="flex gap-3">
+              <button type="button" class="px-4 py-2.5 border rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50">Hủy</button>
+              <button type="submit" class="px-5 py-2.5 bg-sky-600 hover:bg-sky-700 text-white text-sm font-semibold rounded-lg shadow-sm">
+                <i class="fa-solid fa-check mr-1.5"></i> Lưu Phiếu Nhập Kho
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </section>
+
+  </div>
+
+</body>
+</html>

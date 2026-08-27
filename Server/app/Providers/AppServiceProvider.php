@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Repositories\Banner\BannerRepo;
+use App\Repositories\Banner\BannerRepoInter;
 use App\Repositories\Brand\BrandRepo;
 use App\Repositories\Brand\BrandRepoInter;
 use App\Repositories\Cart\CartRepo;
@@ -19,9 +21,7 @@ use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
+    
     public function register(): void
     {
         $this->app->singleton(
@@ -47,6 +47,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(
             BrandRepoInter::class,
             BrandRepo::class
+        );
+        $this->app->singleton(
+            BannerRepoInter::class,
+            BannerRepo::class
         );
     }
 
