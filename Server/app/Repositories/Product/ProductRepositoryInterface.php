@@ -9,4 +9,6 @@ interface  ProductRepositoryInterface extends RepositoryInterface
     public function getProduct(String $slug);
     public function productSearch($name);
     public function getProductsByBrand($id);
+     public function getProductSale();
+     public function getProductNew();
 }

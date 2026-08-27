@@ -44,4 +44,29 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
             )->withMin('productVariants as min_price', 'selling_price')
             ->paginate(10);
     }
+    public function getProductSale()
+    {
+        return $this->model
+            ->where('is_sale', 1)
+            ->select(
+                'id',
+                'product_name',
+                'slug',
+                'thumbnail',
+                'discount_perventage'
+            )->withMin('productVariants as min_price', 'selling_price')->get();
+    }
+    public function getProductNew()
+    {
+        return $this->model
+            ->select(
+                'id',
+                'product_name',
+                'slug',
+                'thumbnail',
+                'discount_perventage'
+            )->withMin('productVariants as min_price', 'selling_price')
+            ->orderBy('created_at', 'asc')
+            ->paginate(10);
+    }
 }

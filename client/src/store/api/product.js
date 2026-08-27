@@ -27,6 +27,17 @@ const productApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+    getProductsSale: builder.query({
+      query: () => ({
+        url: "products/sale",
+        method: "GET",
+      }),
+    }),
+    getProductsNew: builder.query({
+      query: ({page}) => ({
+        url: `products/new?page=${page}`,
+      }),
+    }),
   }),
 });
 
@@ -35,4 +46,6 @@ export const {
   useProductDetailQuery,
   useProductSearchQuery,
   useGetProductsByBrandQuery,
+  useGetProductsSaleQuery,
+  useGetProductsNewQuery,
 } = productApi;

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản Lý Phiếu Bán & Thu Tiền</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-100 font-sans text-gray-800 p-6">
+
+  <div class="max-w-7xl mx-auto space-y-10">
+
+    <!-- ==================== MÀN HÌNH 1: DANH SÁCH PHIẾU BÁN ==================== -->
+    <section class="bg-white rounded-xl shadow-md p-6">
+      <!-- Header & Filter -->
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+        <div>
+          <h1 class="text-2xl font-bold text-gray-800">Danh Sách Phiếu Bán</h1>
+          <p class="text-sm text-gray-500">Quản lý các giao dịch bán và theo dõi công nợ</p>
+        </div>
+        <button class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-4 py-2 rounded-lg flex items-center gap-2 transition">
+          <i class="fa-solid fa-plus"></i> Tạo phiếu bán mới
+        </button>
+      </div>
+
+      <!-- Filters -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6 bg-gray-50 p-4 rounded-lg border border-gray-100">
+        <div class="relative">
+          <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-gray-400"></i>
+          <input type="text" placeholder="Tìm theo Mã PB, Khách hàng..." class="w-full pl-9 pr-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+        </div>
+        <select class="border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white">
+          <option value="">-- Tất cả trạng thái --</option>
+          <option value="no">Còn nợ</option>
+          <option value="het">Trả hết</option>
+        </select>
+        <input type="date" class="border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white">
+        <button class="bg-gray-800 text-white font-medium py-2 rounded-md hover:bg-gray-900 transition text-sm">
+          <i class="fa-solid fa-filter mr-1"></i> Lọc dữ liệu
+        </button>
+      </div>
+
+      <!-- Table -->
+      <div class="overflow-x-auto rounded-lg border border-gray-200">
+        <table class="w-full text-left text-sm text-gray-600">
+          <thead class="bg-gray-100 text-gray-700 uppercase text-xs font-semibold">
+            <tr>
+              <th class="px-4 py-3">Mã PB</th>
+              <th class="px-4 py-3">Khách hàng</th>
+              <th class="px-4 py-3">Ngày bán</th>
+              <th class="px-4 py-3 text-center">Số lượng (con)</th>
+              <th class="px-4 py-3 text-center">Khối lượng (kg)</th>
+              <th class="px-4 py-3 text-right">Tổng tiền (VNĐ)</th>
+              <th class="px-4 py-3 text-center">Trạng thái</th>
+              <th class="px-4 py-3 text-center">Thao tác</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200 bg-white">
+            <!-- Row 1 -->
+            <tr class="hover:bg-gray-50">
+              <td class="px-4 py-3 font-semibold text-emerald-600">PB001</td>
+              <td class="px-4 py-3 font-medium text-gray-900">Nguyễn Văn A</td>
+              <td class="px-4 py-3">24/08/2026</td>
+              <td class="px-4 py-3 text-center">15</td>
+              <td class="px-4 py-3 text-center">1,450.0</td>
+              <td class="px-4 py-3 text-right font-semibold">94,250,000</td>
+              <td class="px-4 py-3 text-center">
+                <span class="bg-red-100 text-red-700 font-medium px-2.5 py-1 rounded-full text-xs">Còn nợ (34.25tr)</span>
+              </td>
+              <td class="px-4 py-3 text-center space-x-2">
+                <button class="text-blue-600 hover:text-blue-800 p-1" title="Xem chi tiết"><i class="fa-regular fa-eye"></i></button>
+                <button class="bg-emerald-100 text-emerald-700 hover:bg-emerald-200 font-medium px-2.5 py-1 rounded text-xs transition">
+                  <i class="fa-solid fa-hand-holding-dollar mr-1"></i> Thu tiền
+                </button>
+              </td>
+            </tr>
+            <!-- Row 2 -->
+            <tr class="hover:bg-gray-50">
+              <td class="px-4 py-3 font-semibold text-emerald-600">PB002</td>
+              <td class="px-4 py-3 font-medium text-gray-900">Trần Thị B</td>
+              <td class="px-4 py-3">23/08/2026</td>
+              <td class="px-4 py-3 text-center">10</td>
+              <td class="px-4 py-3 text-center">980.0</td>
+              <td class="px-4 py-3 text-right font-semibold">63,700,000</td>
+              <td class="px-4 py-3 text-center">
+                <span class="bg-green-100 text-green-700 font-medium px-2.5 py-1 rounded-full text-xs">Trả hết</span>
+              </td>
+              <td class="px-4 py-3 text-center">
+                <button class="text-blue-600 hover:text-blue-800 p-1" title="Xem chi tiết"><i class="fa-regular fa-eye"></i></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ==================== MÀN HÌNH 2: TẠO PHIẾU THU ==================== -->
+    <section class="bg-white rounded-xl shadow-md p-6 max-w-3xl mx-auto">
+      <div class="border-b pb-4 mb-6">
+        <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2">
+          <i class="fa-solid fa-receipt text-emerald-600"></i> Lập Phiếu Thu Mới
+        </h2>
+        <p class="text-sm text-gray-500">Ghi nhận thanh toán từ khách hàng cho phiếu bán</p>
+      </div>
+
+      <form class="space-y-6">
+        <!-- Select Phiếu Bán -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Chọn phiếu bán / Khách hàng còn nợ <span class="text-red-500">*</span></label>
+          <select class="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+            <option value="">-- Chọn phiếu bán --</option>
+            <option value="PB001" selected>PB001 - Nguyễn Văn A - Nợ: 34,250,000 đ</option>
+            <option value="PB003">PB003 - Lê Văn C - Nợ: 12,000,000 đ</option>
+          </select>
+        </div>
+
+        <!-- Info Card Phiếu Bán -->
+        <div class="bg-emerald-50/60 border border-emerald-200 rounded-lg p-4 space-y-2 text-sm">
+          <div class="flex justify-between border-b border-emerald-100 pb-2">
+            <span class="text-gray-600">Khách hàng: <strong class="text-gray-800">Nguyễn Văn A</strong></span>
+            <span class="text-gray-600">Ngày bán: <strong class="text-gray-800">24/08/2026</strong></span>
+          </div>
+          <div class="grid grid-cols-3 gap-2 pt-1 text-center">
+            <div>
+              <p class="text-xs text-gray-500">Tổng tiền</p>
+              <p class="font-semibold text-gray-800">94,250,000 đ</p>
+            </div>
+            <div>
+              <p class="text-xs text-gray-500">Đã thanh toán</p>
+              <p class="font-semibold text-green-600">60,000,000 đ</p>
+            </div>
+            <div>
+              <p class="text-xs text-gray-500">Còn nợ lại</p>
+              <p class="font-bold text-red-600">34,250,000 đ</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Input Fields -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Số tiền thu (VNĐ) <span class="text-red-500">*</span></label>
+            <input type="number" value="34250000" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm font-semibold text-emerald-700 focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Ngày thu <span class="text-red-500">*</span></label>
+            <input type="date" value="2026-08-24" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+          </div>
+        </div>
+
+        <!-- Payment Method -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Phương thức thanh toán <span class="text-red-500">*</span></label>
+          <div class="flex gap-6 text-sm">
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="radio" name="phuong_thuc" class="text-emerald-600 focus:ring-emerald-500">
+              <span>Tiền mặt</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="radio" name="phuong_thuc" checked class="text-emerald-600 focus:ring-emerald-500">
+              <span>Chuyển khoản</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Note -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Ghi chú</label>
+          <textarea rows="3" placeholder="Nhập ghi chú thu tiền..." class="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">Thu nốt tiền công nợ còn thiếu</textarea>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex justify-end gap-3 pt-4 border-t">
+          <button type="button" class="px-5 py-2.5 border rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition">Hủy bỏ</button>
+          <button type="submit" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium rounded-lg transition shadow-sm">Lưu phiếu thu</button>
+        </div>
+      </form>
+    </section>
+
+  </div>
+
+</body>
+</html>

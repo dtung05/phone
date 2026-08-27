@@ -5,6 +5,8 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReviewController;
 
 Route::get('/products', [ProductController::class, 'productSearch']);
+Route::get('/products/sale', [ProductController::class, 'productSale']);
+Route::get('/products/new', [ProductController::class, 'productNew']);
 Route::get('/products/{slug}', [ProductController::class, 'productDetail']);
 
 Route::get("brands/{brand}/products", [ProductController::class, 'productsByBrand']);

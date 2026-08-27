@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="vi">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Quản Lý Lô Lợn & Phân Bổ Chuồng</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+            rel="stylesheet"
+        />
+        <style>
+            @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+            body {
+                font-family: "Inter", sans-serif;
+                background-color: #f8fafc;
+            }
+        </style>
+    </head>
+    <body class="text-slate-800 antialiased p-4 sm:p-6 lg:p-8">
+        <div class="max-w-6xl mx-auto space-y-6">
+            <!-- Header -->
+            <div
+                class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl shadow-sm border border-slate-200"
+            >
+                <div>
+                    <div
+                        class="flex items-center gap-2 text-emerald-600 font-medium text-sm mb-1"
+                    >
+                        <i class="fa-solid fa-piggy-bank"></i> Quản Lý Trang
+                        Trại
+                    </div>
+                    <h1 class="text-2xl font-bold text-slate-900">
+                        Tạo Lô Lợn Mới & Phân Bổ Chuồng
+                    </h1>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button
+                        type="button"
+                        class="px-4 py-2.5 text-sm font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl transition-all"
+                    >
+                        <i class="fa-solid fa-xmark mr-1.5"></i> Hủy Bỏ
+                    </button>
+                    <button
+                        type="button"
+                        class="px-5 py-2.5 text-sm font-semibold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl shadow-lg shadow-emerald-600/20 transition-all flex items-center gap-2"
+                    >
+                        <i class="fa-solid fa-floppy-disk"></i> Lưu & Khởi Tạo
+                    </button>
+                </div>
+            </div>
+
+            <form id="pigBatchForm" class="space-y-6">
+                <!-- SECTION 1: THÔNG TIN LÔ LỢN -->
+                <div
+                    class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden"
+                >
+                    <div
+                        class="border-b border-slate-100 bg-slate-50/50 p-5 flex items-center justify-between"
+                    >
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-base"
+                            >
+                                1
+                            </div>
+                            <div>
+                                <h2
+                                    class="text-base font-semibold text-slate-900"
+                                >
+                                    Thông Tin Lô Lợn (Nhập Kho)
+                                </h2>
+                                <p class="text-xs text-slate-500">
+                                    Điền thông tin chi tiết của lô lợn mới nhập
+                                    về
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
+                    >
+                        <!-- Giống Lợn -->
+                        <div>
+                            <label
+                                class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-2"
+                            >
+                                Giống Lợn <span class="text-rose-500">*</span>
+                            </label>
+                            <select
+                                name="giong_lon_id"
+                                required
+                                class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
+                            >
+                                <option value="">-- Chọn giống lợn --</option>
+                                <option value="1">Lợn Landrace</option>
+                                <option value="2">Lợn Yorkshire</option>
+                                <option value="3">Lợn Duroc</option>
+                                <option value="4">Lợn Móng Cái</option>
+                            </select>
+                        </div>
+
+                        <!-- Nhân Viên -->
+                        <div>
+                            <label
+                                class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-2"
+                            >
+                                Nhân Viên Tiếp Nhận
+                                <span class="text-rose-500">*</span>
+                            </label>
+                            <select
+                                name="nhan_vien_id"
+                                required
+                                class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
+                            >
+                                <option value="">-- Chọn nhân viên --</option>
+                                <option value="101">NV-01: Nguyễn Văn A</option>
+                                <option value="102">NV-02: Trần Thị B</option>
+                                <option value="103">NV-03: Lê Hoàng C</option>
+                            </select>
+                        </div>
+
+                        <!-- Nhà Cung Cấp -->
+                        <div>
+                            <label
+                                class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-2"
+                            >
+                                Nhà Cung Cấp
+                                <span class="text-rose-500">*</span>
+                            </label>
+                            <select
+                                name="nha_cung_cap_id"
+                                required
+                                class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
+                            >
+                                <option value="">
+                                    -- Chọn nhà cung cấp --
+                                </option>
+                                <option value="1">CP Vietnam Corp</option>
+                                <option value="2">Japfa Comfeed</option>
+                                <option value="3">Trang trại Dabaco</option>
+                            </select>
+                        </div>
+
+                        <!-- Ngày Nhập -->
+                        <div>
+                            <label
+                                class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-2"
+                            >
+                                Ngày Nhập <span class="text-rose-500">*</span>
+                            </label>
+                            <input
+                                type="date"
+                                name="ngay_nhap"
+                                value="2026-08-24"
+                                required
+                                class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
+                            />
+                        </div>
+
+                        <!-- Số Lượng Ban Đầu -->
+                        <div>
+                            <label
+                                class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-2"
+                            >
+                                Số Lượng Ban Đầu
+                                <span class="text-rose-500">*</span>
+                            </label>
+                            <input
+                                type="number"
+                                id="so_luong_ban_dau"
+                                name="so_luong_ban_dau"
+                                placeholder="0"
+                                min="1"
+                                required
+                                class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
+                            />
+                        </div>
+
+                        <!-- Số Lượng Hiện Tại -->
+                        <div>
+                            <label
+                                class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-2"
+                            >
+                                Số Lượng Hiện Tại
+                            </label>
+                            <input
+                                type="number"
+                                id="so_luong_hien_tai"
+                                name="so_luong_hien_tai"
+                                placeholder="0"
+                                readonly
+                                class="w-full px-3.5 py-2.5 bg-slate-100 border border-slate-200 text-slate-500 rounded-xl text-sm cursor-not-allowed"
+                            />
+                        </div>
+
+                        <!-- Giá Nhập -->
+                        <div>
+                            <label
+                                class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-2"
+                            >
+                                Giá Nhập (VNĐ)
+                                <span class="text-rose-500">*</span>
+                            </label>
+                            <div class="relative">
+                                <input
+                                    type="number"
+                                    name="gia_nhap"
+                                    placeholder="0"
+                                    class="w-full pl-3.5 pr-12 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
+                                />
+                                <span
+                                    class="absolute right-3.5 top-2.5 text-xs text-slate-400 font-semibold"
+                                    >đ</span
+                                >
+                            </div>
+                        </div>
+
+                        <!-- Trạng Thái -->
+                        <div>
+                            <label
+                                class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-2"
+                            >
+                                Trạng Thái Lô
+                                <span class="text-rose-500">*</span>
+                            </label>
+                            <select
+                                name="trang_thai"
+                                class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
+                            >
+                                <option value="moi_nhap" selected>
+                                    Mới nhập
+                                </option>
+                                <option value="dang_nuoi">Đang nuôi</option>
+                                <option value="cach_ly">Cách ly</option>
+                                <option value="da_xuat">Đã xuất bán</option>
+                            </select>
+                        </div>
+
+                        <!-- Ghi Chú (Full Row) -->
+                        <div class="md:col-span-2 lg:col-span-3">
+                            <label
+                                class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-2"
+                            >
+                                Ghi Chú
+                            </label>
+                            <textarea
+                                name="ghi_chu"
+                                rows="2"
+                                placeholder="Ghi chú về thể trạng, vắc-xin đã tiêm, thông tin kèm theo..."
+                                class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all resize-none"
+                            ></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 2: PHÂN BỔ CHUỒNG -->
+                <div
+                    class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden"
+                >
+                    <div
+                        class="border-b border-slate-100 bg-slate-50/50 p-5 flex flex-wrap items-center justify-between gap-4"
+                    >
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="w-9 h-9 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-base"
+                            >
+                                2
+                            </div>
+                            <div>
+                                <h2
+                                    class="text-base font-semibold text-slate-900"
+                                >
+                                    Chi Tiết Phân Bổ Vào Chuồng
+                                </h2>
+                                <p class="text-xs text-slate-500">
+                                    Phân chia tổng số lợn vào các chuồng nuôi cụ
+                                    thể
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Stats Counter -->
+                        <div
+                            class="flex items-center gap-4 bg-slate-100 px-4 py-2 rounded-xl text-xs font-medium"
+                        >
+                            <div>
+                                Đã phân bổ:
+                                <span
+                                    id="allocatedCount"
+                                    class="font-bold text-indigo-600"
+                                    >0</span
+                                >
+                            </div>
+                            <div class="text-slate-300">|</div>
+                            <div>
+                                Còn lại:
+                                <span
+                                    id="remainingCount"
+                                    class="font-bold text-amber-600"
+                                    >0</span
+                                >
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-6 space-y-4">
+                        <div
+                            class="overflow-x-auto rounded-xl border border-slate-200"
+                        >
+                            <table class="w-full text-left text-sm">
+                                <thead
+                                    class="bg-slate-50 text-slate-600 font-semibold border-b border-slate-200 text-xs uppercase tracking-wider"
+                                >
+                                    <tr>
+                                        <th class="p-3.5 min-w-[180px]">
+                                            Chuồng Feed/Nuôi (<span
+                                                class="lowercase"
+                                                >chuong_id</span
+                                            >)
+                                        </th>
+                                        <th class="p-3.5 w-32">SL Hiện Tại</th>
+
+                                        <th class="p-3.5 min-w-[150px]">
+                                            Ngày Bắt Đầu
+                                        </th>
+
+                                        <th class="p-3.5 w-16 text-center">
+                                            Xóa
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody
+                                    id="allocationTableBody"
+                                    class="divide-y divide-slate-100"
+                                >
+                                    <!-- Dynamic Rows -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Add Row Button -->
+                        <button
+                            type="button"
+                            id="btnAddAllocation"
+                            class="w-full sm:w-auto px-4 py-2.5 text-xs font-semibold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 rounded-xl transition-all flex items-center justify-center gap-2"
+                        >
+                            <i class="fa-solid fa-plus"></i> Thêm Dòng Phân Bổ
+                            Chuồng
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Script Xử lý Linh hoạt -->
+        <script>
+            const tableBody = document.getElementById("allocationTableBody");
+            const btnAdd = document.getElementById("btnAddAllocation");
+            const inputBanDau = document.getElementById("so_luong_ban_dau");
+            const inputHienTai = document.getElementById("so_luong_hien_tai");
+
+            // Tự động đồng bộ Số lượng ban đầu => Số lượng hiện tại
+            inputBanDau.addEventListener("input", (e) => {
+                inputHienTai.value = e.target.value;
+                updateStats();
+            });
+
+            // Hàm thêm một dòng phân bổ chuồng mới
+            function addAllocationRow(
+                chuongId = "",
+                slHienTai = "",
+                slBenh = "0",
+                trangThai = "dang_nuoi",
+                ngayBD = "2026-08-24",
+                ngayKT = "",
+            ) {
+                const rowId = Date.now();
+                const tr = document.createElement("tr");
+                tr.className = "hover:bg-slate-50/80 transition-all";
+                tr.innerHTML = `
+                <td class="p-3">
+                    <select name="allocations[${rowId}][chuong_id]" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <option value="">-- Chọn Chuồng --</option>
+                        <option value="A1" ${chuongId === "A1" ? "selected" : ""}>Chuồng A1 (Sức chứa: 100)</option>
+                        <option value="A2" ${chuongId === "A2" ? "selected" : ""}>Chuồng A2 (Sức chứa: 100)</option>
+                        <option value="B1" ${chuongId === "B1" ? "selected" : ""}>Chuồng B1 (Sức chứa: 50)</option>
+                        <option value="CL1" ${chuongId === "CL1" ? "selected" : ""}>Chuồng Cách Ly 01</option>
+                    </select>
+                </td>
+                <td class="p-3">
+                    <input type="number" name="allocations[${rowId}][so_luong_hien_tai]" value="${slHienTai}" placeholder="0" min="0" oninput="updateStats()" class="alloc-qty w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </td>
+               
+                
+                <td class="p-3">
+                    <input type="date" name="allocations[${rowId}][ngay_bat_dau]" value="${ngayBD}" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </td>
+               
+                <td class="p-3 text-center">
+                    <button type="button" onclick="removeRow(this)" class="w-8 h-8 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-all flex items-center justify-center mx-auto">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </td>
+            `;
+                tableBody.appendChild(tr);
+                updateStats();
+            }
+
+            function removeRow(btn) {
+                btn.closest("tr").remove();
+                updateStats();
+            }
+
+            function updateStats() {
+                const total = parseInt(inputBanDau.value) || 0;
+                const qtyInputs = document.querySelectorAll(".alloc-qty");
+                let allocated = 0;
+                qtyInputs.forEach((i) => (allocated += parseInt(i.value) || 0));
+
+                document.getElementById("allocatedCount").innerText = allocated;
+                const remaining = total - allocated;
+                const remElem = document.getElementById("remainingCount");
+                remElem.innerText = remaining;
+
+                if (remaining < 0) {
+                    remElem.className = "font-bold text-rose-600";
+                } else {
+                    remElem.className = "font-bold text-amber-600";
+                }
+            }
+
+            // Tạo sẵn 2 dòng mẫu
+            addAllocationRow("A1", "50", "0");
+            addAllocationRow("A2", "50", "0");
+
+            btnAdd.addEventListener("click", () => addAllocationRow());
+        </script>
+    </body>
+</html>

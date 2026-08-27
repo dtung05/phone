@@ -28,10 +28,20 @@ class ProductController extends Controller
     //TÌm sản phẩm theo brand
     public function productsByBrand(int $brand)
     {
-     
         $result = $this->productRepo->getProductsByBrand($brand);
         return  response()->json($result);
     }
+    // lấy sản phẩm đang sale
+    public function productSale()
+    {
+        return $this->productRepo->getProductSale();
+    }
+
+    // lấy ra sản phẩm mới thêm
+    public function productNew(){
+        return $this->productRepo->getProductNew();
+    }
+
     public function index()
     {
         //
