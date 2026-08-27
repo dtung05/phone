@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import FormSearch from "../product/FormSearch";
+import AccountMenu from "./AccountMenu";
 import { useGetBrandsQuery } from "../../store/api/brandApi";
 
 function Header() {
@@ -64,10 +65,11 @@ function Header() {
                 <MapPin size={23} />
                 <span>Tìm siêu thị</span>
               </div>
-              <div className="flex cursor-pointer items-center gap-2 whitespace-nowrap">
+              {/* <div className="flex cursor-pointer items-center gap-2 whitespace-nowrap">
                 <UserRound size={22} />
                 <Link to="/register">Tài khoản</Link>
-              </div>
+              </div> */}
+              <AccountMenu />
               <div className="flex cursor-pointer items-center gap-2 whitespace-nowrap">
                 <ShoppingBag size={22} />
                 <Link to="/carts">Giỏ hàng</Link>
@@ -80,10 +82,8 @@ function Header() {
       <div className="border-b border-gray-200 bg-white">
         <div className="mx-auto max-w-[1500px] px-5">
           <div className="flex h-[52px] items-center gap-2 overflow-x-auto scrollbar-hide">
-            <p
-              className="shrink-0 rounded-lg px-5 py-2 font-semibold text-[#009b7a] transition hover:bg-[#d9f7eb]"
-            >
-              Hãng sản phẩm: 
+            <p className="shrink-0 rounded-lg px-5 py-2 font-semibold text-[#009b7a] transition hover:bg-[#d9f7eb]">
+              Hãng sản phẩm:
             </p>
 
             {brands.map((brand) => (
