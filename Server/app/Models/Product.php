@@ -20,7 +20,19 @@ class Product extends Model
     {
         return [
             'images' => 'array',
-            'specifications' => 'array',  
+            'specifications' => 'array',
         ];
     }
+    protected $fillable = [
+        'brand_id',
+        'category_id',
+        'product_name',
+        'slug',
+        'thumbnail',
+        'review_video',
+        'discount_perventage',
+        'images',
+        'specifications',
+        'is_sale'
+    ];
 }

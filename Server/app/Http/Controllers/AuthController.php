@@ -26,8 +26,8 @@ class AuthController extends Controller
 
 
     public function login()
-    {   
-        
+    {
+
         $credentials = request()->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
@@ -38,7 +38,10 @@ class AuthController extends Controller
 
         $credentials = request(['email', 'password']);
         if (! $token = auth()->attempt($credentials)) {
-            return response()->json(['message' => 'Tài khoản hoặc mật khẩu sai'], 401);
+            return response()->json([
+                'message' => 'Tài khoản hoặc mật khẩu sai',
+                'type' => "error"
+            ], 401);
         }
         return $this->respondWithToken($token);
     }
@@ -50,7 +53,10 @@ class AuthController extends Controller
      */
     public function me()
     {
-        return response()->json(auth()->user());
+        return response()->json([
+            'role' => Auth()->user()->role,
+            'name' => Auth()->user()->full_name,
+        ]);
     }
 
     /**
@@ -86,6 +92,7 @@ class AuthController extends Controller
     {
         return response()->json([
             'message' => "Đăng nhập thành công",
+            'type' => 'success',
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60

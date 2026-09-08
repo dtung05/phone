@@ -36,39 +36,44 @@ export default function ProductInfo({ data }) {
     );
   };
 
+  const getStorage = (v) => v?.attributes?.storage || v?.attributes?.["Dung lượng"] || "Tiêu chuẩn";
+  const getColor = (v) => v?.attributes?.color || v?.attributes?.["Màu sắc"] || "Tiêu chuẩn";
+
   const storages = useMemo(() => {
-    return [...new Set(product_variants.map((v) => v.attributes.storage))];
+    return [...new Set((product_variants || []).map((v) => getStorage(v)))];
   }, [product_variants]);
+
   const [selectedStorage, setSelectedStorage] = useState(storages[0]);
   const [selectedVariant, setSelectedVariant] = useState(() =>
-    product_variants.find((v) => v.attributes.storage === storages[0]),
+    (product_variants || []).find((v) => getStorage(v) === storages[0]) || product_variants?.[0]
   );
   const [quantity, setQuantity] = useState(1);
   const colors = useMemo(() => {
-    return product_variants.filter(
-      (v) => v.attributes.storage === selectedStorage,
+    return (product_variants || []).filter(
+      (v) => getStorage(v) === selectedStorage
     );
   }, [product_variants, selectedStorage]);
 
   const handleStorage = (storage) => {
     setSelectedStorage(storage);
-
-    const variant = product_variants.find(
-      (v) => v.attributes.storage === storage,
+    const variant = (product_variants || []).find(
+      (v) => getStorage(v) === storage
     );
-
-    setSelectedVariant(variant);
+    setSelectedVariant(variant || product_variants?.[0]);
   };
+
   const handleColor = (variant) => {
     setSelectedVariant(variant);
   };
+
   useEffect(() => {
-    if (quantity > selectedVariant.stock_quantity) {
+    if (selectedVariant && quantity > (selectedVariant.stock_quantity ?? 0)) {
       setQuantity(selectedVariant.stock_quantity || 1);
     }
   }, [selectedVariant]);
+
   const increaseQuantity = () => {
-    if (quantity < selectedVariant.stock_quantity) {
+    if (selectedVariant && quantity < (selectedVariant.stock_quantity ?? 0)) {
       setQuantity((prev) => prev + 1);
     }
   };
@@ -83,7 +88,7 @@ export default function ProductInfo({ data }) {
       <h1 className="text-3xl font-bold">{product_name}</h1>
 
       <p className="mt-5 text-3xl font-bold text-red-600">
-        {selectedVariant.selling_price.toLocaleString("vi-VN")}₫
+        {selectedVariant?.selling_price ? Number(selectedVariant.selling_price).toLocaleString("vi-VN") : 0}₫
       </p>
 
       <div className="mt-6">
@@ -115,12 +120,12 @@ export default function ProductInfo({ data }) {
               key={variant.id}
               onClick={() => handleColor(variant)}
               className={`rounded-lg border px-4 py-3 transition ${
-                selectedVariant.id === variant.id
+                selectedVariant?.id === variant.id
                   ? "border-blue-500 bg-blue-50 text-blue-600"
                   : "border-gray-300 hover:border-blue-400"
               }`}
             >
-              {variant.attributes.color}
+              {getColor(variant)}
             </button>
           ))}
         </div>

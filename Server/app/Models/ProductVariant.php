@@ -19,6 +19,11 @@ class ProductVariant extends Model
             'average_cost' => 'integer',
         ];
     }
-
-    
+    protected $fillable = [
+        'product_id',
+        'selling_price',
+        'stock_quantity',
+        'average_cost',
+        'attributes'
+    ];
 }
