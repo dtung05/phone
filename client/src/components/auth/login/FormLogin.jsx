@@ -48,7 +48,6 @@ export const FormLogin = () => {
           </Link>
         </p>
       </div>
-
       <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-4">
         <FormField
           control={control}

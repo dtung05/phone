@@ -37,6 +37,15 @@ const productApi = baseApi.injectEndpoints({
       query: ({page}) => ({
         url: `products/new?page=${page}`,
       }),
+      providesTags: ["Products"],
+    }),
+    createProduct: builder.mutation({
+      query: (formData) => ({
+        url: "products",
+        method: "POST",
+        body: formData,
+      }),
+      invalidatesTags: ["Products"],
     }),
   }),
 });
@@ -48,4 +57,5 @@ export const {
   useGetProductsByBrandQuery,
   useGetProductsSaleQuery,
   useGetProductsNewQuery,
+  useCreateProductMutation,
 } = productApi;

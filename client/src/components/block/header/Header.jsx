@@ -10,13 +10,11 @@ import {
   ShoppingBag,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import FormSearch from "../product/FormSearch";
+import FormSearch from "../../product/FormSearch";
 import AccountMenu from "./AccountMenu";
-import { useGetBrandsQuery } from "../../store/api/brandApi";
+import BrandMenu from "./BrandMenu";
 
 function Header() {
-  const { data: brands = [] } = useGetBrandsQuery();
-
   return (
     <header className="w-full">
       <div className="h-[50px] bg-[#d9f7eb]">
@@ -78,26 +76,7 @@ function Header() {
           </div>
         </div>
       </div>
-
-      <div className="border-b border-gray-200 bg-white">
-        <div className="mx-auto max-w-[1500px] px-5">
-          <div className="flex h-[52px] items-center gap-2 overflow-x-auto scrollbar-hide">
-            <p className="shrink-0 rounded-lg px-5 py-2 font-semibold text-[#009b7a] transition hover:bg-[#d9f7eb]">
-              Hãng sản phẩm:
-            </p>
-
-            {brands.map((brand) => (
-              <Link
-                key={brand.id}
-                to={`brands/${brand.id}/products`}
-                className="shrink-0 rounded-lg px-5 py-2 font-medium text-gray-700 transition hover:bg-[#d9f7eb] hover:text-[#009b7a]"
-              >
-                {brand.name}
-              </Link>
-            ))}
-          </div>
-        </div>
-      </div>
+      <BrandMenu />
     </header>
   );
 }

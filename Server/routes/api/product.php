@@ -17,4 +17,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('products/{product:slug}/reviews', [ReviewController::class, 'index']);
     Route::post('/products/{slug}/reviews', [ReviewController::class, 'store']);
     Route::delete('/products/reviews/{id}', [ReviewController::class, 'destroy']);
+    Route::middleware('role:Nhân viên kho,Quản trị viên')->group(function () {
+        Route::post('/products', [ProductController::class, 'store']);
+    });
 });

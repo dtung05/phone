@@ -8,6 +8,8 @@ use App\Repositories\Brand\BrandRepo;
 use App\Repositories\Brand\BrandRepoInter;
 use App\Repositories\Cart\CartRepo;
 use App\Repositories\Cart\CartRepoInter;
+use App\Repositories\Category\CategoryRepo;
+use App\Repositories\Category\CategoryRepoInter;
 use App\Repositories\Order\OrderRepo;
 use App\Repositories\Order\OrderRepositoryInterface;
 use App\Repositories\User\UserRepository;
@@ -21,7 +23,7 @@ use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-    
+
     public function register(): void
     {
         $this->app->singleton(
@@ -51,6 +53,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(
             BannerRepoInter::class,
             BannerRepo::class
+        );
+        $this->app->singleton(
+            CategoryRepoInter::class,
+            CategoryRepo::class
         );
     }
 
