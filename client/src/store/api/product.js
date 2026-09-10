@@ -34,16 +34,37 @@ const productApi = baseApi.injectEndpoints({
       }),
     }),
     getProductsNew: builder.query({
-      query: ({page}) => ({
+      query: ({ page }) => ({
         url: `products/new?page=${page}`,
+      }),
+      providesTags: ["Products"],
+    }),
+    // API Nhân viên
+    getStaffProducts: builder.query({
+      query: ({
+        search = "",
+        category_id = "",
+        brand_id = "",
+        page = 1,
+      } = {}) => ({
+        url: `staff/products?search=${encodeURIComponent(search)}&category_id=${category_id}&brand_id=${brand_id}&page=${page}`,
+        method: "GET",
       }),
       providesTags: ["Products"],
     }),
     createProduct: builder.mutation({
       query: (formData) => ({
-        url: "products",
+        url: "staff/products",
         method: "POST",
         body: formData,
+      }),
+      invalidatesTags: ["Products"],
+    }),
+    updateProduct: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `staff/products/${id}`,
+        method: "POST",
+        body: data,
       }),
       invalidatesTags: ["Products"],
     }),
@@ -57,5 +78,7 @@ export const {
   useGetProductsByBrandQuery,
   useGetProductsSaleQuery,
   useGetProductsNewQuery,
+  useGetStaffProductsQuery,
   useCreateProductMutation,
+  useUpdateProductMutation,
 } = productApi;

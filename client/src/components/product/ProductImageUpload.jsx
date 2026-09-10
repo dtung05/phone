@@ -1,12 +1,29 @@
 import { useState } from "react";
 import { Upload, X } from "lucide-react";
 
+const getImageUrl = (path) => {
+  if (!path) return "";
+  if (
+    path.startsWith("http://") ||
+    path.startsWith("https://") ||
+    path.startsWith("blob:") ||
+    path.startsWith("data:")
+  ) {
+    return path;
+  }
+  return `http://127.0.0.1:8000/storage/${path.replace(/^\/+/, "")}`;
+};
+
 const ProductImageUpload = ({
   register,
   errors,
   setValue,
   galleryFiles,
   setGalleryFiles,
+  existingThumbnail,
+  setExistingThumbnail,
+  existingImages = [],
+  setExistingImages,
 }) => {
   const [thumbnailPreview, setThumbnailPreview] = useState(null);
 
@@ -14,12 +31,18 @@ const ProductImageUpload = ({
     const file = e.target.files?.[0];
     if (file) {
       setThumbnailPreview(URL.createObjectURL(file));
+      if (setExistingThumbnail) {
+        setExistingThumbnail(null);
+      }
     }
   };
 
   const removeThumbnail = () => {
     setThumbnailPreview(null);
     setValue("thumbnail", null);
+    if (setExistingThumbnail) {
+      setExistingThumbnail(null);
+    }
   };
 
   const handleImagesChange = (e) => {
@@ -34,6 +57,14 @@ const ProductImageUpload = ({
     setGalleryFiles((prev) => prev.filter((_, idx) => idx !== indexToRemove));
   };
 
+  const removeExistingImage = (indexToRemove) => {
+    if (setExistingImages) {
+      setExistingImages((prev) => prev.filter((_, idx) => idx !== indexToRemove));
+    }
+  };
+
+  const currentThumbnail = thumbnailPreview || (existingThumbnail ? getImageUrl(existingThumbnail) : null);
+
   return (
     <div className="space-y-6">
       <div className="bg-white border border-slate-200 rounded-lg p-5 space-y-4 shadow-sm">
@@ -47,10 +78,10 @@ const ProductImageUpload = ({
             Ảnh đại diện (Thumbnail) <span className="text-red-500">*</span>
           </label>
 
-          {thumbnailPreview ? (
+          {currentThumbnail ? (
             <div className="relative border border-slate-200 rounded bg-slate-50 h-48 overflow-hidden group">
               <img
-                src={thumbnailPreview}
+                src={currentThumbnail}
                 alt="Thumbnail"
                 className="w-full h-full object-contain"
               />
@@ -72,7 +103,7 @@ const ProductImageUpload = ({
                 type="file"
                 accept="image/*"
                 {...register("thumbnail", {
-                  required: "Ảnh đại diện là bắt buộc",
+                  required: !existingThumbnail && !thumbnailPreview ? "Ảnh đại diện là bắt buộc" : false,
                   onChange: handleThumbnailChange,
                 })}
                 className="hidden"
@@ -103,12 +134,36 @@ const ProductImageUpload = ({
             />
           </label>
 
-          {galleryFiles.length > 0 && (
+          {/* Hiển thị cả ảnh cũ và ảnh mới chọn */}
+          {(existingImages.length > 0 || galleryFiles.length > 0) && (
             <div className="grid grid-cols-3 gap-2 pt-2">
+              {/* Ảnh cũ */}
+              {existingImages.map((imgPath, idx) => (
+                <div
+                  key={`existing-${idx}`}
+                  className="relative aspect-square border border-slate-200 rounded overflow-hidden bg-slate-50 group"
+                >
+                  <img
+                    src={getImageUrl(imgPath)}
+                    alt=""
+                    className="w-full h-full object-cover"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removeExistingImage(idx)}
+                    title="Xóa ảnh cũ này"
+                    className="absolute inset-0 bg-slate-900/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+              ))}
+
+              {/* Ảnh mới tải lên */}
               {galleryFiles.map((file, idx) => (
                 <div
-                  key={idx}
-                  className="relative aspect-square border border-slate-200 rounded overflow-hidden bg-slate-50 group"
+                  key={`new-${idx}`}
+                  className="relative aspect-square border-2 border-emerald-500 rounded overflow-hidden bg-slate-50 group"
                 >
                   <img
                     src={URL.createObjectURL(file)}
@@ -118,7 +173,8 @@ const ProductImageUpload = ({
                   <button
                     type="button"
                     onClick={() => removeDetailImage(idx)}
-                    className="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white"
+                    title="Hủy ảnh này"
+                    className="absolute inset-0 bg-slate-900/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white"
                   >
                     <X className="w-4 h-4" />
                   </button>

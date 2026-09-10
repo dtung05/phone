@@ -15,8 +15,11 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     }
     public function getProduct(String $slug)
     {
-        return  $this->model->where('slug', '=', $slug)
-            ->with(['productVariants'])->first();
+        return $this->model
+            ->where('slug', '=', $slug)
+            ->orWhere('id', '=', $slug)
+            ->with(['productVariants'])
+            ->first();
     }
     public function productSearch($name)
     {
@@ -66,7 +69,31 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                 'thumbnail',
                 'discount_perventage'
             )->withMin('productVariants as min_price', 'selling_price')
-            ->orderBy('created_at', 'asc')
+            ->orderBy('created_at', 'desc')
             ->paginate(10);
+    }
+
+    public function getStaffProducts($search = null, $categoryId = null, $brandId = null, $perPage = 10)
+    {   $query = $this->model
+            ->with([
+                'brand:id,name',
+                'category:id,name',
+            ])
+            ->withMin('productVariants as min_price', 'selling_price')
+            ->withSum('productVariants as total_stock', 'stock_quantity')
+            ->withCount('productVariants as variants_count');
+        if (!empty($search)) {
+            $query->where(function ($q) use ($search) {
+                $q->where('product_name', 'like', "%{$search}%")
+                    ->orWhere('id', $search);
+            });
+        }
+        if (!empty($categoryId)) {
+            $query->where('category_id', $categoryId);
+        }
+        if (!empty($brandId)) {
+            $query->where('brand_id', $brandId);
+        }
+        return $query->latest()->paginate($perPage);
     }
 }
