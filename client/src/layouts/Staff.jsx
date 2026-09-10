@@ -45,10 +45,11 @@ const Staff = () => {
           {/* MENU ĐIỀU HƯỚNG */}
           <nav className="px-3 space-y-1 mt-2">
             <p className="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">
-              Quản lý danh mục
+              Quản lý sản phẩm
             </p>
             <NavLink
               to="/staff/products"
+              end
               className={({ isActive }) =>
                 `flex items-center gap-2.5 px-3 py-2.5 text-xs font-semibold rounded-md transition-all ${
                   isActive
@@ -57,7 +58,19 @@ const Staff = () => {
                 }`
               }
             >
-              <span>Quản lý & Thêm sản phẩm</span>
+              <span>Danh sách sản phẩm</span>
+            </NavLink>
+            <NavLink
+              to="/staff/products/create"
+              className={({ isActive }) =>
+                `flex items-center gap-2.5 px-3 py-2.5 text-xs font-semibold rounded-md transition-all ${
+                  isActive
+                    ? "bg-emerald-50 text-emerald-700 border-l-4 border-emerald-600 shadow-sm"
+                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                }`
+              }
+            >
+              <span>Thêm sản phẩm mới</span>
             </NavLink>
           </nav>
         </div>

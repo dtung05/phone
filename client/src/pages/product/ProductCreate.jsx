@@ -4,6 +4,9 @@ import { useCreateProductMutation } from "../../store/api/product";
 
 const ProductCreate = () => {
   const [createProduct, { isLoading }] = useCreateProductMutation();
+  const handleOnsub = (data) => {
+    return createProduct(data).unwrap();
+  };
   const defaultValues = {
     category_id: "",
     brand_id: "",
@@ -12,7 +15,8 @@ const ProductCreate = () => {
     review_video: "",
     discount_percentage: 0,
     images: [],
-    specifications: '{\n  "RAM": "8GB",\n  "Bộ nhớ trong": "128GB",\n  "Pin": "5000 mAh"\n}',
+    specifications:
+      '{\n  "RAM": "8GB",\n  "Bộ nhớ trong": "128GB",\n  "Pin": "5000 mAh"\n}',
     variants: [
       {
         selling_price: "",
@@ -22,7 +26,7 @@ const ProductCreate = () => {
   };
   return (
     <ProductForm
-      handleOnsub={createProduct}
+      handleOnsub={handleOnsub}
       defaultValues={defaultValues}
       isLoading={isLoading}
     />

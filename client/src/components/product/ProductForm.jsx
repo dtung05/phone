@@ -8,10 +8,19 @@ import VariantFields from "./VariantFields";
 import ProductImageUpload from "./ProductImageUpload";
 import { showToast } from "../../store/slices/toastSlice";
 
-const ProductForm = ({ handleOnsub, defaultValues, isLoading }) => {
+const ProductForm = ({
+  handleOnsub,
+  defaultValues,
+  isLoading,
+  isEdit = false,
+  initialThumbnail = null,
+  initialImages = [],
+}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [galleryFiles, setGalleryFiles] = useState([]);
+  const [existingThumbnail, setExistingThumbnail] = useState(initialThumbnail);
+  const [existingImages, setExistingImages] = useState(initialImages || []);
 
   const {
     register,
@@ -35,7 +44,6 @@ const ProductForm = ({ handleOnsub, defaultValues, isLoading }) => {
 
   const onSubmit = async (data) => {
     try {
-      // Validate specifications JSON
       if (data.specifications) {
         try {
           JSON.parse(data.specifications);
@@ -44,23 +52,20 @@ const ProductForm = ({ handleOnsub, defaultValues, isLoading }) => {
             showToast({
               message: "Thông số kỹ thuật phải đúng định dạng JSON!",
               type: "error",
-            })
+            }),
           );
           return;
         }
       }
-
-      // Validate and parse variants
       if (!data.variants || data.variants.length === 0) {
         dispatch(
           showToast({
             message: "Vui lòng thêm ít nhất một biến thể sản phẩm!",
             type: "error",
-          })
+          }),
         );
         return;
       }
-
       const parsedVariants = [];
       for (let i = 0; i < data.variants.length; i++) {
         const v = data.variants[i];
@@ -69,7 +74,7 @@ const ProductForm = ({ handleOnsub, defaultValues, isLoading }) => {
             showToast({
               message: `Biến thể #${i + 1} phải có giá bán hợp lệ!`,
               type: "error",
-            })
+            }),
           );
           return;
         }
@@ -77,6 +82,7 @@ const ProductForm = ({ handleOnsub, defaultValues, isLoading }) => {
         try {
           const parsedAttrs = JSON.parse(v.attributes_json || "{}");
           parsedVariants.push({
+            id: v.id || null,
             selling_price: Number(v.selling_price),
             attributes: parsedAttrs,
           });
@@ -85,42 +91,42 @@ const ProductForm = ({ handleOnsub, defaultValues, isLoading }) => {
             showToast({
               message: `Biến thể #${i + 1} có thuộc tính JSON không hợp lệ!`,
               type: "error",
-            })
+            }),
           );
           return;
         }
       }
-
       const formData = new FormData();
       formData.append("product_name", data.name);
       formData.append("category_id", data.category_id);
       formData.append("brand_id", data.brand_id);
       formData.append("discount_percentage", data.discount_percentage || 0);
       formData.append("review_video", data.review_video || "");
-
-      // Thumbnail
       if (data.thumbnail?.[0]) {
         formData.append("thumbnail", data.thumbnail[0]);
+      } else if (existingThumbnail) {
+        formData.append("existing_thumbnail", existingThumbnail);
       }
-
-      // Gallery Images
       galleryFiles.forEach((file) => {
         formData.append("images[]", file);
       });
 
-      // Specifications
+      if (isEdit) {
+        formData.append("existing_images", JSON.stringify(existingImages));
+      }
       formData.append("specifications", data.specifications || "{}");
-
-      // Variants
       formData.append("variants", JSON.stringify(parsedVariants));
-
-      const result = await handleOnsub(formData).unwrap();
-
+      const result = await handleOnsub(formData);
+      console.log("UPDATE SUCCESS", result);
       dispatch(
         showToast({
-          message: result?.message || "Thêm sản phẩm thành công!",
+          message:
+            result?.message ||
+            (isEdit
+              ? "Cập nhật sản phẩm thành công!"
+              : "Thêm sản phẩm thành công!"),
           type: "success",
-        })
+        }),
       );
 
       reset();
@@ -128,14 +134,26 @@ const ProductForm = ({ handleOnsub, defaultValues, isLoading }) => {
       navigate("/staff/products");
     } catch (error) {
       console.error(error);
-      const serverMessage =
-        error?.data?.message ||
-        "Dữ liệu không hợp lệ hoặc thêm sản phẩm thất bại!";
+      const serverErrors = error?.data?.errors;
+      let serverMessage = error?.data?.message;
+      if (serverErrors && typeof serverErrors === "object") {
+        const firstKey = Object.keys(serverErrors)[0];
+        if (
+          Array.isArray(serverErrors[firstKey]) &&
+          serverErrors[firstKey].length > 0
+        ) {
+          serverMessage = serverErrors[firstKey][0];
+        }
+      }
       dispatch(
         showToast({
-          message: serverMessage,
+          message:
+            serverMessage ||
+            (isEdit
+              ? "Cập nhật sản phẩm thất bại!"
+              : "Dữ liệu không hợp lệ hoặc thêm sản phẩm thất bại!"),
           type: "error",
-        })
+        }),
       );
     }
   };
@@ -149,10 +167,14 @@ const ProductForm = ({ handleOnsub, defaultValues, isLoading }) => {
         <div className="bg-white border border-slate-200 rounded-lg p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm">
           <div>
             <h1 className="text-lg font-bold text-slate-800">
-              Thêm sản phẩm công nghệ mới
+              {isEdit
+                ? "Cập nhật thông tin sản phẩm"
+                : "Thêm sản phẩm công nghệ mới"}
             </h1>
             <p className="text-xs text-slate-500">
-              Quản lý thông tin thiết bị, hình ảnh và biến thể sản phẩm
+              {isEdit
+                ? "Chỉnh sửa thông số thiết bị, giá bán và biến thể sản phẩm"
+                : "Quản lý thông tin thiết bị, hình ảnh và biến thể sản phẩm"}
             </p>
           </div>
           <div className="flex items-center gap-2">
@@ -169,7 +191,11 @@ const ProductForm = ({ handleOnsub, defaultValues, isLoading }) => {
               disabled={isLoading}
               className="px-4 py-2 text-xs font-medium text-white bg-slate-900 rounded hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm"
             >
-              {isLoading ? "Đang lưu..." : "Lưu sản phẩm"}
+              {isLoading
+                ? "Đang lưu..."
+                : isEdit
+                  ? "Cập nhật sản phẩm"
+                  : "Lưu sản phẩm"}
             </button>
           </div>
         </div>
@@ -282,7 +308,7 @@ const ProductForm = ({ handleOnsub, defaultValues, isLoading }) => {
                       JSON.parse(val);
                       return true;
                     } catch (e) {
-                      return "Thông số kỹ thuật phải đúng định dạng JSON hợp lệ (ví dụ: {\"RAM\": \"8GB\"})";
+                      return 'Thông số kỹ thuật phải đúng định dạng JSON hợp lệ (ví dụ: {"RAM": "8GB"})';
                     }
                   },
                 })}
@@ -304,6 +330,10 @@ const ProductForm = ({ handleOnsub, defaultValues, isLoading }) => {
             setValue={setValue}
             galleryFiles={galleryFiles}
             setGalleryFiles={setGalleryFiles}
+            existingThumbnail={existingThumbnail}
+            setExistingThumbnail={setExistingThumbnail}
+            existingImages={existingImages}
+            setExistingImages={setExistingImages}
           />
         </div>
       </form>
