@@ -58,5 +58,19 @@ abstract class BaseRepository implements RepositoryInterface
         }
         return false;
     }
-    
+
+    public function getTrashed()
+    {
+        return $this->model->onlyTrashed()->orderBy('deleted_at', 'desc')->get();
+    }
+
+    public function restore($id)
+    {
+        $result = $this->model->onlyTrashed()->find($id);
+        if ($result) {
+            $result->restore();
+            return $result;
+        }
+        return false;
+    }
 }

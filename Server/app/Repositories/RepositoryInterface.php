@@ -15,5 +15,8 @@ interface RepositoryInterface
     function create($attribuites = []);
 
     function delete($id);
-   
+
+    function getTrashed();
+
+    function restore($id);
 }
