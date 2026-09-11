@@ -2,6 +2,7 @@ import React from "react";
 import ProductListStaff from "../../pages/product/ProductListStaff";
 import ProductCreate from "../../pages/product/ProductCreate";
 import ProductUpdate from "../../pages/product/ProductUpdate";
+import CategoryBrandManage from "../../pages/category-brand/CategoryBrandManage";
 
 const product = [
   {
@@ -19,6 +20,10 @@ const product = [
   {
     path: "products/edit/:id",
     Component: ProductUpdate,
+  },
+  {
+    path: "categories-brands",
+    Component: CategoryBrandManage,
   },
 ];
 

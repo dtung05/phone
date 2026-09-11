@@ -49,7 +49,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
 export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: baseQueryWithReauth,
-  tagTypes: ["Products", "Reviews", "Orders", "Cart"],
+  tagTypes: ["Products", "Reviews", "Orders", "Cart", "Brands", "Categories"],
   endpoints: () => ({}),
 });
 

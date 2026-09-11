@@ -72,6 +72,18 @@ const Staff = () => {
             >
               <span>Thêm sản phẩm mới</span>
             </NavLink>
+            <NavLink
+              to="/staff/categories-brands"
+              className={({ isActive }) =>
+                `flex items-center gap-2.5 px-3 py-2.5 text-xs font-semibold rounded-md transition-all ${
+                  isActive
+                    ? "bg-emerald-50 text-emerald-700 border-l-4 border-emerald-600 shadow-sm"
+                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                }`
+              }
+            >
+              <span>Danh mục & Thương hiệu</span>
+            </NavLink>
           </nav>
         </div>
 

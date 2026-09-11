@@ -1,6 +1,6 @@
 <?php
 
-namespace  App\Repositories\Brand;
+namespace App\Repositories\Brand;
 
 use App\Repositories\RepositoryInterface;
 
