@@ -20,7 +20,7 @@ class OrderService
     public function hasEnoughStock($ids, $productVariant)
     {
         $quantityRepo = $this->productVariantRepo->getQuantitys($ids);
-        
+
         foreach ($productVariant as $item) {
             $id = $item['id'];
             if ($item['quantity'] > $quantityRepo[$id]) {
@@ -51,7 +51,7 @@ class OrderService
 
         $quantityMap = array_column($data['idQuantities'], 'quantity', 'id');
 
-        DB::transaction(function () use ($data, $ids, $quantityMap, $idUser) {
+        return  DB::transaction(function () use ($data, $ids, $quantityMap, $idUser) {
             //Trừ số lượng trong kho
             $this->productVariantRepo->decreaseStock($data['idQuantities']);
             // Lấy ra thông tin sản phẩm
@@ -66,9 +66,8 @@ class OrderService
             unset($item);
             // Tạo đơn hàng
 
-            $order = $this->orderRepo->createOrder($data, $idUser, $total_amount, $productInfomation);
+            return  $this->orderRepo->createOrder($data, $idUser, $total_amount, $productInfomation);
         });
-        return true;
     }
     public function index($idUser, $quantity)
     {
@@ -84,11 +83,46 @@ class OrderService
         }
         $orderItems = $order->orderItems;
         return DB::transaction(function () use ($orderItems, $order) {
-            
+
             $this->productVariantRepo->increaseStock($orderItems);
             $order->order_status = 'Đã hủy';
             $order->save();
             return true;
+        });
+    }
+
+    public function getStaffOrders($filters = [], $perPage = 10)
+    {
+        return $this->orderRepo->getStaffOrders($filters, $perPage);
+    }
+
+    public function getStaffOrderDetail($id)
+    {
+        return $this->orderRepo->findOrderWithItems($id);
+    }
+
+    public function updateOrderStatus($id, $newStatus, $newPaymentStatus = null)
+    {
+        $order = $this->orderRepo->findOrderWithItems($id);
+        $oldStatus = $order->order_status;
+
+        return DB::transaction(function () use ($order, $oldStatus, $newStatus, $newPaymentStatus) {
+            // 1. Chuyển sang "Đã hủy" từ trạng thái đang hoạt động => Hoàn trả lại tồn kho
+            if ($oldStatus !== 'Đã hủy' && $newStatus === 'Đã hủy') {
+                $this->productVariantRepo->increaseStock($order->orderItems);
+            }
+            // 2. Kích hoạt lại đơn hàng từ "Đã hủy" về trạng thái đặt => Trừ lại số lượng tồn kho
+            elseif ($oldStatus === 'Đã hủy' && $newStatus !== 'Đã hủy') {
+                $this->productVariantRepo->decreaseStock($order->orderItems);
+            }
+
+            $order->order_status = $newStatus;
+            if (!empty($newPaymentStatus)) {
+                $order->payment_status = $newPaymentStatus;
+            }
+            $order->save();
+
+            return $order->load(['orderItems', 'user:id,full_name,email']);
         });
     }
 }

@@ -10,4 +10,5 @@ interface OrderRepositoryInterface extends RepositoryInterface
     public function getMyOrders($idUser, $quantity, $status);
     public function cancelOrder($id);
     public function findOrderWithItems($id);
+    public function getStaffOrders($filters = [], $perPage = 10);
 }

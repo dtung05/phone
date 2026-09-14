@@ -31,6 +31,36 @@ const orderApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["Orders"],
     }),
+
+    // Dành cho Staff và Admin
+    getStaffOrders: builder.query({
+      query: ({
+        search = "",
+        order_status = "",
+        payment_status = "",
+        page = 1,
+        per_page = 10,
+      } = {}) => ({
+        url: `staff/orders?search=${encodeURIComponent(search)}&order_status=${encodeURIComponent(order_status)}&payment_status=${encodeURIComponent(payment_status)}&page=${page}&per_page=${per_page}`,
+        method: "GET",
+      }),
+      providesTags: ["Orders"],
+    }),
+    getStaffOrderDetail: builder.query({
+      query: (id) => ({
+        url: `staff/orders/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["Orders"],
+    }),
+    updateStaffOrderStatus: builder.mutation({
+      query: ({ id, order_status, payment_status }) => ({
+        url: `staff/orders/${id}/status`,
+        method: "PUT",
+        body: { order_status, payment_status },
+      }),
+      invalidatesTags: ["Orders", "Products"],
+    }),
   }),
 });
 
@@ -39,4 +69,9 @@ export const {
   useAddOrderMutation,
   useGetOrdersQuery,
   useCancelOrderMutation,
+  useGetStaffOrdersQuery,
+  useGetStaffOrderDetailQuery,
+  useUpdateStaffOrderStatusMutation,
 } = orderApi;
+
+export default orderApi;
