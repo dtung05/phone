@@ -1,5 +1,6 @@
 import Staff from "../../layouts/Staff";
 import product from "./product";
+import order from "./order";
 import AuthLogin from "../middleware/AuthLogin";
 
 const staff = {
@@ -8,7 +9,7 @@ const staff = {
   children: [
     {
       Component: Staff,
-      children: [...product],
+      children: [...product, ...order],
     },
   ],
 };

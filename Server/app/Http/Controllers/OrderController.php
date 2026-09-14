@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\OrderCreated;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OrderCreateValidation;
 use App\Services\OrderService;
@@ -45,7 +46,8 @@ class OrderController extends Controller
     {
         $request->validated();
         try {
-            $this->orderService->createOrder($request->all(), Auth::id());
+            $order = $this->orderService->createOrder($request->all(), Auth::id());
+            event(new OrderCreated($order));
             return response()->json([
                 'message' => "Tạo đơn hàng thành công",
                 'type' => 'success',
@@ -96,6 +98,68 @@ class OrderController extends Controller
                 "type" => "error",
                 "message" => $error->getMessage()
             ]);
+        }
+    }
+
+    /**
+     * Danh sách đơn hàng cho Staff & Admin (có tìm kiếm, lọc trạng thái, phân trang server)
+     */
+    public function staffOrders(Request $request)
+    {
+        $filters = $request->only(['search', 'order_status', 'payment_status']);
+        $perPage = (int) $request->query('per_page', 10);
+        $orders = $this->orderService->getStaffOrders($filters, $perPage);
+
+        return response()->json($orders);
+    }
+
+    /**
+     * Chi tiết đơn hàng cho Staff & Admin
+     */
+    public function staffOrderDetail(string $id)
+    {
+        try {
+            $order = $this->orderService->getStaffOrderDetail($id);
+            return response()->json($order);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'type' => 'error',
+                'message' => 'Không tìm thấy đơn hàng #' . $id,
+            ], 404);
+        }
+    }
+
+    /**
+     * Cập nhật trạng thái đơn hàng kèm đồng bộ kho (hoàn trả khi hủy, trừ khi kích hoạt lại)
+     */
+    public function updateOrderStatus(Request $request, string $id)
+    {
+        $request->validate([
+            'order_status' => 'required|in:Chờ xử lý,Đã xác nhận,Đang giao,Thành công,Đã hủy',
+            'payment_status' => 'nullable|in:Unpaid,Paid',
+        ], [
+            'order_status.required' => 'Vui lòng chọn trạng thái đơn hàng.',
+            'order_status.in' => 'Trạng thái đơn hàng không hợp lệ.',
+            'payment_status.in' => 'Trạng thái thanh toán không hợp lệ.',
+        ]);
+
+        try {
+            $order = $this->orderService->updateOrderStatus(
+                $id,
+                $request->order_status,
+                $request->payment_status
+            );
+
+            return response()->json([
+                'type' => 'success',
+                'message' => 'Cập nhật trạng thái đơn hàng thành công!',
+                'data' => $order,
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'type' => 'error',
+                'message' => $e->getMessage(),
+            ], 400);
         }
     }
 }

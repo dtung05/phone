@@ -61,6 +61,35 @@ class OrderRepo extends BaseRepository implements OrderRepositoryInterface
     }
     public function findOrderWithItems($id)
     {
-        return $this->model->with('orderItems')->findOrFail($id);
+        return $this->model->with(['orderItems', 'user:id,full_name,email'])->findOrFail($id);
+    }
+
+    public function getStaffOrders($filters = [], $perPage = 10)
+    {
+        $query = $this->model->with(['orderItems', 'user:id,full_name,email'])->latest();
+
+        // 1. Lọc theo trạng thái đơn hàng (order_status)
+        if (!empty($filters['order_status'])) {
+            $query->where('order_status', $filters['order_status']);
+        }
+
+        // 2. Lọc theo trạng thái thanh toán (payment_status)
+        if (!empty($filters['payment_status'])) {
+            $query->where('payment_status', $filters['payment_status']);
+        }
+
+        // 3. Tra cứu tìm kiếm (search): Mã đơn hàng, Tên người nhận, Số điện thoại
+        if (!empty($filters['search'])) {
+            $search = trim($filters['search']);
+            $query->where(function ($q) use ($search) {
+                if (is_numeric($search)) {
+                    $q->orWhere('id', (int) $search);
+                }
+                $q->orWhere('recipient_name', 'like', "%{$search}%")
+                  ->orWhere('recipient_phone', 'like', "%{$search}%");
+            });
+        }
+
+        return $query->paginate($perPage);
     }
 }
