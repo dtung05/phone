@@ -31,8 +31,8 @@ class OrderCreated implements ShouldBroadcastNow
     {
         return new PrivateChannel('orders');
     }
-    //  public function broadcastAs(): string
-    // {
-    //     return 'order.created';
-    // }
+    public function broadcastAs(): string
+    {
+        return 'order.created';
+    }
 }

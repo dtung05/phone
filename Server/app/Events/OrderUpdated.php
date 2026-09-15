@@ -4,13 +4,12 @@ namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class OrderUpdated
+class OrderUpdated implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -27,10 +26,13 @@ class OrderUpdated
      *
      * @return array<int, Channel>
      */
-    public function broadcastOn(): array
+    public function broadcastOn(): PrivateChannel
     {
-        return [
-            new PrivateChannel('channel-name'),
-        ];
+        return  new PrivateChannel('orders');
+    }
+
+    public function broadcatsAs(): string
+    {
+        return 'order.updated';
     }
 }
