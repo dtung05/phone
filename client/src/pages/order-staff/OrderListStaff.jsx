@@ -49,8 +49,13 @@ const OrderListStaff = () => {
     per_page: perPage,
   });
   const orders = ordersResponse?.data || [];
-  useEcho("orders", "OrderCreated", () => {
+  useEcho("orders", "order.created", () => {
     console.log("Có đơn mới:");
+    refetch();
+  });
+
+  useEcho("orders", "order.updated", () => {
+    console.log("Có đơn vừa cập nhật");
     refetch();
   });
   const meta = {

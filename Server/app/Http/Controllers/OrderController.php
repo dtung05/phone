@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\OrderCreated;
+use App\Events\OrderUpdated;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OrderCreateValidation;
 use App\Services\OrderService;
@@ -89,6 +90,7 @@ class OrderController extends Controller
                     "message" => "Hủy đơn hàng thành công"
                 ]);
             }
+            event(new OrderUpdated());
             return response()->json([
                 "type" => "warning",
                 "message" => "Đơn hàng không thể hủy"
@@ -149,7 +151,7 @@ class OrderController extends Controller
                 $request->order_status,
                 $request->payment_status
             );
-
+            event(new OrderUpdated());
             return response()->json([
                 'type' => 'success',
                 'message' => 'Cập nhật trạng thái đơn hàng thành công!',
