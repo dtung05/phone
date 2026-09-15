@@ -130,7 +130,6 @@ const EntityManageSection = ({
         </div>
       </div>
 
-      {/* TABLE DATA */}
       <div className="flex-1 overflow-x-auto min-h-[260px]">
         {isLoading ? (
           <div className="py-16 flex flex-col items-center justify-center text-slate-400 text-xs">
@@ -243,7 +242,6 @@ const EntityManageSection = ({
         )}
       </div>
 
-      {/* FOOTER STATS */}
       <div className="px-4 py-2.5 bg-slate-50 border-t border-slate-100 text-[11px] text-slate-500 flex items-center justify-between">
         <span>
           {activeTab === "active" ? "Đang hoạt động" : "Trong thùng rác"}:{" "}
