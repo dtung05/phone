@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Broadcast;
 //     return (int) $user->id === (int) $id;
 // });
 Broadcast::channel('orders', function ($user) {
-    if( $user->role == 'Quản trị viên' || $user->role = "Nhân viên sale"){
+    if( $user->role == 'Quản trị viên' || $user->role == "Nhân viên sale"){
         return true;
     }
     return false;

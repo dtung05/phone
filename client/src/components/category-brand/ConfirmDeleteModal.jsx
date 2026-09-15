@@ -1,4 +1,3 @@
-import React from "react";
 import { AlertTriangle, X, Loader2 } from "lucide-react";
 
 const ConfirmDeleteModal = ({
@@ -71,7 +70,6 @@ const ConfirmDeleteModal = ({
           )}
         </div>
 
-        {/* Actions */}
         <div className="flex items-center justify-end gap-2 px-5 py-3.5 bg-slate-50 border-t border-slate-100">
           <button
             type="button"

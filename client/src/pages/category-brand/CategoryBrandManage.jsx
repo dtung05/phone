@@ -274,12 +274,7 @@ const CategoryBrandManage = () => {
                 Quản lý Danh mục & Thương hiệu
               </h1>
             </div>
-            <p className="text-xs text-slate-500 mt-1">
-              Phân hệ thiết lập thuộc tính phân loại sản phẩm dành cho Nhân viên
-              kho và Quản trị viên (hỗ trợ xóa mềm và khôi phục)
-            </p>
           </div>
-
           <div className="flex items-center gap-3 shrink-0 flex-wrap">
             <div className="px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs">
               <span className="text-slate-500 block text-[10px] uppercase font-semibold">

@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
+import { getImageUrl } from "../../utils/image";
 
 export default function ProductImages({ thumbnail, images = [] }) {
   const [currentImage, setCurrentImage] = useState(null);
@@ -8,27 +9,52 @@ export default function ProductImages({ thumbnail, images = [] }) {
       setCurrentImage(thumbnail);
     }
   }, [thumbnail]);
+
+  const allImages = [thumbnail, ...(Array.isArray(images) ? images : [])].filter(Boolean);
+
   return (
-    <div className="w-80">
-      <div className="border rounded-lg overflow-hidden">
-        <img src={currentImage} alt="" className="w-full h-auto object-cover" />
+    <div className="w-full lg:w-[450px] shrink-0 space-y-3">
+      {/* ẢNH CHÍNH */}
+      <div className="border border-gray-200 rounded-lg bg-white p-4 flex items-center justify-center aspect-square">
+        <img
+          src={getImageUrl(currentImage)}
+          alt="Hình ảnh sản phẩm"
+          className="max-h-[380px] w-full object-contain"
+          onError={(e) => {
+            e.target.src = "https://placehold.co/400x400?text=No+Image";
+          }}
+        />
       </div>
-      <div className="grid grid-cols-4 gap-2 mt-3">
-        {[thumbnail, ...images].map((item, index) => (
-          <img
-            key={index}
-            src={item}
-            alt=""
-            onClick={() => setCurrentImage(item)}
-            className={`cursor-pointer border rounded-md p-1 transition
-              ${
-                currentImage === item
-                  ? "border-blue-500"
-                  : "border-gray-300 hover:border-blue-400"
-              }`}
-          />
-        ))}
-      </div>
+
+      {/* DANH SÁCH THUMBNAIL */}
+      {allImages.length > 1 && (
+        <div className="flex items-center gap-2 overflow-x-auto pb-1">
+          {allImages.map((item, index) => {
+            const isSelected = currentImage === item;
+            return (
+              <button
+                key={index}
+                type="button"
+                onClick={() => setCurrentImage(item)}
+                className={`shrink-0 w-16 h-16 rounded border p-1 bg-white cursor-pointer transition-colors ${
+                  isSelected
+                    ? "border-red-600 ring-1 ring-red-600"
+                    : "border-gray-200 hover:border-gray-400"
+                }`}
+              >
+                <img
+                  src={getImageUrl(item)}
+                  alt={`Thumbnail ${index + 1}`}
+                  className="w-full h-full object-contain"
+                  onError={(e) => {
+                    e.target.src = "https://placehold.co/80x80?text=Img";
+                  }}
+                />
+              </button>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }
