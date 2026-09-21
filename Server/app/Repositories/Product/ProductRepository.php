@@ -47,17 +47,37 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
             )->withMin('productVariants as min_price', 'selling_price')
             ->paginate(10);
     }
-    public function getProductSale()
+    public function getProductSale($perPage = null, $filters = [])
     {
-        return $this->model
-            ->where('is_sale', 1)
+        $query = $this->model
+            ->where('is_sale', '1')
             ->select(
                 'id',
+                'brand_id',
+                'category_id',
                 'product_name',
                 'slug',
                 'thumbnail',
                 'discount_perventage'
-            )->withMin('productVariants as min_price', 'selling_price')->get();
+            )
+            ->with([
+                'brand:id,name',
+                'category:id,name'
+            ])
+            ->withMin('productVariants as min_price', 'selling_price');
+
+        if (!empty($filters['brand_id'])) {
+            $query->where('brand_id', $filters['brand_id']);
+        }
+        if (!empty($filters['category_id'])) {
+            $query->where('category_id', $filters['category_id']);
+        }
+
+        if ($perPage) {
+            return $query->latest()->paginate($perPage);
+        }
+
+        return $query->get();
     }
     public function getProductNew()
     {
@@ -73,8 +93,9 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
             ->paginate(10);
     }
 
-    public function getStaffProducts($search = null, $categoryId = null, $brandId = null, $perPage = 10)
-    {   $query = $this->model
+    public function getStaffProducts($search = null, $categoryId = null, $brandId = null, $isSale = null, $perPage = 10)
+    {
+        $query = $this->model
             ->with([
                 'brand:id,name',
                 'category:id,name',
@@ -82,6 +103,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
             ->withMin('productVariants as min_price', 'selling_price')
             ->withSum('productVariants as total_stock', 'stock_quantity')
             ->withCount('productVariants as variants_count');
+
         if (!empty($search)) {
             $query->where(function ($q) use ($search) {
                 $q->where('product_name', 'like', "%{$search}%")
@@ -94,6 +116,23 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         if (!empty($brandId)) {
             $query->where('brand_id', $brandId);
         }
+        if (isset($isSale) && $isSale !== '') {
+            $query->where('is_sale', (string) $isSale);
+        }
+
         return $query->latest()->paginate($perPage);
+    }
+
+    public function toggleSale($id)
+    {
+        $product = $this->find($id);
+        if (!$product) {
+            return false;
+        }
+
+        $product->is_sale = (string) $product->is_sale === '1' ? '0' : '1';
+        $product->save();
+
+        return $product;
     }
 }

@@ -15,8 +15,8 @@ const ProductListStaff = () => {
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [categoryId, setCategoryId] = useState("");
   const [brandId, setBrandId] = useState("");
+  const [isSale, setIsSale] = useState("");
   const [page, setPage] = useState(1);
-
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -37,6 +37,7 @@ const ProductListStaff = () => {
     search: debouncedSearch,
     category_id: categoryId,
     brand_id: brandId,
+    is_sale: isSale,
     page,
   });
 
@@ -50,10 +51,11 @@ const ProductListStaff = () => {
     setDebouncedSearch("");
     setCategoryId("");
     setBrandId("");
+    setIsSale("");
     setPage(1);
   };
 
-  const hasFilters = Boolean(search || categoryId || brandId);
+  const hasFilters = Boolean(search || categoryId || brandId || isSale);
   return (
     <div className="space-y-6">
       <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -83,7 +85,7 @@ const ProductListStaff = () => {
 
       <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm space-y-3">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3">
-          <div className="lg:col-span-5 relative">
+          <div className="lg:col-span-4 relative">
             <Search
               size={18}
               className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
@@ -115,7 +117,7 @@ const ProductListStaff = () => {
             </select>
           </div>
 
-          <div className="lg:col-span-3">
+          <div className="lg:col-span-2">
             <select
               value={brandId}
               onChange={(e) => {
@@ -124,12 +126,27 @@ const ProductListStaff = () => {
               }}
               className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs font-medium text-slate-700 outline-none focus:bg-white focus:border-slate-600 transition-all cursor-pointer"
             >
-              <option value="">-- Tất cả thương hiệu --</option>
+              <option value="">-- Tất cả hãng --</option>
               {brands?.map((brand) => (
                 <option key={brand.id} value={brand.id}>
                   {brand.name}
                 </option>
               ))}
+            </select>
+          </div>
+
+          <div className="lg:col-span-2">
+            <select
+              value={isSale}
+              onChange={(e) => {
+                setIsSale(e.target.value);
+                setPage(1);
+              }}
+              className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs font-semibold text-slate-700 outline-none focus:bg-white focus:border-slate-600 transition-all cursor-pointer"
+            >
+              <option value="">-- Khuyến mãi --</option>
+              <option value="1">🔥 Đang Flash Sale</option>
+              <option value="0">Không Sale</option>
             </select>
           </div>
 

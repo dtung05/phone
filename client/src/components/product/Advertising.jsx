@@ -1,4 +1,27 @@
 import React, { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
+import { getImageUrl } from "../../utils/image";
+
+const BannerLink = ({ banner, children, className }) => {
+  const isInternal = banner.link && banner.link.startsWith("/");
+  if (isInternal) {
+    return (
+      <Link to={banner.link} className={className}>
+        {children}
+      </Link>
+    );
+  }
+  return (
+    <a
+      href={banner.link || "#"}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={className}
+    >
+      {children}
+    </a>
+  );
+};
 
 const Advertising = ({ banners = [] }) => {
   const [currentMainSlide, setCurrentMainSlide] = useState(0);
@@ -10,12 +33,13 @@ const Advertising = ({ banners = [] }) => {
     (item) => String(item.is_active) === "1",
   );
 
-  const leftBanners = activeBanners.filter((item) => item.position === "left");
-  const mainBanners = activeBanners.filter((item) => item.position === "main");
+  const leftBanners = activeBanners.filter((item) => (item.position || "").trim() === "left");
+  const mainBanners = activeBanners.filter((item) => (item.position || "").trim() === "main");
   const minBanners = activeBanners.filter(
-    (item) =>
-      item.position === "min" ||
-      (item.position !== "left" && item.position !== "main"),
+    (item) => {
+      const pos = (item.position || "").trim();
+      return pos === "min" || (pos !== "left" && pos !== "main");
+    }
   );
 
   useEffect(() => {
@@ -74,22 +98,25 @@ const Advertising = ({ banners = [] }) => {
               style={{ transform: `translateY(-${currentLeftSlide * 100}%)` }}
             >
               {leftBanners.map((banner) => (
-                <a
+                <BannerLink
                   key={banner.id}
-                  href={banner.link}
+                  banner={banner}
                   className="min-w-full h-full min-h-full relative block flex-shrink-0"
                 >
                   <img
-                    src={banner.imager}
+                    src={getImageUrl(banner.imager)}
                     alt={banner.title}
                     className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.target.src = "https://placehold.co/400x500?text=Banner";
+                    }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-3">
                     <p className="text-xs md:text-sm font-semibold text-white truncate">
                       {banner.title}
                     </p>
                   </div>
-                </a>
+                </BannerLink>
               ))}
             </div>
 
@@ -124,25 +151,28 @@ const Advertising = ({ banners = [] }) => {
               style={{ transform: `translateX(-${currentMainSlide * 100}%)` }}
             >
               {mainBanners.map((banner) => (
-                <a
+                <BannerLink
                   key={banner.id}
-                  href={banner.link}
+                  banner={banner}
                   className="min-w-full h-full relative block flex-shrink-0"
                 >
                   <img
-                    src={banner.imager}
+                    src={getImageUrl(banner.imager)}
                     alt={banner.title}
                     className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.target.src = "https://placehold.co/800x400?text=Banner";
+                    }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-4 md:p-6 text-white">
-                    <span className="w-max px-2 py-0.5 bg-red-600 text-[10px] md:text-xs font-bold rounded mb-1">
-                      HOT
+                    <span className="w-max px-2 py-0.5 bg-red-600 text-[10px] md:text-xs font-bold rounded mb-1 uppercase tracking-wide">
+                      ƯU ĐÃI HOT
                     </span>
                     <h3 className="text-base md:text-xl font-bold truncate">
                       {banner.title}
                     </h3>
                   </div>
-                </a>
+                </BannerLink>
               ))}
             </div>
 
@@ -150,7 +180,7 @@ const Advertising = ({ banners = [] }) => {
               <>
                 <button
                   onClick={handleMainPrev}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-8 h-8 md:w-10 md:h-10 rounded-full bg-black/40 hover:bg-black/70 text-white flex items-center justify-center backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  className="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-8 h-8 md:w-10 md:h-10 rounded-full bg-black/40 hover:bg-black/70 text-white flex items-center justify-center backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer"
                   aria-label="Previous Slide"
                 >
                   <svg
@@ -170,7 +200,7 @@ const Advertising = ({ banners = [] }) => {
 
                 <button
                   onClick={handleMainNext}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 z-10 w-8 h-8 md:w-10 md:h-10 rounded-full bg-black/40 hover:bg-black/70 text-white flex items-center justify-center backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 z-10 w-8 h-8 md:w-10 md:h-10 rounded-full bg-black/40 hover:bg-black/70 text-white flex items-center justify-center backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer"
                   aria-label="Next Slide"
                 >
                   <svg
@@ -214,15 +244,18 @@ const Advertising = ({ banners = [] }) => {
             className="flex gap-3 overflow-x-auto scrollbar-hide scroll-smooth py-1"
           >
             {minBanners.map((banner) => (
-              <a
+              <BannerLink
                 key={banner.id}
-                href={banner.link}
+                banner={banner}
                 className="relative flex-shrink-0 w-36 sm:w-44 md:w-52 h-16 md:h-20 rounded-lg overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-all group bg-gray-50"
               >
                 <img
-                  src={banner.imager}
+                  src={getImageUrl(banner.imager)}
                   alt={banner.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  onError={(e) => {
+                    e.target.src = "https://placehold.co/200x100?text=Banner";
+                  }}
                 />
                 <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors" />
                 <div className="absolute inset-x-0 bottom-0 bg-black/60 p-1 text-center">
@@ -230,7 +263,7 @@ const Advertising = ({ banners = [] }) => {
                     {banner.title}
                   </p>
                 </div>
-              </a>
+              </BannerLink>
             ))}
           </div>
         </div>

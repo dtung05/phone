@@ -1,6 +1,7 @@
 import baseApi from "./baseApi";
 
 const bannerApi = baseApi.injectEndpoints({
+  // lấy danh sách quảng cáo
   endpoints: (builder) => ({
     getBanners: builder.query({
       query: () => ({
@@ -9,6 +10,7 @@ const bannerApi = baseApi.injectEndpoints({
       }),
       providesTags: ["Banners"],
     }),
+    // tìm kiếm
     getStaffBanners: builder.query({
       query: ({ search = "", position = "", is_active = "", page = 1 } = {}) => ({
         url: `staff/banners?search=${encodeURIComponent(search)}&position=${position}&is_active=${is_active}&page=${page}`,
@@ -16,6 +18,7 @@ const bannerApi = baseApi.injectEndpoints({
       }),
       providesTags: ["Banners"],
     }),
+    // Tạo
     createBanner: builder.mutation({
       query: (formData) => ({
         url: "staff/banners",
@@ -24,6 +27,7 @@ const bannerApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["Banners"],
     }),
+    //sửa
     updateBanner: builder.mutation({
       query: ({ id, data }) => ({
         url: `staff/banners/${id}`,
@@ -32,6 +36,7 @@ const bannerApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["Banners"],
     }),
+    // bật tắt quảng cáo
     toggleBannerActive: builder.mutation({
       query: (id) => ({
         url: `staff/banners/${id}/toggle-active`,
@@ -39,6 +44,7 @@ const bannerApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["Banners"],
     }),
+    // xóa quảng cáo
     deleteBanner: builder.mutation({
       query: (id) => ({
         url: `staff/banners/${id}`,

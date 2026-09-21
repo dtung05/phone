@@ -47,6 +47,7 @@ const ProductUpdate = () => {
     review_video: product.review_video || "",
     discount_percentage:
       product.discount_perventage ?? product.discount_percentage ?? 0,
+    is_sale: String(product.is_sale) === "1",
     specifications:
       typeof product.specifications === "object"
         ? JSON.stringify(product.specifications, null, 2)

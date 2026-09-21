@@ -1,8 +1,13 @@
-import ProductSearch from "../../pages/product/ProductSearch";
+import ProductSaleList from "../../pages/product/ProductSaleList";
 import ProductDetail from "../../pages/product/ProductDetail";
+import ProductSearch from "../../pages/product/ProductSearch";
 import ProductsByBrand from "../../pages/product/ProductsByBrand";
 
 const product = [
+  {
+    path: "products/sale",
+    Component: ProductSaleList,
+  },
   {
     path: "products/:slug",
     Component: ProductDetail,

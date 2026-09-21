@@ -7,5 +7,12 @@ const formatDate = (created) => {
     minute: "2-digit",
   });
 };
-
-export { formatDate };
+// Check ngày hết hạn
+const isExpired = (endDate) => {
+  if (!endDate) return false;
+  const end = new Date(endDate);
+  const now = new Date();
+  now.setHours(0, 0, 0, 0);
+  return end < now;
+};
+export { formatDate, isExpired };

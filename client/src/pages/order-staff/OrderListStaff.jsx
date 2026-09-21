@@ -32,7 +32,6 @@ const OrderListStaff = () => {
   const [paymentFilter, setPaymentFilter] = useState("");
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
-
   const [selectedOrderForDetail, setSelectedOrderForDetail] = useState(null);
   const [selectedOrderForStatus, setSelectedOrderForStatus] = useState(null);
 
