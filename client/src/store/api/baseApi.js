@@ -42,7 +42,6 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
   if (result.error?.status === 403) {
     window.location.href = "/403";
   }
-
   return result;
 };
 

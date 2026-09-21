@@ -40,9 +40,17 @@ class ProductController extends Controller
         return  response()->json($result);
     }
     // lấy sản phẩm đang sale
-    public function productSale()
+    public function productSale(Request $request)
     {
-        return $this->productRepo->getProductSale();
+        if ($request->has('page') || $request->has('paginate')) {
+            $perPage = (int) $request->query('per_page', 12);
+            $filters = [
+                'brand_id' => $request->query('brand_id'),
+                'category_id' => $request->query('category_id'),
+            ];
+            return response()->json($this->productRepo->getProductSale($perPage, $filters));
+        }
+        return response()->json($this->productRepo->getProductSale());
     }
 
     // lấy ra sản phẩm mới thêm
@@ -77,9 +85,10 @@ class ProductController extends Controller
         $search = $request->query('search');
         $categoryId = $request->query('category_id');
         $brandId = $request->query('brand_id');
-        $perPage = $request->query('per_page', 10);
+        $isSale = $request->query('is_sale');
+        $perPage = (int) $request->query('per_page', 10);
 
-        $products = $this->productRepo->getStaffProducts($search, $categoryId, $brandId, $perPage);
+        $products = $this->productRepo->getStaffProducts($search, $categoryId, $brandId, $isSale, $perPage);
         return response()->json($products);
     }
 
@@ -132,7 +141,9 @@ class ProductController extends Controller
                     'discount_perventage' => $discount,
                     'images' => $imagesDB,
                     'specifications' => $specifications ?? [],
-                    'is_sale' => 0,
+                    'is_sale' => $request->has('is_sale')
+                        ? ((string) $request->is_sale === '1' || $request->is_sale === true || $request->is_sale === 1 ? '1' : '0')
+                        : '0',
                 ]);
 
                 // Xử lý biến thể
@@ -249,6 +260,9 @@ class ProductController extends Controller
                 $product->category_id = $request->category_id;
                 $product->review_video = $request->review_video ?? '';
                 $product->discount_perventage = $request->discount_percentage ?? $request->discount_perventage ?? 0;
+                if ($request->has('is_sale')) {
+                    $product->is_sale = ((string) $request->is_sale === '1' || $request->is_sale === true || $request->is_sale === 1) ? '1' : '0';
+                }
                 $product->save();
 
                 // 5. Variants sync (cập nhật thông minh, không xóa trực tiếp để tránh lỗi khoá ngoại và mất tồn kho)
@@ -311,6 +325,29 @@ class ProductController extends Controller
                 'type' => 'error'
             ], 500);
         }
+    }
+
+    /**
+     * Bật/tắt nhanh trạng thái sale của sản phẩm
+     */
+    public function toggleSale(string $id)
+    {
+        $product = $this->productRepo->toggleSale($id);
+        if (!$product) {
+            return response()->json([
+                'type' => 'error',
+                'message' => 'Không tìm thấy sản phẩm #' . $id,
+            ], 404);
+        }
+
+        return response()->json([
+            'type' => 'success',
+            'message' => 'Đổi trạng thái giảm giá sản phẩm thành công!',
+            'data' => [
+                'id' => $product->id,
+                'is_sale' => $product->is_sale,
+            ],
+        ]);
     }
 
     /**

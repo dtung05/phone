@@ -115,9 +115,7 @@ class OrderController extends Controller
         return response()->json($orders);
     }
 
-    /**
-     * Chi tiết đơn hàng cho Staff & Admin
-     */
+ 
     public function staffOrderDetail(string $id)
     {
         try {

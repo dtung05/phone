@@ -32,6 +32,14 @@ const productApi = baseApi.injectEndpoints({
         url: "products/sale",
         method: "GET",
       }),
+      providesTags: ["Products"],
+    }),
+    getProductsSalePaginated: builder.query({
+      query: ({ page = 1, brand_id = "", category_id = "" } = {}) => ({
+        url: `products/sale?page=${page}&brand_id=${brand_id}&category_id=${category_id}&per_page=12`,
+        method: "GET",
+      }),
+      providesTags: ["Products"],
     }),
     getProductsNew: builder.query({
       query: ({ page }) => ({
@@ -45,12 +53,20 @@ const productApi = baseApi.injectEndpoints({
         search = "",
         category_id = "",
         brand_id = "",
+        is_sale = "",
         page = 1,
       } = {}) => ({
-        url: `staff/products?search=${encodeURIComponent(search)}&category_id=${category_id}&brand_id=${brand_id}&page=${page}`,
+        url: `staff/products?search=${encodeURIComponent(search)}&category_id=${category_id}&brand_id=${brand_id}&is_sale=${is_sale}&page=${page}`,
         method: "GET",
       }),
       providesTags: ["Products"],
+    }),
+    toggleProductSale: builder.mutation({
+      query: (id) => ({
+        url: `staff/products/${id}/toggle-sale`,
+        method: "PATCH",
+      }),
+      invalidatesTags: ["Products"],
     }),
     createProduct: builder.mutation({
       query: (formData) => ({
@@ -77,8 +93,10 @@ export const {
   useProductSearchQuery,
   useGetProductsByBrandQuery,
   useGetProductsSaleQuery,
+  useGetProductsSalePaginatedQuery,
   useGetProductsNewQuery,
   useGetStaffProductsQuery,
+  useToggleProductSaleMutation,
   useCreateProductMutation,
   useUpdateProductMutation,
 } = productApi;

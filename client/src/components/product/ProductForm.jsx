@@ -101,6 +101,7 @@ const ProductForm = ({
       formData.append("category_id", data.category_id);
       formData.append("brand_id", data.brand_id);
       formData.append("discount_percentage", data.discount_percentage || 0);
+      formData.append("is_sale", data.is_sale ? "1" : "0");
       formData.append("review_video", data.review_video || "");
       if (data.thumbnail?.[0]) {
         formData.append("thumbnail", data.thumbnail[0]);
@@ -258,6 +259,26 @@ const ProductForm = ({
                       className="w-full border border-slate-300 rounded px-3 py-2 text-sm outline-none focus:border-slate-600"
                     />
                   </div>
+                </div>
+
+                <div className="p-3.5 bg-red-50/70 border border-red-200/80 rounded-lg flex items-center justify-between gap-4">
+                  <div>
+                    <p className="text-xs font-bold text-red-900 flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-red-600"></span>
+                      Bật hiển thị Khuyến mãi / Flash Sale (is_sale)
+                    </p>
+                    <p className="text-[11px] text-red-700/80 mt-0.5">
+                      Khi kích hoạt, sản phẩm sẽ xuất hiện tại mục "Deal Sốc Mỗi Ngày" trên trang chủ và trang Sản phẩm giảm giá.
+                    </p>
+                  </div>
+                  <label className="relative inline-flex items-center cursor-pointer shrink-0">
+                    <input
+                      type="checkbox"
+                      {...register("is_sale")}
+                      className="sr-only peer"
+                    />
+                    <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-600"></div>
+                  </label>
                 </div>
               </div>
             </div>

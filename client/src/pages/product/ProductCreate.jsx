@@ -14,6 +14,7 @@ const ProductCreate = () => {
     thumbnail: null,
     review_video: "",
     discount_percentage: 0,
+    is_sale: false,
     images: [],
     specifications:
       '{\n  "RAM": "8GB",\n  "Bộ nhớ trong": "128GB",\n  "Pin": "5000 mAh"\n}',

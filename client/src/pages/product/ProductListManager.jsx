@@ -1,8 +1,39 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Edit, Layers } from "lucide-react";
+import { Edit, Layers, Flame, Loader2 } from "lucide-react";
 import { formatPrice } from "../../utils/price";
 import { getImageUrl } from "../../utils/image";
+import { useToggleProductSaleMutation } from "../../store/api/product";
+import { useDispatch } from "react-redux";
+import { showToast } from "../../store/slices/toastSlice";
+
 export const ProductListManager = ({ products }) => {
+  const dispatch = useDispatch();
+  const [toggleProductSale] = useToggleProductSaleMutation();
+  const [togglingId, setTogglingId] = useState(null);
+
+  const handleToggleSale = async (item) => {
+    try {
+      setTogglingId(item.id);
+      const res = await toggleProductSale(item.id).unwrap();
+      dispatch(
+        showToast({
+          message: res?.message || "Đổi trạng thái sale thành công!",
+          type: "success",
+        }),
+      );
+    } catch (err) {
+      dispatch(
+        showToast({
+          message: err?.data?.message || "Không thể đổi trạng thái sale.",
+          type: "error",
+        }),
+      );
+    } finally {
+      setTogglingId(null);
+    }
+  };
+
   return (
     <div className="overflow-x-auto">
       <table className="w-full text-left border-collapse">
@@ -12,17 +43,20 @@ export const ProductListManager = ({ products }) => {
             <th className="py-3 px-4">Sản phẩm</th>
             <th className="py-3 px-4">Phân loại</th>
             <th className="py-3 px-4">Giá khởi điểm</th>
+            <th className="py-3 px-4 text-center">Trạng thái Sale</th>
             <th className="py-3 px-4">Biến thể & Kho</th>
             <th className="py-3 px-4 text-center w-28">Thao tác</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-slate-100 text-xs text-slate-700">
           {products.map((item) => {
-            console.log(item);
+            const isSaleActive = String(item.is_sale) === "1";
             const hasDiscount = Number(item.discount_perventage) > 0;
             const totalStock = item.total_stock ?? 0;
             const variantsCount =
               item.variants_count ?? item.product_variants?.length ?? 0;
+            const isRowToggling = togglingId === item.id;
+
             return (
               <tr
                 key={item.id}
@@ -71,6 +105,47 @@ export const ProductListManager = ({ products }) => {
                     {hasDiscount && (
                       <span className="bg-red-50 text-red-600 border border-red-200 text-[10px] font-bold px-1.5 py-0.5 rounded">
                         -{item.discount_perventage}%
+                      </span>
+                    )}
+                  </div>
+                </td>
+
+                {/* Trạng thái Sale với nút Toggle trực tiếp */}
+                <td className="py-3.5 px-4 text-center">
+                  <div className="inline-flex flex-col items-center gap-1.5">
+                    <button
+                      type="button"
+                      disabled={isRowToggling}
+                      onClick={() => handleToggleSale(item)}
+                      className={`relative inline-flex items-center h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                        isSaleActive ? "bg-red-600" : "bg-slate-300"
+                      } ${isRowToggling ? "opacity-60 cursor-not-allowed" : ""}`}
+                      title={
+                        isSaleActive
+                          ? "Bấm để tắt trạng thái Sale"
+                          : "Bấm để kích hoạt Sale"
+                      }
+                    >
+                      {isRowToggling ? (
+                        <span className="absolute inset-0 flex items-center justify-center text-white">
+                          <Loader2 size={12} className="animate-spin" />
+                        </span>
+                      ) : (
+                        <span
+                          className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-md ring-0 transition duration-200 ease-in-out ${
+                            isSaleActive ? "translate-x-5" : "translate-x-0"
+                          }`}
+                        />
+                      )}
+                    </button>
+                    {isSaleActive ? (
+                      <span className="inline-flex items-center gap-0.5 text-[10px] font-bold text-red-600 bg-red-50 px-1.5 py-0.5 rounded border border-red-200">
+                        <Flame size={11} className="fill-red-600 text-red-600" />
+                        Đang Sale
+                      </span>
+                    ) : (
+                      <span className="text-[10px] text-slate-400 font-medium">
+                        Không Sale
                       </span>
                     )}
                   </div>

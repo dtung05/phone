@@ -31,7 +31,7 @@ class OrderUpdated implements ShouldBroadcastNow
         return  new PrivateChannel('orders');
     }
 
-    public function broadcatsAs(): string
+    public function broadcastAs(): string
     {
         return 'order.updated';
     }

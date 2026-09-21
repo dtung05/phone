@@ -1,26 +1,26 @@
+import React from "react";
+import { Search } from "lucide-react";
+
 const NoResult = ({
-  title,
+  Icon,
+  title = "Không tìm thấy kết quả",
   content = "Hãy thử kiểm tra lại lỗi chính tả hoặc tìm kiếm với từ khóa khác tổng quát hơn.",
+  action,
 }) => {
   return (
-    <div className="my-12 flex flex-col items-center justify-center rounded-2xl border border-dashed border-gray-200 bg-gray-50/50 py-16 px-4 text-center">
-      <div className="mb-4 rounded-full bg-gray-100 p-4 text-gray-400">
-        <svg
-          className="h-8 w-8"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={1.5}
-            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-          />
-        </svg>
+    <div className="my-8 flex flex-col items-center justify-center rounded-2xl border border-slate-100 bg-slate-50/60 p-8 text-center animate-in fade-in duration-200">
+      <div className="mb-3.5 flex h-14 w-14 items-center justify-center rounded-2xl bg-white shadow-xs border border-slate-100 text-slate-400">
+        {Icon ? (
+          <Icon size={26} strokeWidth={1.5} />
+        ) : (
+          <Search size={26} strokeWidth={1.5} />
+        )}
       </div>
-      <p className="text-lg font-semibold text-gray-800">{title}</p>
-      <p className="mt-1 max-w-sm text-sm text-gray-500">{content}</p>
+      <h4 className="text-base font-semibold text-slate-800">{title}</h4>
+      <p className="mt-1 max-w-sm text-xs leading-relaxed text-slate-500">
+        {content}
+      </p>
+      {action && <div className="mt-4">{action}</div>}
     </div>
   );
 };
