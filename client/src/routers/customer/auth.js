@@ -1,6 +1,4 @@
 
-import { Register } from "../../pages/auth/register.jsx";
-import { Login } from "../../pages/auth/Login.jsx";
 
 const authRouter = [
      {

@@ -51,6 +51,26 @@ class ProductController extends Controller
         return $this->productRepo->getProductNew();
     }
 
+    // Lấy danh sách biến thể kèm thông tin sản phẩm phục vụ nhập kho & bán hàng
+    public function staffVariants(Request $request)
+    {
+        $search = $request->query('search');
+        $query = \App\Models\ProductVariant::with([
+            'product:id,product_name,thumbnail,category_id,brand_id',
+            'product.brand:id,name',
+            'product.category:id,name',
+        ]);
+
+        if (!empty($search)) {
+            $query->whereHas('product', function ($q) use ($search) {
+                $q->where('product_name', 'like', "%{$search}%");
+            });
+        }
+
+        $variants = $query->orderBy('id', 'desc')->take(100)->get();
+        return response()->json($variants);
+    }
+
     // Quản lý danh sách sản phẩm cho Staff/Admin
     public function staffProducts(Request $request)
     {

@@ -1,6 +1,7 @@
-
-
-const NoResult = ({ title }) => {
+const NoResult = ({
+  title,
+  content = "Hãy thử kiểm tra lại lỗi chính tả hoặc tìm kiếm với từ khóa khác tổng quát hơn.",
+}) => {
   return (
     <div className="my-12 flex flex-col items-center justify-center rounded-2xl border border-dashed border-gray-200 bg-gray-50/50 py-16 px-4 text-center">
       <div className="mb-4 rounded-full bg-gray-100 p-4 text-gray-400">
@@ -19,10 +20,7 @@ const NoResult = ({ title }) => {
         </svg>
       </div>
       <p className="text-lg font-semibold text-gray-800">{title}</p>
-      <p className="mt-1 max-w-sm text-sm text-gray-500">
-        Hãy thử kiểm tra lại lỗi chính tả hoặc tìm kiếm với từ khóa khác tổng
-        quát hơn.
-      </p>
+      <p className="mt-1 max-w-sm text-sm text-gray-500">{content}</p>
     </div>
   );
 };
