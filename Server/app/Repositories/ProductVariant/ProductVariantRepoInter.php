@@ -11,4 +11,6 @@ interface ProductVariantRepoInter extends RepositoryInterface
    
     public function decreaseStock($productVariant);
     public function increaseStock($orderItems);
+    public function findWithLock($id);
+    public function updateCostAndStock($id, $newAvgCost, $newStockQty);
 }

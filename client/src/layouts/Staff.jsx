@@ -7,7 +7,6 @@ const Staff = () => {
   const profile = useSelector((state) => state.profile);
   const toast = useSelector((state) => state.toast);
 
-  // Lấy chữ cái đầu của tên làm Avatar
   const getInitial = (name) => {
     if (!name) return "S";
     const parts = name.trim().split(" ");
@@ -16,18 +15,15 @@ const Staff = () => {
 
   return (
     <div className="flex min-h-screen bg-slate-50 font-sans text-slate-800">
-      {/* SIDEBAR BÊN TRÁI */}
       <aside className="w-64 bg-white border-r border-slate-200 flex flex-col justify-between shrink-0 shadow-sm">
         <div>
-          {/* BRAND / LOGO AREA */}
           <div className="h-16 border-b border-slate-100 flex items-center px-6 gap-2">
             <div className="w-3 h-6 bg-emerald-600 rounded-sm"></div>
             <span className="font-bold text-base text-slate-800 tracking-tight">
-              STAFF<span className="text-emerald-600">PORTAL</span>
+              CELL<span className="text-emerald-600">PHONE</span>
             </span>
           </div>
 
-          {/* THÔNG TIN NHÂN VIÊN */}
           <div className="p-4 mx-3 my-3 bg-slate-50 border border-slate-200/60 rounded-lg flex items-center gap-3">
             <div className="w-9 h-9 rounded-full bg-emerald-600 text-white font-bold text-sm flex items-center justify-center shrink-0">
               {getInitial(profile?.name)}
@@ -42,7 +38,6 @@ const Staff = () => {
             </div>
           </div>
 
-          {/* MENU ĐIỀU HƯỚNG */}
           <nav className="px-3 space-y-1 mt-2">
             <p className="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">
               Quản lý sản phẩm
@@ -100,6 +95,51 @@ const Staff = () => {
             >
               <span>Quản lý đơn hàng</span>
             </NavLink>
+
+            <p className="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-wider mt-4 mb-2">
+              Quản lý kho hàng
+            </p>
+            <NavLink
+              to="/staff/purchase-receipts"
+              className={({ isActive }) =>
+                `flex items-center gap-2.5 px-3 py-2.5 text-xs font-semibold rounded-md transition-all ${
+                  isActive
+                    ? "bg-emerald-50 text-emerald-700 border-l-4 border-emerald-600 shadow-sm"
+                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                }`
+              }
+            >
+              <span>Phiếu nhập kho</span>
+            </NavLink>
+
+            <NavLink
+              to="/staff/suppliers"
+              className={({ isActive }) =>
+                `flex items-center gap-2.5 px-3 py-2.5 text-xs font-semibold rounded-md transition-all ${
+                  isActive
+                    ? "bg-emerald-50 text-emerald-700 border-l-4 border-emerald-600 shadow-sm"
+                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                }`
+              }
+            >
+              <span>Nhà cung ứng</span>
+            </NavLink>
+
+            <p className="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-wider mt-4 mb-2">
+              Quảng cáo & Marketing
+            </p>
+            <NavLink
+              to="/staff/banners"
+              className={({ isActive }) =>
+                `flex items-center gap-2.5 px-3 py-2.5 text-xs font-semibold rounded-md transition-all ${
+                  isActive
+                    ? "bg-emerald-50 text-emerald-700 border-l-4 border-emerald-600 shadow-sm"
+                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                }`
+              }
+            >
+              <span>Banner quảng cáo</span>
+            </NavLink>
           </nav>
         </div>
 
@@ -131,7 +171,10 @@ const Staff = () => {
           </div>
 
           <div className="text-xs text-slate-500">
-            Xin chào, <strong className="text-slate-800">{profile?.name || "Nhân viên"}</strong>
+            Xin chào,{" "}
+            <strong className="text-slate-800">
+              {profile?.name || "Nhân viên"}
+            </strong>
           </div>
         </header>
 

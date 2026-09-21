@@ -12,15 +12,16 @@ Route::get('/products/{slug}', [ProductController::class, 'productDetail']);
 Route::get("brands/{brand}/products", [ProductController::class, 'productsByBrand']);
 //Đánh giá sản phẩm
 
-
 Route::middleware('auth:api')->group(function () {
     Route::get('products/{product:slug}/reviews', [ReviewController::class, 'index']);
     Route::post('/products/{slug}/reviews', [ReviewController::class, 'store']);
     Route::delete('/products/reviews/{id}', [ReviewController::class, 'destroy']);
 
-    Route::middleware('role:Nhân viên kho,Quản trị viên')->group(function () {
+    Route::middleware('role:Nhân viên kho,Nhân viên sale,Quản trị viên')->group(function () {
         Route::get('/staff/products', [ProductController::class, 'staffProducts']);
+        Route::get('/staff/variants', [ProductController::class, 'staffVariants']);
         Route::post('/staff/products', [ProductController::class, 'store']);
         Route::post('/staff/products/{id}', [ProductController::class, 'update']);
+        Route::patch('/staff/products/{id}/toggle-sale', [ProductController::class, 'toggleSale']);
     });
 });

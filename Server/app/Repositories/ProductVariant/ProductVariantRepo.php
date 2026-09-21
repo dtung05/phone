@@ -80,4 +80,21 @@ class ProductVariantRepo extends BaseRepository implements ProductVariantRepoInt
             }
         }
     }
+
+    public function findWithLock($id)
+    {
+        return $this->model->where('id', $id)->lockForUpdate()->first();
+    }
+
+    public function updateCostAndStock($id, $newAvgCost, $newStockQty)
+    {
+        $variant = $this->find($id);
+        if ($variant) {
+            $variant->average_cost = $newAvgCost;
+            $variant->stock_quantity = $newStockQty;
+            $variant->save();
+            return $variant;
+        }
+        return false;
+    }
 }

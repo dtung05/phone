@@ -18,6 +18,10 @@ use App\Repositories\Product\ProductRepository;
 use App\Repositories\Product\ProductRepositoryInterface;
 use App\Repositories\ProductVariant\ProductVariantRepo;
 use App\Repositories\ProductVariant\ProductVariantRepoInter;
+use App\Repositories\Supplier\SupplierRepo;
+use App\Repositories\Supplier\SupplierRepoInter;
+use App\Repositories\PurchaseReceipt\PurchaseReceiptRepo;
+use App\Repositories\PurchaseReceipt\PurchaseReceiptRepoInter;
 use Illuminate\Support\ServiceProvider;
 
 
@@ -57,6 +61,14 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(
             CategoryRepoInter::class,
             CategoryRepo::class
+        );
+        $this->app->singleton(
+            SupplierRepoInter::class,
+            SupplierRepo::class
+        );
+        $this->app->singleton(
+            PurchaseReceiptRepoInter::class,
+            PurchaseReceiptRepo::class
         );
     }
 
