@@ -1,9 +1,13 @@
+import { Loader2 } from "lucide-react";
+
 export default function Loading({ text = "Đang tải..." }) {
   return (
-    <div className="flex flex-col items-center justify-center gap-3 py-8">
-      <div className="h-10 w-10 animate-spin rounded-full border-4 border-gray-300 border-t-blue-500"></div>
-
-      <p className="text-sm text-gray-500">{text}</p>
+    <div className="bg-white rounded-2xl border border-slate-200 p-16 text-center">
+      <Loader2
+        size={40}
+        className="animate-spin text-emerald-600 mx-auto mb-2"
+      />
+      <p className="text-xs text-slate-500">{text}</p>
     </div>
   );
 }

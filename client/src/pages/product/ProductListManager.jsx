@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Edit, Layers, Flame, Loader2 } from "lucide-react";
+import { Edit, Layers, Flame, Loader2, Eye } from "lucide-react";
 import { formatPrice } from "../../utils/price";
 import { getImageUrl } from "../../utils/image";
 import { useToggleProductSaleMutation } from "../../store/api/product";
@@ -171,13 +171,24 @@ export const ProductListManager = ({ products }) => {
                   </div>
                 </td>
                 <td className="py-3.5 px-4 text-center">
-                  <Link
-                    to={`/staff/products/${item.id}/edit`}
-                    className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-emerald-600 hover:bg-emerald-700 rounded-md shadow-sm transition-all"
-                  >
-                    <Edit size={13} />
-                    <span>Sửa</span>
-                  </Link>
+                  <div className="inline-flex items-center gap-1.5">
+                    <Link
+                      to={`/staff/products/${item.id}`}
+                      title="Xem chi tiết sản phẩm"
+                      className="inline-flex items-center justify-center gap-1 px-2.5 py-1.5 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-md shadow-2xs transition-all"
+                    >
+                      <Eye size={13} />
+                      <span>Xem</span>
+                    </Link>
+                    <Link
+                      to={`/staff/products/${item.id}/edit`}
+                      title="Chỉnh sửa sản phẩm"
+                      className="inline-flex items-center justify-center gap-1 px-2.5 py-1.5 text-xs font-semibold text-white bg-emerald-600 hover:bg-emerald-700 rounded-md shadow-2xs transition-all"
+                    >
+                      <Edit size={13} />
+                      <span>Sửa</span>
+                    </Link>
+                  </div>
                 </td>
               </tr>
             );

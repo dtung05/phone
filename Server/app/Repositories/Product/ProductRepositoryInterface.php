@@ -12,5 +12,6 @@ interface ProductRepositoryInterface extends RepositoryInterface
     public function getProductSale($perPage = null, $filters = []);
     public function getProductNew();
     public function getStaffProducts($search = null, $categoryId = null, $brandId = null, $isSale = null, $perPage = 10);
+    public function getStaffProductDetail($id);
     public function toggleSale($id);
 }

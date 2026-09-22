@@ -4,6 +4,7 @@ import order from "./order";
 import banner from "./banner";
 import purchaseReceipt from "./purchaseReceipt";
 import supplier from "./supplier";
+import review from "./review";
 import AuthLogin from "../middleware/AuthLogin";
 
 const staff = {
@@ -12,7 +13,14 @@ const staff = {
   children: [
     {
       Component: Staff,
-      children: [...product, ...order, ...banner, ...purchaseReceipt, ...supplier],
+      children: [
+        ...product,
+        ...order,
+        ...banner,
+        ...purchaseReceipt,
+        ...supplier,
+        ...review,
+      ],
     },
   ],
 };

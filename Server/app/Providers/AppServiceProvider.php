@@ -22,6 +22,8 @@ use App\Repositories\Supplier\SupplierRepo;
 use App\Repositories\Supplier\SupplierRepoInter;
 use App\Repositories\PurchaseReceipt\PurchaseReceiptRepo;
 use App\Repositories\PurchaseReceipt\PurchaseReceiptRepoInter;
+use App\Repositories\Review\ReviewRepository;
+use App\Repositories\Review\ReviewRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
 
 
@@ -69,6 +71,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(
             PurchaseReceiptRepoInter::class,
             PurchaseReceiptRepo::class
+        );
+        $this->app->singleton(
+            ReviewRepositoryInterface::class,
+            ReviewRepository::class
         );
     }
 
