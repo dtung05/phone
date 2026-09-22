@@ -2,10 +2,15 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { NavLink, Outlet } from "react-router-dom";
 import Toast from "../components/block/Toast";
+import { useGetUnrepliedReviewsCountQuery } from "../store/api/reviewApi";
 
 const Staff = () => {
   const profile = useSelector((state) => state.profile);
   const toast = useSelector((state) => state.toast);
+  const { data: countData } = useGetUnrepliedReviewsCountQuery(undefined, {
+    pollingInterval: 30000,
+  });
+  const unrepliedCount = countData?.unreplied_count ?? 0;
 
   const getInitial = (name) => {
     if (!name) return "S";
@@ -94,6 +99,24 @@ const Staff = () => {
               }
             >
               <span>Quản lý đơn hàng</span>
+            </NavLink>
+
+            <NavLink
+              to="/staff/reviews"
+              className={({ isActive }) =>
+                `flex items-center justify-between px-3 py-2.5 text-xs font-semibold rounded-md transition-all ${
+                  isActive
+                    ? "bg-emerald-50 text-emerald-700 border-l-4 border-emerald-600 shadow-sm"
+                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                }`
+              }
+            >
+              <span>Đánh giá & Bình luận</span>
+              {unrepliedCount > 0 && (
+                <span className="px-1.5 py-0.2 rounded-full bg-red-600 text-white text-[10px] font-black animate-pulse">
+                  {unrepliedCount}
+                </span>
+              )}
             </NavLink>
 
             <p className="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-wider mt-4 mb-2">

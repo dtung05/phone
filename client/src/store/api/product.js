@@ -61,6 +61,13 @@ const productApi = baseApi.injectEndpoints({
       }),
       providesTags: ["Products"],
     }),
+    getStaffProductDetail: builder.query({
+      query: (id) => ({
+        url: `staff/products/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["Products", "Reviews"],
+    }),
     toggleProductSale: builder.mutation({
       query: (id) => ({
         url: `staff/products/${id}/toggle-sale`,
@@ -96,6 +103,7 @@ export const {
   useGetProductsSalePaginatedQuery,
   useGetProductsNewQuery,
   useGetStaffProductsQuery,
+  useGetStaffProductDetailQuery,
   useToggleProductSaleMutation,
   useCreateProductMutation,
   useUpdateProductMutation,

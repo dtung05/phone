@@ -135,4 +135,25 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
 
         return $product;
     }
+
+    public function getStaffProductDetail($id)
+    {
+        return $this->model->with([
+            'brand:id,name',
+            'category:id,name',
+            'productVariants',
+            'reviews' => function ($q) {
+                $q->with([
+                    'user:id,full_name,email',
+                    'replies.user:id,full_name,role'
+                ])->latest('id');
+            }
+        ])
+        ->withCount(['reviews', 'reviews as unreplied_reviews_count' => function ($q) {
+            $q->where('is_replied', false);
+        }])
+        ->withAvg('reviews as average_rating', 'rating')
+        ->withSum('productVariants as total_stock', 'stock_quantity')
+        ->find($id);
+    }
 }

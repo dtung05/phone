@@ -1,4 +1,4 @@
-﻿import { useDeleteReviewMutation } from "../../store/api/reviewApi";
+import { useDeleteReviewMutation } from "../../store/api/reviewApi";
 import ReviewForm from "./ReviewForm";
 
 export default function ProductReviews({ reviews = [], total = 0, data }) {
@@ -54,6 +54,31 @@ export default function ProductReviews({ reviews = [], total = 0, data }) {
                   <p className="text-xs text-gray-700 leading-relaxed">
                     {review.content}
                   </p>
+
+                  {/* CÂU TRẢ LỜI CỦA SHOP / NHÂN VIÊN */}
+                  {review.replies && review.replies.length > 0 && (
+                    <div className="mt-2 pl-3 border-l-2 border-emerald-500 space-y-1.5">
+                      {review.replies.map((reply) => (
+                        <div
+                          key={reply.id}
+                          className="bg-emerald-50/70 border border-emerald-100 p-2.5 rounded-lg text-xs space-y-1"
+                        >
+                          <div className="flex items-center justify-between text-[11px]">
+                            <span className="font-bold text-emerald-800 flex items-center gap-1">
+                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                              Phản hồi từ Phone Store ({reply.user?.full_name || "Chăm sóc khách hàng"})
+                            </span>
+                            <span className="text-emerald-700/60 text-[10px]">
+                              {reply.created_at ? new Date(reply.created_at).toLocaleDateString("vi-VN") : "—"}
+                            </span>
+                          </div>
+                          <p className="text-gray-800 leading-relaxed font-medium">
+                            {reply.content}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
 
                   <div className="text-right">
                     <button

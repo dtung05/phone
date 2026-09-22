@@ -92,6 +92,20 @@ class ProductController extends Controller
         return response()->json($products);
     }
 
+    // Chi tiết sản phẩm toàn diện cho nhân viên
+    public function staffProductDetail(string $id)
+    {
+        $product = $this->productRepo->getStaffProductDetail($id);
+        if (!$product) {
+            return response()->json([
+                'type' => 'error',
+                'message' => 'Không tìm thấy sản phẩm #' . $id,
+            ], 404);
+        }
+
+        return response()->json($product);
+    }
+
     /**
      * Store a newly created resource in storage.
      */
