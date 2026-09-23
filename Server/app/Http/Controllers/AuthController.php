@@ -11,11 +11,6 @@ use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
-
-
-
-
-
     public function register(RegisterValidation $request, UserRepositoryInterface $userRepo)
     {
         $data = $request->validated();
@@ -43,7 +38,21 @@ class AuthController extends Controller
                 'type' => "error"
             ], 401);
         }
-        return $this->respondWithToken($token);
+        $refreshToken = auth()->refresh();
+        return $this->respondWithToken($token)->withCookie(
+            cookie(
+                'refresh_token',
+                $refreshToken,
+                20160,
+                '/',
+                null,
+                false,
+                true,
+                false,
+                'Lax'
+            )
+        )
+        ;
     }
 
     /**
