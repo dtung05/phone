@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: import.meta.env.VITE_BASE_URL,
+  credentials: "include", // cho phép gửi cookie kèm theoo
   prepareHeaders: (headers) => {
     const token = localStorage.getItem("access_token");
     if (token) {
@@ -15,17 +16,12 @@ const baseQuery = fetchBaseQuery({
 const baseQueryWithReauth = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
   if (result.error?.status === 401) {
-    const refreshToken = localStorage.getItem("refresh_token");
-    if (!refreshToken) {
-      return result;
-    }
+    
     const refreshResult = await baseQuery(
       {
         url: "/refresh",
         method: "POST",
-        body: {
-          refresh_token: refreshToken,
-        },
+      
       },
       api,
       extraOptions,
@@ -35,7 +31,6 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
       result = await baseQuery(args, api, extraOptions);
     } else {
       localStorage.removeItem("access_token");
-      localStorage.removeItem("refresh_token");
       window.location.href = "/login";
     }
   }

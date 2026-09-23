@@ -19,7 +19,7 @@ export const FormLogin = () => {
     try {
       const result = await useLogin(data).unwrap();
       localStorage.setItem("access_token", result.access_token);
-      window.location.href = "/";
+      // window.location.href = "/";
     } catch (error) {
       const errors = error?.data?.errors;
       if (errors) {
