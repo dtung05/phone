@@ -1,6 +1,6 @@
 <?php
 
-namespace app\Services;
+namespace App\Services;
 
 use App\Repositories\Order\OrderRepositoryInterface;
 use App\Repositories\ProductVariant\ProductVariantRepoInter;
@@ -105,7 +105,6 @@ class OrderService
     {
         $order = $this->orderRepo->findOrderWithItems($id);
         $oldStatus = $order->order_status;
-
         return DB::transaction(function () use ($order, $oldStatus, $newStatus, $newPaymentStatus) {
             // 1. Chuyển sang "Đã hủy" từ trạng thái đang hoạt động => Hoàn trả lại tồn kho
             if ($oldStatus !== 'Đã hủy' && $newStatus === 'Đã hủy') {
@@ -115,14 +114,48 @@ class OrderService
             elseif ($oldStatus === 'Đã hủy' && $newStatus !== 'Đã hủy') {
                 $this->productVariantRepo->decreaseStock($order->orderItems);
             }
-
             $order->order_status = $newStatus;
             if (!empty($newPaymentStatus)) {
                 $order->payment_status = $newPaymentStatus;
             }
             $order->save();
-
             return $order->load(['orderItems', 'user:id,full_name,email']);
         });
+    }
+
+    public function processPaymentResult(int $orderId, float $amount, bool $isSuccess): array
+    {
+        $order = $this->orderRepo->find($orderId);
+        if (!$order) {
+            return [
+                'status' => 'ORDER_NOT_FOUND',
+            ];
+        }
+        if ($order->payment_status === 'Paid') {
+            return [
+                'status' => 'ALREADY_PAID',
+            ];
+        }
+        if ((float) $order->total_amount !== (float) $amount) {
+            return [
+                'status' => 'INVALID_AMOUNT',
+            ];
+        }
+
+        if (!$isSuccess) {
+            return [
+                'status' => 'PAYMENT_FAILED',
+            ];
+        }
+        $this->orderRepo->update($orderId, [
+            'payment_status' => 'Paid'
+        ]);
+        return [
+            'status' => 'SUCCESS',
+        ];
+    }
+    public function findOrderId($orderId)
+    {
+        return $this->orderRepo->find($orderId);
     }
 }

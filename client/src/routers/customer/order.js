@@ -1,5 +1,6 @@
 import Checkout from "../../pages/order/Checkout";
 import myOrders from "../../pages/order/myOrders";
+import PaymentResult from "../../pages/order/PaymentResult";
 import AuthLogin from "../middleware/AuthLogin";
 
 const order = [
@@ -13,6 +14,10 @@ const order = [
       {
         path: "orders",
         Component: myOrders,
+      },
+      {
+        path: "/payment/result",
+        Component: PaymentResult,
       },
     ],
   },

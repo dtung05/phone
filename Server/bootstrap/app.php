@@ -15,7 +15,11 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
-            'role' => RoleMiddleware::class
+            'role' => RoleMiddleware::class,
+            'jwt.access' => \App\Http\Middleware\EnsureAccessToken::class,
+        ]);
+        $middleware->api(append: [
+            \App\Http\Middleware\EnsureAccessToken::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
