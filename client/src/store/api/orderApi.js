@@ -24,6 +24,12 @@ const orderApi = baseApi.injectEndpoints({
       }),
       providesTags: ["Orders"],
     }),
+    handlePayment: builder.query({
+      query: ({ payment, id }) => ({
+        url: `payment/${payment}/${id}`,
+        method: "GET",
+      }),
+    }),
     cancelOrder: builder.mutation({
       query: (id) => ({
         url: `orders/${id}`,
@@ -68,6 +74,7 @@ export const {
   useCheckoutMutation,
   useAddOrderMutation,
   useGetOrdersQuery,
+  useLazyHandlePaymentQuery,
   useCancelOrderMutation,
   useGetStaffOrdersQuery,
   useGetStaffOrderDetailQuery,

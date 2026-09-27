@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\OrderCreated;
 use App\Events\OrderUpdated;
+use App\Factory\PaymentFactory;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OrderCreateValidation;
 use App\Services\OrderService;
@@ -13,9 +14,11 @@ use Illuminate\Http\Request;
 class OrderController extends Controller
 {
     protected $orderService;
-    public function __construct(OrderService $order)
+    protected $paymentFactory;
+    public function __construct(OrderService $order, PaymentFactory $paymentFactory)
     {
         $this->orderService = $order;
+        $this->paymentFactory = $paymentFactory;
     }
 
 
@@ -48,10 +51,16 @@ class OrderController extends Controller
         $request->validated();
         try {
             $order = $this->orderService->createOrder($request->all(), Auth::id());
+            $urlPay = "";
+            if ($order->payment_method !== 'cod') {
+                $urlPay = $this->paymentFactory->make($order->payment_method)->createPayment($order);
+            }
             event(new OrderCreated($order));
             return response()->json([
                 'message' => "Tạo đơn hàng thành công",
                 'type' => 'success',
+                'paymentMethod' => $order->payment_method,
+                'urlPay' => $urlPay,
             ]);
         } catch (\Throwable $e) {
             return response()->json([
@@ -114,8 +123,6 @@ class OrderController extends Controller
 
         return response()->json($orders);
     }
-
- 
     public function staffOrderDetail(string $id)
     {
         try {

@@ -15,13 +15,19 @@ const baseQuery = fetchBaseQuery({
 
 const baseQueryWithReauth = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
-  if (result.error?.status === 401) {
-    
+
+  // Không cố gắng refresh token đối với các endpoint xác thực (login, register, refresh)
+  const url = typeof args === "string" ? args : args?.url || "";
+  const isAuthEndpoint =
+    url.includes("login") ||
+    url.includes("register") ||
+    url.includes("refresh");
+
+  if (result.error?.status === 401 && !isAuthEndpoint) {
     const refreshResult = await baseQuery(
       {
         url: "/refresh",
         method: "POST",
-      
       },
       api,
       extraOptions,

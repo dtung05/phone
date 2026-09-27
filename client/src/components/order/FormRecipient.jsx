@@ -31,7 +31,11 @@ const FormRecipient = ({ idQuantities }) => {
       const result = await addOrder(order).unwrap();
       dispatch(showToast({ message: result.message, type: result.type }));
       if (result.type == "success") {
-        navigate("/orders");
+        if (result.paymentMethod == "cod") {
+          navigate("/orders");
+          return;
+        }
+        window.location.href = result.urlPay;
       } else {
         navigate("/");
       }
@@ -76,7 +80,8 @@ const FormRecipient = ({ idQuantities }) => {
         {...register("payment_method")}
       >
         <option value="cod">COD</option>
-        <option value="momo">MOMO</option>
+        <option value="momo">Momo</option>
+        <option value="vnpay">VnPay</option>
       </Select>
       <FormField
         Component={TextInput}
