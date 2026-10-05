@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { NavLink, Outlet } from "react-router-dom";
-import Toast from "../components/block/Toast";
+import Toast from "../components/common/feedback/Toast";
 import { useGetUnrepliedReviewsCountQuery } from "../store/api/reviewApi";
 
 const Staff = () => {
@@ -44,7 +44,7 @@ const Staff = () => {
           </div>
 
           <nav className="px-3 space-y-1 mt-2">
-            <p className="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">
+            <p className="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-wider mt-4 mb-2">
               Quản lý sản phẩm
             </p>
             <NavLink
@@ -163,10 +163,30 @@ const Staff = () => {
             >
               <span>Banner quảng cáo</span>
             </NavLink>
+
+            {profile?.role === "Quản trị viên" && (
+              <>
+                <p className="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-wider mt-4 mb-2">
+                  Hệ thống & Phân quyền
+                </p>
+                <NavLink
+                  to="/staff/users"
+                  className={({ isActive }) =>
+                    `flex items-center gap-2.5 px-3 py-2.5 text-xs font-semibold rounded-md transition-all ${
+                      isActive
+                        ? "bg-emerald-50 text-emerald-700 border-l-4 border-emerald-600 shadow-sm"
+                        : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                    }`
+                  }
+                >
+                  <span>Quản lý tài khoản</span>
+                </NavLink>
+              </>
+            )}
           </nav>
         </div>
 
-        {/* NÚT ĐĂNG XUẤT */}
+        {/* đăng xuất */}
         <div className="p-3 border-t border-slate-100">
           <button
             type="button"
@@ -182,9 +202,7 @@ const Staff = () => {
         </div>
       </aside>
 
-      {/* KHU VỰC NỘI DUNG BÊN PHẢI */}
       <div className="flex-1 flex flex-col min-w-0">
-        {/* HEADER */}
         <header className="h-16 bg-white border-b border-slate-200 px-8 flex items-center justify-between shadow-sm">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
@@ -200,8 +218,7 @@ const Staff = () => {
             </strong>
           </div>
         </header>
-
-        {/* NỘI DUNG TRANG FORM / CHỨC NĂNG */}
+        {/* Trang chính  */}
         <main className="flex-1 p-4 overflow-y-auto">
           <Outlet />
         </main>

@@ -1,8 +1,8 @@
 import { Outlet } from "react-router";
-import Header from "../components/block/header/Header";
-import Footer from "../components/block/Footer";
+import Header from "../components/common/layout/Header";
+import Footer from "../components/common/layout/Footer";
 import { useSelector } from "react-redux";
-import Toast from "../components/block/Toast";
+import Toast from "../components/common/feedback/Toast";
 
 
 export default function Customer() {

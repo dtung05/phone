@@ -1,9 +1,9 @@
 import React from "react";
-import ProductListStaff from "../../pages/product/ProductListStaff";
-import ProductCreate from "../../pages/product/ProductCreate";
-import ProductUpdate from "../../pages/product/ProductUpdate";
-import ProductDetailStaff from "../../pages/product/ProductDetailStaff";
-import CategoryBrandManage from "../../pages/category-brand/CategoryBrandManage";
+import ProductListStaff from "../../pages/staff/product/ProductListStaff";
+import ProductCreate from "../../pages/staff/product/ProductCreate";
+import ProductUpdate from "../../pages/staff/product/ProductUpdate";
+import ProductDetailStaff from "../../pages/staff/product/ProductDetailStaff";
+import CategoryBrandManage from "../../pages/staff/category-brand/CategoryBrandManage";
 
 const product = [
   {

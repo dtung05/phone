@@ -1,7 +1,5 @@
 import { baseApi } from "./baseApi";
 
-//mutation : post , patch, put, delete
-//query: get
 export const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     register: builder.mutation({
@@ -19,13 +17,47 @@ export const authApi = baseApi.injectEndpoints({
         body: data,
       }),
     }),
+
     getMe: builder.query({
       query: () => ({
         url: "/me",
         method: "GET",
       }),
+      providesTags: ["Profile"],
+    }),
+    // lấy thông tin trang profile
+    getProfile: builder.query({
+      query: () => ({
+        url: "/profile",
+        method: "GET",
+      }),
+      providesTags: ["Profile"],
+    }),
+    // cập nhật địachỉ
+    updateProfile: builder.mutation({
+      query: (data) => ({
+        url: "/profile",
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["Profile"],
+    }),
+    // thayddooir mật khẩu
+    changePassword: builder.mutation({
+      query: (data) => ({
+        url: "/profile/change-password",
+        method: "PUT",
+        body: data,
+      }),
     }),
   }),
 });
 
-export const { useRegisterMutation, useLoginMutation, useGetMeQuery } = authApi;
+export const {
+  useRegisterMutation,
+  useLoginMutation,
+  useGetMeQuery,
+  useGetProfileQuery,
+  useUpdateProfileMutation,
+  useChangePasswordMutation,
+} = authApi;

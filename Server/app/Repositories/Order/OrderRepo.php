@@ -1,12 +1,9 @@
 <?php
 
-namespace app\Repositories\Order;
-
+namespace App\Repositories\Order;
 use App\Models\Order;
 use App\Repositories\Order\OrderRepositoryInterface;
-
 use App\Repositories\BaseRepository;
-use Illuminate\Container\Attributes\Auth;
 
 class OrderRepo extends BaseRepository implements OrderRepositoryInterface
 {

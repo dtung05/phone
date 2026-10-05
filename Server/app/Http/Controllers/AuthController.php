@@ -11,11 +11,17 @@ use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
-    public function register(RegisterValidation $request, UserRepositoryInterface $userRepo)
+    protected $userRepo;
+
+    public function __construct(UserRepositoryInterface $userRepo)
     {
-        $data = $request->validated();
+        $this->userRepo = $userRepo;
+    }
+
+    public function register(RegisterValidation $request)
+    {
         $data = $request->only('full_name', 'email', 'password');
-        $check = $userRepo->create($data);
+        $this->userRepo->create($data);
         return response()->json($data);
     }
 
@@ -147,7 +153,7 @@ class AuthController extends Controller
 
             // Lấy User từ claim sub
             $userId = $payload->get('sub');
-            $user = \App\Models\User::find($userId);
+            $user = $this->userRepo->find($userId);
 
             if (!$user) {
                 return response()->json([
