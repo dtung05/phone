@@ -1,6 +1,6 @@
-import Checkout from "../../pages/order/Checkout";
-import myOrders from "../../pages/order/myOrders";
-import PaymentResult from "../../pages/order/PaymentResult";
+import Checkout from "../../pages/customer/order/Checkout";
+import myOrders from "../../pages/customer/order/MyOrders";
+import PaymentResult from "../../pages/customer/order/PaymentResult";
 import AuthLogin from "../middleware/AuthLogin";
 
 const order = [

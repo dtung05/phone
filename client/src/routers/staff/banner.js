@@ -1,4 +1,4 @@
-import BannerManager from "../../pages/banner/BannerManager";
+import BannerManager from "../../pages/staff/banner/BannerManager";
 
 const banner = [
   {

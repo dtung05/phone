@@ -15,7 +15,6 @@ use App\Models\Cart;
 
 class User extends Authenticatable implements JWTSubject
 {
-    /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
 
@@ -23,6 +22,8 @@ class User extends Authenticatable implements JWTSubject
         'full_name',
         'email',
         'password',
+        'role',
+        'status'
     ];
     public function orders()
     {
@@ -31,6 +32,11 @@ class User extends Authenticatable implements JWTSubject
     public function carts()
     {
         return $this->hasMany(Cart::class);
+    }
+
+    public function shippingAddress()
+    {
+        return $this->hasOne(ShippingAddress::class);
     }
 
     protected $hidden = [

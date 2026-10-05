@@ -1,4 +1,4 @@
-import StaffReviewManager from "../../pages/review/StaffReviewManager";
+import StaffReviewManager from "../../pages/staff/review/StaffReviewManager";
 
 const review = [
   {

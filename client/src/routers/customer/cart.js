@@ -1,4 +1,4 @@
-import MyCart from "../../pages/cart/MyCart";
+import MyCart from "../../pages/customer/cart/MyCart";
 import AuthLogin from "../middleware/AuthLogin";
 
 const cart = [

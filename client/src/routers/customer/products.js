@@ -1,7 +1,7 @@
-import ProductSaleList from "../../pages/product/ProductSaleList";
-import ProductDetail from "../../pages/product/ProductDetail";
-import ProductSearch from "../../pages/product/ProductSearch";
-import ProductsByBrand from "../../pages/product/ProductsByBrand";
+import ProductSaleList from "../../pages/customer/product/ProductSaleList";
+import ProductDetail from "../../pages/customer/product/ProductDetail";
+import ProductSearch from "../../pages/customer/product/ProductSearch";
+import ProductsByBrand from "../../pages/customer/product/ProductsByBrand";
 
 const product = [
   {

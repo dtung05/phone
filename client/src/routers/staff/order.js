@@ -1,5 +1,4 @@
-﻿import React from "react";
-import OrderListStaff from "../../pages/order-staff/OrderListStaff";
+import OrderListStaff from "../../pages/staff/order/OrderListStaff";
 
 const order = [
   {

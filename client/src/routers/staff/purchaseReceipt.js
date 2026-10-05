@@ -1,6 +1,6 @@
-import PurchaseReceiptList from "../../pages/purchase-receipt/PurchaseReceiptList";
-import PurchaseReceiptCreate from "../../pages/purchase-receipt/PurchaseReceiptCreate";
-import PurchaseReceiptDetail from "../../pages/purchase-receipt/PurchaseReceiptDetail";
+import PurchaseReceiptList from "../../pages/staff/purchase-receipt/PurchaseReceiptList";
+import PurchaseReceiptCreate from "../../pages/staff/purchase-receipt/PurchaseReceiptCreate";
+import PurchaseReceiptDetail from "../../pages/staff/purchase-receipt/PurchaseReceiptDetail";
 
 const purchaseReceipt = [
   {

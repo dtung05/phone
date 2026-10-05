@@ -1,4 +1,4 @@
-import SupplierManager from "../../pages/supplier/SupplierManager";
+import SupplierManager from "../../pages/staff/supplier/SupplierManager";
 
 const supplier = [
   {

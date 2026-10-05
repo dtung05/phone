@@ -5,7 +5,7 @@ import { Provider } from "react-redux";
 import { RouterProvider } from "react-router/dom";
 import router from "./routers/router.js";
 import "./index.css";
-import AuthInitializer from "./components/auth/login/AuthInitializer.jsx";
+import AuthInitializer from "./components/customer/auth/AuthInitializer.jsx";
 import "./echo";
 createRoot(document.getElementById("root")).render(
   <StrictMode>

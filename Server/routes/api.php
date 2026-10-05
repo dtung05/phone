@@ -9,3 +9,4 @@ require_once __DIR__ . '/api/banner.php';
 require_once __DIR__ . '/api/category.php';
 require_once __DIR__ . '/api/payment.php';
 require_once __DIR__ . '/api/purchase_receipt.php';
+require_once __DIR__ . '/api/user.php';

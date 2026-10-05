@@ -5,6 +5,7 @@ import banner from "./banner";
 import purchaseReceipt from "./purchaseReceipt";
 import supplier from "./supplier";
 import review from "./review";
+import user from "./user";
 import AuthLogin from "../middleware/AuthLogin";
 
 const staff = {
@@ -20,6 +21,7 @@ const staff = {
         ...purchaseReceipt,
         ...supplier,
         ...review,
+        ...user,
       ],
     },
   ],
