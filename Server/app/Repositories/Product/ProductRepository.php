@@ -32,6 +32,8 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                 'thumbnail',
                 'discount_perventage'
             )->withMin('productVariants as min_price', 'selling_price')
+            ->withAvg('reviews as avg_rating', 'rating')
+            ->withCount('reviews as reviews_count')
             ->paginate(10);
     }
 
@@ -45,6 +47,8 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                 'thumbnail',
                 'discount_perventage'
             )->withMin('productVariants as min_price', 'selling_price')
+            ->withAvg('reviews as avg_rating', 'rating')
+            ->withCount('reviews as reviews_count')
             ->paginate(10);
     }
     public function getProductSale($perPage = null, $filters = [])
@@ -64,7 +68,9 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                 'brand:id,name',
                 'category:id,name'
             ])
-            ->withMin('productVariants as min_price', 'selling_price');
+            ->withMin('productVariants as min_price', 'selling_price')
+            ->withAvg('reviews as avg_rating', 'rating')
+            ->withCount('reviews as reviews_count');
 
         if (!empty($filters['brand_id'])) {
             $query->where('brand_id', $filters['brand_id']);
@@ -84,11 +90,15 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         return $this->model
             ->select(
                 'id',
+                'category_id',
+                'brand_id',
                 'product_name',
                 'slug',
                 'thumbnail',
                 'discount_perventage'
             )->withMin('productVariants as min_price', 'selling_price')
+            ->withAvg('reviews as avg_rating', 'rating')
+            ->withCount('reviews as reviews_count')
             ->orderBy('created_at', 'desc')
             ->paginate(10);
     }

@@ -42,15 +42,15 @@ class ProductController extends Controller
     // lấy sản phẩm đang sale
     public function productSale(Request $request)
     {
+        $perPage = (int) $request->query('per_page', 10);
         if ($request->has('page') || $request->has('paginate')) {
-            $perPage = (int) $request->query('per_page', 12);
             $filters = [
                 'brand_id' => $request->query('brand_id'),
                 'category_id' => $request->query('category_id'),
             ];
             return response()->json($this->productRepo->getProductSale($perPage, $filters));
         }
-        return response()->json($this->productRepo->getProductSale());
+        return response()->json($this->productRepo->getProductSale($perPage));
     }
 
     // lấy ra sản phẩm mới thêm
@@ -223,7 +223,7 @@ class ProductController extends Controller
         $uploadedFiles = [];
         try {
             DB::transaction(function () use ($request, $product, &$uploadedFiles) {
-             
+
                 if ($request->hasFile('thumbnail')) {
                     $newThumbnail = $request->file('thumbnail')->store('products', 'public');
                     $uploadedFiles[] = $newThumbnail;
@@ -296,14 +296,12 @@ class ProductController extends Controller
                         $variantId = !empty($variant['id']) ? (int) $variant['id'] : null;
 
                         if ($variantId && isset($existingVariants[$variantId])) {
-                           
                             $existingVariants[$variantId]->update([
                                 'selling_price' => $variant['selling_price'],
                                 'attributes' => $attributes ?? [],
                             ]);
                             $retainedVariantIds[] = $variantId;
                         } else {
-                          
                             $newVariant = $this->productVariantRepo->create([
                                 'product_id' => $product->id,
                                 'selling_price' => $variant['selling_price'],
@@ -315,7 +313,7 @@ class ProductController extends Controller
                         }
                     }
 
-                  
+
                     foreach ($existingVariants as $oldId => $oldVariant) {
                         if (!in_array($oldId, $retainedVariantIds)) {
                             $oldVariant->delete();

@@ -1,10 +1,10 @@
 import formatPrice from "@/utils/price";
 import { useMemo, useState } from "react";
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 import { CreditCard, Layers } from "lucide-react";
-import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 
-const DashboardRevenueBreakDown = ({  stats, kpi }) => {
-  const [breakdownTab, setBreakdownTab] = useState("category"); 
+const DashboardRevenueBreakDown = ({ stats, kpi }) => {
+  const [breakdownTab, setBreakdownTab] = useState("category");
 
   const categories = stats.categories || [];
   const brands = stats.brands || [];
