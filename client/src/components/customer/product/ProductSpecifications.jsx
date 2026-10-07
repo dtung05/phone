@@ -1,4 +1,4 @@
-﻿import { useState } from "react";
+import { useState } from "react";
 
 export default function ProductSpecification({ specifications }) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -16,17 +16,17 @@ export default function ProductSpecification({ specifications }) {
   const hasMore = entries.length > 8;
 
   return (
-    <div className="border border-gray-200 rounded-lg bg-white p-5">
-      <h2 className="text-base font-bold text-gray-900 border-b border-gray-200 pb-2.5 mb-3">
-        Thông số kỹ thuật
+    <div className="border border-gray-200/80 rounded-2xl bg-white p-5 shadow-2xs">
+      <h2 className="text-base font-bold text-gray-900 border-b border-gray-100 pb-2.5 mb-3 flex items-center justify-between">
+        <span>Thông số kỹ thuật</span>
       </h2>
 
-      <div className="border border-gray-200 rounded text-xs divide-y divide-gray-200">
+      <div className="border border-gray-100 rounded-xl overflow-hidden text-xs divide-y divide-gray-100">
         {visibleEntries.map(([key, value], index) => (
           <div
             key={key}
-            className={`flex items-center justify-between p-2.5 ${
-              index % 2 === 0 ? "bg-gray-50/70" : "bg-white"
+            className={`flex items-center justify-between p-2.5 sm:px-3.5 ${
+              index % 2 === 0 ? "bg-gray-50/60" : "bg-white"
             }`}
           >
             <span className="text-gray-600 font-medium w-2/5">{key}</span>
@@ -42,7 +42,7 @@ export default function ProductSpecification({ specifications }) {
           <button
             type="button"
             onClick={() => setIsExpanded(!isExpanded)}
-            className="text-xs font-semibold text-blue-600 hover:text-blue-800 transition cursor-pointer py-1"
+            className="inline-flex items-center gap-1 text-xs font-semibold text-[#009b7a] hover:text-[#006b5a] bg-[#eefbf6] hover:bg-[#d9f7eb] px-3.5 py-1.5 rounded-lg transition cursor-pointer"
           >
             {isExpanded ? "Thu gọn thông số ▲" : "Xem thêm cấu hình chi tiết ▼"}
           </button>

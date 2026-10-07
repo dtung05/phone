@@ -1,4 +1,4 @@
-﻿import { useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import FormField from "../../common/form/FormField";
 import TextInput from "../../common/form/TextInput";
@@ -46,14 +46,14 @@ export default function ReviewForm({ data }) {
   };
 
   return (
-    <div className="border border-gray-200 rounded-lg bg-white p-5 space-y-3">
-      <h3 className="text-sm font-bold text-gray-900 border-b border-gray-200 pb-2">
+    <div className="border border-gray-100 rounded-xl bg-gray-50/70 p-4 sm:p-5 space-y-3.5">
+      <h3 className="text-sm font-bold text-gray-900 border-b border-gray-200/80 pb-2">
         Viết nhận xét của bạn
       </h3>
 
       <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-3">
         <div>
-          <label className="block text-xs text-gray-600 mb-1 font-medium">
+          <label className="block text-xs text-gray-600 mb-1.5 font-medium">
             Đánh giá sao:
           </label>
           <div className="flex items-center gap-1">
@@ -62,9 +62,13 @@ export default function ReviewForm({ data }) {
                 key={star}
                 type="button"
                 onClick={() => handleSelectStar(star)}
-                className="text-xl text-amber-400 cursor-pointer focus:outline-none"
+                className="text-xl text-amber-400 hover:scale-110 transition cursor-pointer focus:outline-none"
               >
-                {selectedRating >= star ? "★" : <span className="text-gray-200">★</span>}
+                {selectedRating >= star ? (
+                  "★"
+                ) : (
+                  <span className="text-gray-300">★</span>
+                )}
               </button>
             ))}
             <span className="text-xs text-gray-500 ml-2 font-medium">
@@ -74,13 +78,13 @@ export default function ReviewForm({ data }) {
         </div>
 
         <div>
-          <label className="block text-xs text-gray-600 mb-1 font-medium">
+          <label className="block text-xs text-gray-600 mb-1.5 font-medium">
             Nội dung nhận xét:
           </label>
           <FormField
             control={control}
             name="content"
-            placeholder="Nhận xét về chất lượng sản phẩm, giao hàng..."
+            placeholder="Chia sẻ cảm nhận về chất lượng sản phẩm, dịch vụ..."
             Component={TextInput}
             rules={{
               required: "Vui lòng nhập nội dung đánh giá",
@@ -91,7 +95,7 @@ export default function ReviewForm({ data }) {
         <button
           disabled={isLoading}
           type="submit"
-          className="w-full py-2.5 px-4 rounded bg-red-600 hover:bg-red-700 text-white font-bold text-xs uppercase tracking-wide transition disabled:opacity-50 cursor-pointer"
+          className="w-full py-2.5 px-4 rounded-xl bg-[#009b7a] hover:bg-[#006b5a] text-white font-bold text-xs uppercase tracking-wider transition disabled:opacity-50 cursor-pointer shadow-xs active:scale-[0.99]"
         >
           {isLoading ? "Đang gửi..." : "Gửi đánh giá"}
         </button>
