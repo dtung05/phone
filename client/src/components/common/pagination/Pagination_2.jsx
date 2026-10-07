@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight } from "lucide-react";
+ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const Pagination_2 = ({ meta, setPage, page }) => {
   return (

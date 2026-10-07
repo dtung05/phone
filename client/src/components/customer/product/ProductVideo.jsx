@@ -1,4 +1,4 @@
-﻿import React from "react";
+import React from "react";
 import { getImageUrl } from "../../../utils/image";
 
 export default function ProductVideo({ videoUrl }) {
@@ -23,12 +23,12 @@ export default function ProductVideo({ videoUrl }) {
     videoUrl.endsWith(".ogg");
 
   return (
-    <div className="border border-gray-200 rounded-lg bg-white p-4 h-full flex flex-col">
-      <h2 className="text-base font-bold text-gray-900 border-b border-gray-200 pb-2.5 mb-3">
+    <div className="border border-gray-200/80 rounded-2xl bg-white p-5 shadow-2xs h-full flex flex-col">
+      <h2 className="text-base font-bold text-gray-900 border-b border-gray-100 pb-2.5 mb-3">
         Video đánh giá
       </h2>
 
-      <div className="relative w-full aspect-video rounded overflow-hidden bg-black border border-gray-200 flex-1 min-h-[220px]">
+      <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-black border border-gray-100 flex-1 min-h-[220px]">
         {embedUrl ? (
           <iframe
             src={embedUrl}
