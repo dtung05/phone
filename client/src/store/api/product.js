@@ -28,15 +28,15 @@ const productApi = baseApi.injectEndpoints({
       }),
     }),
     getProductsSale: builder.query({
-      query: () => ({
-        url: "products/sale",
+      query: (perPage) => ({
+        url: `products/sale?per_page=${perPage}`,
         method: "GET",
       }),
       providesTags: ["Products"],
     }),
     getProductsSalePaginated: builder.query({
       query: ({ page = 1, brand_id = "", category_id = "" } = {}) => ({
-        url: `products/sale?page=${page}&brand_id=${brand_id}&category_id=${category_id}&per_page=12`,
+        url: `products/sale?page=${page}&brand_id=${brand_id}&category_id=${category_id}&per_page=10`,
         method: "GET",
       }),
       providesTags: ["Products"],
