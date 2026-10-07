@@ -3,6 +3,7 @@ const formatPrice = (price) =>
     style: "currency",
     currency: "VND",
   }).format(price || 0);
+  
 const readNumberToVietnameseWords = (number) => {
   if (!number || isNaN(number) || number === 0) return "Không đồng";
   const digits = [
