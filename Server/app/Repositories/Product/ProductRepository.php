@@ -37,19 +37,26 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
             ->paginate(10);
     }
 
-    public function getProductsByBrand($id)
+    public function getProductsByBrand($id, $categoryId = null)
     {
-        return $this->model->where('brand_id', $id)
+        $query = $this->model->where('brand_id', $id)
             ->select(
                 'id',
+                'category_id',
+                'brand_id',
                 'product_name',
                 'slug',
                 'thumbnail',
                 'discount_perventage'
             )->withMin('productVariants as min_price', 'selling_price')
             ->withAvg('reviews as avg_rating', 'rating')
-            ->withCount('reviews as reviews_count')
-            ->paginate(10);
+            ->withCount('reviews as reviews_count');
+
+        if (!empty($categoryId)) {
+            $query->where('category_id', $categoryId);
+        }
+
+        return $query->paginate(10);
     }
     public function getProductSale($perPage = null, $filters = [])
     {

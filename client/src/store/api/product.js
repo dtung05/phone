@@ -22,10 +22,11 @@ const productApi = baseApi.injectEndpoints({
       }),
     }),
     getProductsByBrand: builder.query({
-      query: ({ brand, page }) => ({
-        url: `brands/${brand}/products?page=${page}`,
+      query: ({ brand, page = 1, category_id = "" }) => ({
+        url: `brands/${brand}/products?page=${page}${category_id ? `&category_id=${category_id}` : ""}`,
         method: "GET",
       }),
+      providesTags: ["Products"],
     }),
     getProductsSale: builder.query({
       query: (perPage) => ({
