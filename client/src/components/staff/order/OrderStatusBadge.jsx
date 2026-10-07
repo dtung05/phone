@@ -92,19 +92,27 @@ export const PaymentStatusBadge = ({ status, className = "" }) => {
 };
 
 export const PaymentMethodBadge = ({ method, className = "" }) => {
-  const isVnPay = method === "vn_pay";
+  const paymentMethods = {
+    vnpay: {
+      label: "VNPAY",
+      className: "bg-sky-50 text-sky-700 border-sky-200/70",
+    },
+    momo: {
+      label: "MoMo",
+      className: "bg-pink-50 text-pink-700 border-pink-200/70",
+    },
+    cod: {
+      label: "COD",
+      className: "bg-slate-100 text-slate-700 border-slate-200/70",
+    },
+  };
+  const payment = paymentMethods[method] || paymentMethods.cod;
   return (
     <span
-      className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-mono font-medium ${
-        isVnPay
-          ? "bg-sky-50 text-sky-700 border border-sky-200/70"
-          : "bg-slate-100 text-slate-700 border border-slate-200/70"
-      } ${className}`}
+      className={`inline-flex items-center gap-1 px-2 py-0.5 rounded border text-[11px] font-medium ${payment.className} ${className}`}
     >
-      <CreditCard className="w-3 h-3" />
-      <span>{isVnPay ? "VNPAY" : "COD"}</span>
+      <CreditCard className="w-3 h-3" /> <span>{payment.label}</span>{" "}
     </span>
   );
 };
-
 export default OrderStatusBadge;

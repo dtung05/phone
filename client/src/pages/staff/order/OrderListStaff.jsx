@@ -172,8 +172,8 @@ const OrderListStaff = () => {
               className="text-xs font-medium px-2.5 py-2 bg-white border border-slate-200 rounded-lg focus:outline-none focus:border-emerald-500 cursor-pointer"
             >
               <option value="">Tất cả</option>
-              <option value="Paid">Đã thanh toán (Paid)</option>
-              <option value="Unpaid">Chưa thanh toán (Unpaid)</option>
+              <option value="Paid">Đã thanh toán </option>
+              <option value="Unpaid">Chưa thanh toán </option>
             </select>
           </div>
           <div className="flex items-center gap-2">

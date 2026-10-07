@@ -6,6 +6,7 @@ import purchaseReceipt from "./purchaseReceipt";
 import supplier from "./supplier";
 import review from "./review";
 import user from "./user";
+import dashboard from "./dashboard";
 import AuthLogin from "../middleware/AuthLogin";
 
 const staff = {
@@ -15,6 +16,7 @@ const staff = {
     {
       Component: Staff,
       children: [
+        ...dashboard,
         ...product,
         ...order,
         ...banner,
