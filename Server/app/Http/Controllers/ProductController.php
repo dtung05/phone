@@ -34,10 +34,11 @@ class ProductController extends Controller
         return response()->json($result);
     }
     //TÌm sản phẩm theo brand
-    public function productsByBrand(int $brand)
+    public function productsByBrand(Request $request, int $brand)
     {
-        $result = $this->productRepo->getProductsByBrand($brand);
-        return  response()->json($result);
+        $categoryId = $request->query('category_id');
+        $result = $this->productRepo->getProductsByBrand($brand, $categoryId);
+        return response()->json($result);
     }
     // lấy sản phẩm đang sale
     public function productSale(Request $request)
