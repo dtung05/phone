@@ -5,7 +5,7 @@ use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:api')->group(function () {
-    Route::middleware('role:Nhân viên kho,Quản trị viên,Nhân viên sale')->group(function () {
+    Route::middleware('role:Nhân viên kho,Quản trị viên')->group(function () {
         // Quản lý nhà cung ứng
         Route::get('/staff/suppliers', [SupplierController::class, 'index']);
         Route::post('/staff/suppliers', [SupplierController::class, 'store']);
