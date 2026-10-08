@@ -50,14 +50,16 @@ const InfoUser = ({ profile }) => {
     }
   };
   return (
-    <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-emerald-100/80">
-      <h2 className="text-lg font-bold text-gray-800 mb-1 flex items-center gap-2">
-        <Sparkles className="w-5 h-5 text-emerald-600" />
-        Cập nhật thông tin nhận hàng
-      </h2>
-      <p className="text-xs text-gray-400 mb-6">
-        Thông tin này sẽ được tự động điền khi bạn đặt hàng lần sau.
-      </p>
+    <div className="bg-white rounded-2xl border border-gray-200/80 p-5 sm:p-7 lg:p-8 shadow-2xs space-y-6">
+      <div className="border-b border-gray-100 pb-3.5">
+        <h2 className="text-base sm:text-lg font-bold text-gray-900 flex items-center gap-2">
+          <User className="w-5 h-5 text-[#009b7a]" />
+          <span>Thông tin tài khoản </span>
+        </h2>
+        <p className="text-xs text-gray-500 mt-1">
+          Thông tin cá nhân
+        </p>
+      </div>
 
       <form
         onSubmit={handleSubmitInfo(handleUpdateInfo, (errors) =>
@@ -75,8 +77,9 @@ const InfoUser = ({ profile }) => {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div className="space-y-1.5">
             <label className="text-xs font-semibold text-gray-700 flex items-center gap-1.5">
-              <User className="w-3.5 h-3.5 text-emerald-600" />
-              Họ và tên
+              <User className="w-3.5 h-3.5 text-[#009b7a]" />
+              <span>Họ và tên</span>
+              <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
@@ -86,58 +89,77 @@ const InfoUser = ({ profile }) => {
                   value.trim() !== "" || "Họ và tên không được để trống!",
               })}
               placeholder="Nguyễn Văn A"
-              className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
+              className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#009b7a]/20 focus:border-[#009b7a] transition-all bg-white"
             />
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-gray-700 flex items-center gap-1.5">
-              <Mail className="w-3.5 h-3.5 text-emerald-600" />
-              Email (Không thể thay đổi)
+            <label className="text-xs font-semibold text-gray-700 flex items-center justify-between">
+              <span className="flex items-center gap-1.5">
+                <Mail className="w-3.5 h-3.5 text-[#009b7a]" />
+                <span>Email tài khoản</span>
+              </span>
+              <span className="text-[10px] text-gray-400 font-normal">Cố định</span>
             </label>
             <input
               type="email"
               value={profile?.email || ""}
               disabled
-              className="w-full px-4 py-2.5 rounded-xl border border-gray-100 bg-gray-50 text-gray-500 text-sm cursor-not-allowed"
+              className="w-full px-4 py-2.5 rounded-xl border border-gray-200/80 bg-gray-50/90 text-gray-500 text-sm cursor-not-allowed"
             />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div className="space-y-1.5">
+            <label className="text-xs font-semibold text-gray-700 flex items-center gap-1.5">
+              <Phone className="w-3.5 h-3.5 text-[#009b7a]" />
+              <span>Số điện thoại nhận hàng</span>
+            </label>
+            <input
+              type="tel"
+              {...registerInfo("phone_number")}
+              placeholder="0912345678"
+              className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#009b7a]/20 focus:border-[#009b7a] transition-all bg-white"
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="text-xs font-semibold text-gray-700 flex items-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5 text-[#009b7a]" />
+              <span>Cấp bậc tài khoản</span>
+            </label>
+            <div className="w-full px-4 py-2.5 rounded-xl border border-gray-200/80 bg-gray-50/90 text-gray-700 text-sm flex items-center justify-between">
+              <span className="font-semibold text-[#006b5a]">
+                {profile?.role }
+              </span>
+              
+            </div>
           </div>
         </div>
 
         <div className="space-y-1.5">
           <label className="text-xs font-semibold text-gray-700 flex items-center gap-1.5">
-            <Phone className="w-3.5 h-3.5 text-emerald-600" />
-            Số điện thoại nhận hàng
-          </label>
-          <input
-            type="tel"
-            {...registerInfo("phone_number")}
-            placeholder="0912345678"
-            className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
-          />
-        </div>
-
-        <div className="space-y-1.5">
-          <label className="text-xs font-semibold text-gray-700 flex items-center gap-1.5">
-            <MapPin className="w-3.5 h-3.5 text-emerald-600" />
-            Địa chỉ giao hàng mặc định
+            <MapPin className="w-3.5 h-3.5 text-[#009b7a]" />
+            <span>Địa chỉ giao hàng mặc định</span>
           </label>
           <textarea
             rows={3}
             {...registerInfo("address")}
             placeholder="Số nhà, tên đường, phường/xã, quận/huyện, tỉnh/thành phố"
-            className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all resize-none"
+            className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#009b7a]/20 focus:border-[#009b7a] transition-all resize-none bg-white"
           />
         </div>
 
-        <div className="pt-3 flex justify-end">
+        <div className="pt-2 flex items-center justify-between border-t border-gray-100">
+         
           <button
             type="submit"
             disabled={isUpdating}
-            className="inline-flex items-center gap-2 px-6 py-2.5 bg-emerald-600 text-white rounded-xl font-semibold text-sm hover:bg-emerald-700 shadow-md shadow-emerald-600/20 active:scale-95 transition-all disabled:opacity-60"
+            className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#009b7a] text-white rounded-xl font-bold text-xs uppercase tracking-wide hover:bg-[#006b5a] shadow-xs active:scale-[0.99] transition-all disabled:opacity-50 cursor-pointer"
           >
             <Save className="w-4 h-4" />
-            {isUpdating ? "Đang lưu..." : "Lưu thay đổi"}
+            <span>{isUpdating ? "Đang lưu..." : "Lưu thay đổi"}</span>
           </button>
         </div>
       </form>
