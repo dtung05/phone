@@ -1,245 +1,138 @@
 import React from "react";
-import { Link } from "react-router-dom"; // Hoặc "react-router-dom" tùy cấu hình dự án của bạn
+import { Link } from "react-router-dom";
+import { PhoneCall, Mail, Clock, CreditCard, Banknote } from "lucide-react";
 
 function Footer() {
-  const paymentLogos = [
-    "visa.png",
-    "mastercard.png",
-    "jcb.png",
-    "samsung-pay.png",
-    "vnpay.png",
-    "zalopay.png",
-    "apple-pay.png",
-    "kredivo.png",
-    "spay.png",
-  ];
-
-  const socialLogos = [
-    { name: "Facebook", file: "facebook.png" },
-    { name: "TikTok", file: "tiktok.png" },
-    { name: "YouTube", file: "youtube.png" },
-    { name: "Instagram", file: "instagram.png" },
-    { name: "Threads", file: "threads.png" },
-  ];
-
   return (
-    <footer className="bg-[#005247] text-emerald-50 text-sm">
-      {/* Container chính */}
-      <div className="mx-auto max-w-[1320px] px-4 sm:px-6 lg:px-8 pt-12 pb-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
-          {/* Cột 1: Hotline & Đối tác */}
-          <div className="space-y-6">
-            <div>
-              <h3 className="text-base font-bold uppercase tracking-wider text-white mb-3">
-                Tư vấn mua hàng
-              </h3>
-              <p className="text-lg font-extrabold text-amber-300 tracking-wide">
-                1900.2091{" "}
-                <span className="text-xs font-normal text-emerald-200">
-                  (Nhánh 1)
-                </span>
-              </p>
-              <p className="text-xs text-emerald-200/80 mt-0.5">
-                (Từ 8h30 - 21h30)
-              </p>
-            </div>
-
-            <div>
-              <h3 className="text-base font-bold uppercase tracking-wider text-white mb-3">
-                Bảo hành - Hỗ trợ kỹ thuật
-              </h3>
-              <p className="text-lg font-extrabold text-amber-300 tracking-wide">
-                1900.2091{" "}
-                <span className="text-xs font-normal text-emerald-200">
-                  (Nhánh 2)
-                </span>
-              </p>
-              <p className="text-xs text-emerald-200/80 mt-0.5">
-                (Từ 8h30 - 21h30)
-              </p>
-            </div>
-
-            <div>
-              <h3 className="text-xs font-semibold uppercase tracking-wider text-emerald-200 mb-2.5">
-                Phương thức thanh toán
-              </h3>
-              <div className="grid grid-cols-3 gap-2 max-w-[280px]">
-                {paymentLogos.map((image) => (
-                  <div
-                    key={image}
-                    className="flex h-9 items-center justify-center rounded-md bg-white/95 p-1 transition-transform hover:scale-105 shadow-sm"
-                  >
-                    <img
-                      src={`/images/payment/${image}`}
-                      alt={image.replace(".png", "")}
-                      className="max-h-6 max-w-full object-contain"
-                    />
-                  </div>
-                ))}
+    <footer className="bg-[#eefbf6] text-gray-700 text-xs sm:text-[13px] border-t border-[#bbf0dc]">
+      <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-10">
+          <div className="lg:col-span-4 space-y-3.5">
+            <Link to="/" className="inline-flex items-center gap-2.5 group">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#009b7a] to-[#00c99e] text-white flex items-center justify-center font-black text-xl shadow-xs group-hover:scale-105 transition-transform">
+                T
               </div>
-            </div>
+              <span className="text-xl font-black tracking-tight text-[#006b5a]">
+                DIDONG<span className="text-[#009b7a]">.COM</span>
+              </span>
+            </Link>
 
-            <div>
-              <h3 className="text-xs font-semibold uppercase tracking-wider text-emerald-200 mb-2.5">
-                Hình thức vận chuyển
-              </h3>
-              <div className="flex gap-2">
-                <div className="flex h-9 w-24 items-center justify-center rounded-md bg-white/95 p-1 transition-transform hover:scale-105 shadow-sm">
-                  <img
-                    src="/images/shipping/nhat-tin.png"
-                    alt="Nhất Tín Logistics"
-                    className="max-h-7 max-w-full object-contain"
-                  />
-                </div>
-                <div className="flex h-9 w-24 items-center justify-center rounded-md bg-white/95 p-1 transition-transform hover:scale-105 shadow-sm">
-                  <img
-                    src="/images/shipping/vietnam-post.png"
-                    alt="Vietnam Post"
-                    className="max-h-7 max-w-full object-contain"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
+            <p className="text-xs sm:text-[13px] text-gray-600 leading-relaxed max-w-sm">
+              Hệ thống bán lẻ điện thoại chính hãng, bảo hành uy tín và hỗ trợ
+              khách hàng tận tâm trên toàn quốc.
+            </p>
 
-          {/* Cột 2: Hỗ trợ - Dịch vụ */}
-          <div>
-            <h3 className="text-base font-bold uppercase tracking-wider text-white mb-4">
-              Hỗ trợ - Dịch vụ
-            </h3>
-            <ul className="space-y-2.5">
-              <li>
-                <FooterLink text="Chính sách và hướng dẫn mua hàng trả góp" />
-              </li>
-              <li>
-                <FooterLink text="Hướng dẫn mua hàng và chính sách vận chuyển" />
-              </li>
-              <li>
-                <FooterLink text="Chính sách đổi mới và bảo hành" />
-              </li>
-              <li>
-                <FooterLink text="Dịch vụ bảo hành mở rộng H-Care" />
-              </li>
-              <li>
-                <FooterLink text="Chính Sách Bảo Mật Và Xử Lý Dữ Liệu Cá Nhân" />
-              </li>
-              <li>
-                <FooterLink text="Chính sách giải quyết khiếu nại" />
-              </li>
-              <li>
-                <FooterLink text="Quy chế hoạt động" />
-              </li>
-              <li>
-                <FooterLink text="Chương trình Hoàng Hà Edu" />
-              </li>
-              <li>
-                <FooterLink text="Quy định về hóa đơn GTGT" />
-              </li>
-              <li>
-                <FooterLink text="Chính sách về hạng thành viên" />
-              </li>
-            </ul>
-          </div>
-
-          {/* Cột 3: Thông tin liên hệ */}
-          <div>
-            <h3 className="text-base font-bold uppercase tracking-wider text-white mb-4">
-              Thông tin liên hệ
-            </h3>
-            <ul className="space-y-2.5">
-              <li>
-                <FooterLink
-                  text="Giới thiệu về Hoàng Hà Mobile"
-                  to="/ductung"
-                />
-              </li>
-              <li>
-                <FooterLink text="Thông tin các trang TMĐT" />
-              </li>
-              <li>
-                <FooterLink text="Chăm sóc khách hàng" />
-              </li>
-              <li>
-                <FooterLink text="Dịch vụ sửa chữa Hoàng Hà Care" />
-              </li>
-              <li>
-                <FooterLink text="Khách hàng doanh nghiệp (B2B)" />
-              </li>
-              <li>
-                <FooterLink text="Tuyển dụng" />
-              </li>
-              <li>
-                <FooterLink text="Tra cứu đơn hàng" />
-              </li>
-              <li>
-                <FooterLink text="Tra cứu bảo hành" />
-              </li>
-              <li>
-                <FooterLink text="Tìm siêu thị (118 cửa hàng)" />
-              </li>
-              <li>
-                <FooterLink text="Tra cứu lịch sử mua hàng" />
-              </li>
-              <li>
-                <FooterLink text="Tra cứu hóa đơn điện tử" />
-              </li>
-            </ul>
-          </div>
-
-          {/* Cột 4: Kết nối & Website thành viên */}
-          <div className="space-y-6">
-            <div>
-              <h3 className="text-base font-bold uppercase tracking-wider text-white mb-3">
-                Kết nối với chúng tôi
-              </h3>
-              <div className="flex flex-wrap gap-2.5">
-                {socialLogos.map((item) => (
+            <div className="space-y-2 pt-1 text-xs sm:text-[13px] text-gray-700">
+              <div className="flex items-center gap-2">
+                <PhoneCall size={15} className="text-[#009b7a] shrink-0" />
+                <span>
+                  Hotline tư vấn:{" "}
                   <a
-                    href="#"
-                    key={item.file}
-                    className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-all hover:-translate-y-0.5"
-                    title={item.name}
+                    href="tel:0862527719"
+                    className="font-bold text-[#009b7a] hover:underline"
                   >
-                    <img
-                      src={`/images/social/${item.file}`}
-                      alt={item.name}
-                      className="h-5 w-5 object-contain"
-                    />
+                    086.252.7719
                   </a>
-                ))}
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Clock size={15} className="text-[#009b7a] shrink-0" />
+                <span>Thời gian hỗ trợ: 08:00 - 21:30 hàng ngày</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Mail size={15} className="text-[#009b7a] shrink-0" />
+                <span>Email hỗ trợ: ductunng05@gmail.com</span>
               </div>
             </div>
+          </div>
 
-            <div>
-              <h3 className="text-base font-bold uppercase tracking-wider text-white mb-3">
-                Website thành viên
-              </h3>
-              <div className="space-y-3">
+          <div className="lg:col-span-3 space-y-3">
+            <h3 className="text-sm font-bold text-[#006b5a] uppercase tracking-wider border-b border-[#bbf0dc] pb-2">
+              Địa chỉ cửa hàng
+            </h3>
+            <div className="w-80 h-60 overflow-hidden rounded-xl border border-gray-200 shadow-sm">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3723.94346510358!2d105.78643107476934!3d21.034947987566945!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab49933f54f1%3A0x4233bfd8474bd829!2zNDQgVHLhuqduIFRow6FpIFTDtG5nLCBsw6BuZyBWw7JuZywgQ-G6p3UgR2nhuqV5LCBIw6AgTuG7mWkgMTAwMDAwLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1791477479171!5m2!1svi!2s"
+                width="100%"
+                height="100%"
+                className="border-0"
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="strict-origin-when-cross-origin"
+              />
+            </div>
+          </div>
+
+          <div className="lg:col-span-2 space-y-3">
+            <h3 className="text-sm font-bold text-[#006b5a] uppercase tracking-wider border-b border-[#bbf0dc] pb-2">
+              Tài khoản
+            </h3>
+            <ul className="space-y-2 text-xs sm:text-[13px]">
+              <li>
+                <Link
+                  to="/profile"
+                  className="text-gray-600 hover:text-[#009b7a] transition-colors inline-block hover:translate-x-1 duration-150"
+                >
+                  Hồ sơ cá nhân
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/orders"
+                  className="text-gray-600 hover:text-[#009b7a] transition-colors inline-block hover:translate-x-1 duration-150"
+                >
+                  Lịch sử mua hàng
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/products/sale"
+                  className="text-gray-600 hover:text-[#009b7a] transition-colors inline-block hover:translate-x-1 duration-150"
+                >
+                  Sản phẩm đang giảm giá
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/carts"
+                  className="text-gray-600 hover:text-[#009b7a] transition-colors inline-block hover:translate-x-1 duration-150"
+                >
+                  Giỏ hàng của bạn
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          <div className="lg:col-span-3 space-y-3">
+            <h3 className="text-sm font-bold text-[#006b5a] uppercase tracking-wider border-b border-[#bbf0dc] pb-2">
+              Hình thức thanh toán
+            </h3>
+            <p className="text-xs sm:text-[13px] text-gray-600 leading-relaxed">
+              Hỗ trợ các phương thức thanh toán an toàn và tiện lợi khi đặt mua
+              hàng:
+            </p>
+            <div className="space-y-2 pt-0.5">
+              <div className="flex items-center gap-2.5 p-2.5 rounded-xl border border-[#bbf0dc] bg-white text-gray-800 shadow-2xs">
+                <Banknote size={18} className="text-[#009b7a] shrink-0" />
                 <div>
-                  <p className="text-xs text-emerald-200/90 mb-1.5 font-medium">
-                    Hệ thống bán lẻ di động toàn quốc
-                  </p>
-                  <MemberWebsite
-                    image="hoanghamobile.png"
-                    alt="Hoàng Hà Mobile"
-                  />
+                  <span className="font-bold text-xs sm:text-[13px] block text-gray-900">
+                    Thanh toán khi nhận hàng
+                  </span>
+                  <span className="text-[11px] text-gray-500">
+                    Kiểm tra máy rồi thanh toán tiền mặt
+                  </span>
                 </div>
+              </div>
 
+              <div className="flex items-center gap-2.5 p-2.5 rounded-xl border border-[#bbf0dc] bg-white text-gray-800 shadow-2xs">
+                <CreditCard size={18} className="text-[#009b7a] shrink-0" />
                 <div>
-                  <p className="text-xs text-emerald-200/90 mb-1.5 font-medium">
-                    Hệ thống bảo hành & chăm sóc ĐT - Máy tính
-                  </p>
-                  <MemberWebsite image="hoanghacare.png" alt="Hoàng Hà Care" />
-                </div>
-
-                <div>
-                  <p className="text-xs text-emerald-200/90 mb-1.5 font-medium">
-                    Tuyển dụng - Cơ hội việc làm
-                  </p>
-                  <MemberWebsite
-                    image="hoanghacareers.png"
-                    alt="Hoàng Hà Careers"
-                  />
+                  <span className="font-bold text-xs sm:text-[13px] block text-gray-900">
+                    Thanh toán trực tuyến VNPAY
+                  </span>
+                  <span className="text-[11px] text-gray-500">
+                    Quét mã VNPAY-QR, thẻ ATM & Visa
+                  </span>
                 </div>
               </div>
             </div>
@@ -247,49 +140,19 @@ function Footer() {
         </div>
       </div>
 
-      {/* Bản quyền & Thông tin pháp lý */}
-      <div className="border-t border-emerald-800/60 bg-[#00473e] py-6 text-xs text-emerald-200/80">
-        <div className="mx-auto max-w-[1320px] px-4 sm:px-6 lg:px-8 text-center leading-relaxed space-y-1">
+      <div className="border-t border-[#bbf0dc] bg-[#dcf5ea] py-4 text-xs text-[#006b5a]">
+        <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left">
           <p>
-            © 2020. CÔNG TY CỔ PHẦN XÂY DỰNG VÀ ĐẦU TƯ THƯƠNG MẠI HOÀNG HÀ. MST:
-            0106713191.
+            © {new Date().getFullYear()}{" "}
+            <strong className="text-[#005a4b] font-bold">DIDONG.COM</strong>. Hệ
+            thống bán lẻ điện thoại chính hãng.
           </p>
-          <p>
-            (Đăng ký lần đầu: Ngày 15/12/2014, Đăng ký thay đổi ngày 10/07/2025)
-          </p>
-          <p>GP số 426/GP-TTĐT do Sở TTTT Hà Nội cấp ngày 22/01/2021</p>
-          <p className="pt-1">
-            Địa chỉ: Số 89 Đường Tam Trinh, Phường Vĩnh Tuy, Thành Phố Hà Nội,
-            Việt Nam. Điện thoại: 1900.2091.
+          <p className="text-[#006b5a]/80 text-[11px]">
+            Cam kết chất lượng chính hãng · Bảo hành chu đáo
           </p>
         </div>
       </div>
     </footer>
-  );
-}
-
-// Component link phụ trợ
-function FooterLink({ text, to = "#" }) {
-  return (
-    <Link
-      to={to}
-      className="text-emerald-100/90 hover:text-amber-300 transition-colors duration-150 inline-block hover:translate-x-0.5 transform"
-    >
-      {text}
-    </Link>
-  );
-}
-
-// Component hiển thị website thành viên
-function MemberWebsite({ image, alt }) {
-  return (
-    <div className="flex h-10 w-full max-w-[220px] items-center justify-center rounded-md bg-white/95 p-1.5 shadow-sm transition-transform hover:scale-[1.02]">
-      <img
-        src={`/images/member/${image}`}
-        alt={alt || image}
-        className="max-h-7 max-w-full object-contain"
-      />
-    </div>
   );
 }
 
