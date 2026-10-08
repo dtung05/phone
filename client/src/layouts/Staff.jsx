@@ -93,7 +93,8 @@ const Staff = () => {
             >
               <span>Thêm sản phẩm mới</span>
             </NavLink>
-            <NavLink
+          {(profile?.role == "Quản trị viên" || profile?.role == "Nhân viên kho") && (
+              <NavLink
               to="/staff/categories-brands"
               className={({ isActive }) =>
                 `flex items-center gap-2.5 px-3 py-2.5 text-xs font-semibold rounded-md transition-all ${
@@ -105,85 +106,100 @@ const Staff = () => {
             >
               <span>Danh mục & Thương hiệu</span>
             </NavLink>
+          )}
+            {(profile?.role === "Quản trị viên" ||
+              profile?.role === "Nhân viên sale") && (
+              <>
+                <p className="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-wider mt-4 mb-2">
+                  Quản lý bán hàng
+                </p>
+                <NavLink
+                  to="/staff/orders"
+                  className={({ isActive }) =>
+                    `flex items-center gap-2.5 px-3 py-2.5 text-xs font-semibold rounded-md transition-all ${
+                      isActive
+                        ? "bg-emerald-50 text-emerald-700 border-l-4 border-emerald-600 shadow-sm"
+                        : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                    }`
+                  }
+                >
+                  <span>Quản lý đơn hàng</span>
+                </NavLink>
 
-            <p className="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-wider mt-4 mb-2">
-              Quản lý bán hàng
-            </p>
-            <NavLink
-              to="/staff/orders"
-              className={({ isActive }) =>
-                `flex items-center gap-2.5 px-3 py-2.5 text-xs font-semibold rounded-md transition-all ${
-                  isActive
-                    ? "bg-emerald-50 text-emerald-700 border-l-4 border-emerald-600 shadow-sm"
-                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
-                }`
-              }
-            >
-              <span>Quản lý đơn hàng</span>
-            </NavLink>
+                <NavLink
+                  to="/staff/reviews"
+                  className={({ isActive }) =>
+                    `flex items-center justify-between px-3 py-2.5 text-xs font-semibold rounded-md transition-all ${
+                      isActive
+                        ? "bg-emerald-50 text-emerald-700 border-l-4 border-emerald-600 shadow-sm"
+                        : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                    }`
+                  }
+                >
+                  <span>Đánh giá & Bình luận</span>
+                  {unrepliedCount > 0 && (
+                    <span className="px-1.5 py-0.2 rounded-full bg-red-600 text-white text-[10px] font-black animate-pulse">
+                      {unrepliedCount}
+                    </span>
+                  )}
+                </NavLink>
+              </>
+            )}
 
-            <NavLink
-              to="/staff/reviews"
-              className={({ isActive }) =>
-                `flex items-center justify-between px-3 py-2.5 text-xs font-semibold rounded-md transition-all ${
-                  isActive
-                    ? "bg-emerald-50 text-emerald-700 border-l-4 border-emerald-600 shadow-sm"
-                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
-                }`
-              }
-            >
-              <span>Đánh giá & Bình luận</span>
-              {unrepliedCount > 0 && (
-                <span className="px-1.5 py-0.2 rounded-full bg-red-600 text-white text-[10px] font-black animate-pulse">
-                  {unrepliedCount}
-                </span>
-              )}
-            </NavLink>
+            {(profile?.role == "Nhân viên kho" ||
+              profile?.role == "Quản trị viên") && (
+              <>
+                <p className="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-wider mt-4 mb-2">
+                  Quản lý kho hàng
+                </p>
+                <NavLink
+                  to="/staff/purchase-receipts"
+                  className={({ isActive }) =>
+                    `flex items-center gap-2.5 px-3 py-2.5 text-xs font-semibold rounded-md transition-all ${
+                      isActive
+                        ? "bg-emerald-50 text-emerald-700 border-l-4 border-emerald-600 shadow-sm"
+                        : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                    }`
+                  }
+                >
+                  <span>Phiếu nhập kho</span>
+                </NavLink>
 
-            <p className="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-wider mt-4 mb-2">
-              Quản lý kho hàng
-            </p>
-            <NavLink
-              to="/staff/purchase-receipts"
-              className={({ isActive }) =>
-                `flex items-center gap-2.5 px-3 py-2.5 text-xs font-semibold rounded-md transition-all ${
-                  isActive
-                    ? "bg-emerald-50 text-emerald-700 border-l-4 border-emerald-600 shadow-sm"
-                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
-                }`
-              }
-            >
-              <span>Phiếu nhập kho</span>
-            </NavLink>
+                <NavLink
+                  to="/staff/suppliers"
+                  className={({ isActive }) =>
+                    `flex items-center gap-2.5 px-3 py-2.5 text-xs font-semibold rounded-md transition-all ${
+                      isActive
+                        ? "bg-emerald-50 text-emerald-700 border-l-4 border-emerald-600 shadow-sm"
+                        : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                    }`
+                  }
+                >
+                  <span>Nhà cung ứng</span>
+                </NavLink>
+              </>
+            )}
 
-            <NavLink
-              to="/staff/suppliers"
-              className={({ isActive }) =>
-                `flex items-center gap-2.5 px-3 py-2.5 text-xs font-semibold rounded-md transition-all ${
-                  isActive
-                    ? "bg-emerald-50 text-emerald-700 border-l-4 border-emerald-600 shadow-sm"
-                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
-                }`
-              }
-            >
-              <span>Nhà cung ứng</span>
-            </NavLink>
-
-            <p className="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-wider mt-4 mb-2">
-              Quảng cáo & Marketing
-            </p>
-            <NavLink
-              to="/staff/banners"
-              className={({ isActive }) =>
-                `flex items-center gap-2.5 px-3 py-2.5 text-xs font-semibold rounded-md transition-all ${
-                  isActive
-                    ? "bg-emerald-50 text-emerald-700 border-l-4 border-emerald-600 shadow-sm"
-                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
-                }`
-              }
-            >
-              <span>Banner quảng cáo</span>
-            </NavLink>
+            {(profile?.role === "Quản trị viên" ||
+              profile?.role === "Nhân viên sale") && (
+              <>
+                <p className="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-wider mt-4 mb-2">
+                  Quảng cáo & Marketing
+                </p>
+                <NavLink
+                  to="/staff/banners"
+                  className={({ isActive }) =>
+                    `flex items-center gap-2.5 px-3 py-2.5 text-xs font-semibold rounded-md transition-all ${
+                      isActive
+                        ? "bg-emerald-50 text-emerald-700 border-l-4 border-emerald-600 shadow-sm"
+                        : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                    }`
+                  }
+                >
+                  <span>Banner quảng cáo</span>
+                </NavLink>
+              </>
+            )}
 
             {profile?.role === "Quản trị viên" && (
               <>
@@ -207,7 +223,6 @@ const Staff = () => {
           </nav>
         </div>
 
-        {/* đăng xuất */}
         <div className="p-3 border-t border-slate-100">
           <button
             type="button"
@@ -239,7 +254,6 @@ const Staff = () => {
             </strong>
           </div>
         </header>
-        {/* Trang chính  */}
         <main className="flex-1 p-4 overflow-y-auto">
           <Outlet />
         </main>

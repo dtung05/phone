@@ -8,14 +8,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RoleMiddleware
 {
+    // nhận danh sách quyền đc xem truyền vào
     public function handle(Request $request, Closure $next, ...$roles): Response
     {
         $role = auth()->user()->role;
-
-        if ($role === 'admin' || in_array($role, $roles)) {
+        if ($role === 'Quản trị viên' || in_array($role, $roles)) {
             return $next($request);
         }
-
         abort(403);
     }
 }
