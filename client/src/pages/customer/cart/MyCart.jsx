@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import {
   useDestroyCartMutation,
   useGetCartQuery,
@@ -8,10 +9,10 @@ import Loading from "../../../components/common/feedback/Loading";
 import { ShoppingCart, ChevronRight, ArrowLeft } from "lucide-react";
 import { addProductVariant } from "../../../store/slices/productVariantSlice";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import ListCart from "../../../components/customer/cart/ListCart";
 import ConfirmCart from "../../../components/customer/cart/ConfirmCart";
 import { showToast } from "../../../store/slices/toastSlice";
+import NoResult from "@/components/common/feedback/NoResult";
 
 const MyCart = () => {
   const updateTimer = React.useRef(null);
@@ -46,11 +47,21 @@ const MyCart = () => {
     [selectedItems],
   );
   const [updateCart] = useUpdateCartMutation();
-  if (isLoading) return <Loading />;
+  if (isLoading) return <Loading text="Đang tải giỏ hàng..." />;
   if (error)
     return (
-      <div className="text-center py-12 text-red-500 font-medium">
-        Có lỗi xảy ra khi tải giỏ hàng.
+      <div className="max-w-[1440px] mx-auto px-4 py-16 text-center">
+        <div className="bg-white rounded-2xl border border-red-200/80 p-8 max-w-md mx-auto shadow-2xs space-y-3">
+          <p className="text-sm font-semibold text-red-600">
+            Có lỗi xảy ra khi tải dữ liệu giỏ hàng.
+          </p>
+          <button
+            onClick={() => window.location.reload()}
+            className="px-4 py-2 bg-[#009b7a] text-white rounded-xl text-xs font-bold hover:bg-[#006b5a] transition cursor-pointer"
+          >
+            Tải lại trang
+          </button>
+        </div>
       </div>
     );
 
@@ -94,15 +105,15 @@ const MyCart = () => {
 
   // xóa sản phẩm khỏi giỏ
   const removeItem = async (id) => {
-    if (!confirm("Xác nhận xóa đơn hàng?")) {
+    if (!confirm("Xác nhận xóa sản phẩm khỏi giỏ hàng?")) {
       return;
     }
     try {
       const result = await destroyCart(id).unwrap();
       dispatch(
         showToast({
-          message: result.message,
-          type: result.type,
+          message: result.message || "Đã xóa sản phẩm khỏi giỏ!",
+          type: result.type || "success",
         }),
       );
     } catch (removeError) {
@@ -128,31 +139,75 @@ const MyCart = () => {
 
   if (items.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-24 px-4 text-center bg-gray-50 min-h-screen">
-        <ShoppingCart size={48} className="text-gray-400 mb-3" />
-        <p className="text-gray-500 font-medium">Giỏ hàng của bạn đang trống</p>
-      </div>
+      <NoResult
+        Icon={ShoppingCart}
+        title="Giỏ hàng của bạn đang trống"
+        content="Chưa có sản phẩm nào trong giỏ hàng. Hãy khám phá và mua sắm ngay!"
+        action={
+          <button
+            onClick={() => navigate("/")}
+            className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-[#009b7a] hover:bg-[#006b5a] text-white text-xs font-bold uppercase tracking-wider transition-all shadow-xs cursor-pointer"
+          >
+            <span>Khám phá sản phẩm ngay</span>
+            <ChevronRight size={16} />
+          </button>
+        }
+      />
+     
     );
   }
-  return (
-    <div className="bg-gray-50 min-h-screen py-8">
-      <div className="max-w-5xl mx-auto px-4">
-        <h1 className="text-2xl font-bold text-gray-900 mb-6">Giỏ hàng</h1>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
-          <ListCart
-            selectedIds={selectedIds}
-            items={items}
-            toggleSelectAll={toggleSelectAll}
-            updateQuantity={updateQuantity}
-            toggleSelect={toggleSelect}
-            removeItem={removeItem}
-          />
-          <ConfirmCart
-            handleCheckout={handleCheckout}
-            selectedItems={selectedItems}
-            totalPrice={totalPrice}
-          />
+  return (
+    <div className="bg-[#f8faf9] min-h-screen py-5 sm:py-7">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 space-y-5">
+        <nav
+          aria-label="Breadcrumb"
+          className="text-xs text-gray-500 flex items-center gap-1.5 flex-wrap"
+        >
+          <Link to="/" className="hover:text-[#009b7a] transition-colors">
+            Trang chủ
+          </Link>
+          <span className="text-gray-300">/</span>
+          <span className="text-gray-800 font-semibold">Giỏ hàng của tôi</span>
+        </nav>
+
+        <div className="flex items-center justify-between flex-wrap gap-3">
+          <div className="flex items-center gap-2.5">
+            <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
+              Giỏ hàng
+            </h1>
+            <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-[#d9f7eb] text-[#006b5a] border border-[#bbf0dc]">
+              {items.length} sản phẩm
+            </span>
+          </div>
+
+          <button
+            onClick={() => navigate("/products")}
+            className="text-xs text-[#009b7a] hover:text-[#006b5a] hover:underline font-semibold flex items-center gap-1 cursor-pointer"
+          >
+            <ArrowLeft size={14} />
+            <span>Tiếp tục mua hàng</span>
+          </button>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          <div className="lg:col-span-8">
+            <ListCart
+              selectedIds={selectedIds}
+              items={items}
+              toggleSelectAll={toggleSelectAll}
+              updateQuantity={updateQuantity}
+              toggleSelect={toggleSelect}
+              removeItem={removeItem}
+            />
+          </div>
+          <div className="lg:col-span-4">
+            <ConfirmCart
+              handleCheckout={handleCheckout}
+              selectedItems={selectedItems}
+              totalPrice={totalPrice}
+            />
+          </div>
         </div>
       </div>
     </div>
