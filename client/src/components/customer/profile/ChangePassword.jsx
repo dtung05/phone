@@ -45,14 +45,23 @@ const ChangePassword = () => {
   const [showCurrentPass, setShowCurrentPass] = useState(false);
   const [showNewPass, setShowNewPass] = useState(false);
   return (
-    <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-emerald-100/80">
-      <h2 className="text-lg font-bold text-gray-800 mb-1 flex items-center gap-2">
-        <Shield className="w-5 h-5 text-emerald-600" />
-        Đổi mật khẩu tài khoản
-      </h2>
-      <p className="text-xs text-gray-400 mb-6">
-        Để bảo mật tài khoản, vui lòng không chia sẻ mật khẩu cho người khác.
-      </p>
+    <div className="bg-white rounded-2xl border border-gray-200/80 p-5 sm:p-7 lg:p-8 shadow-2xs space-y-6">
+      <div className="border-b border-gray-100 pb-3.5">
+        <h2 className="text-base sm:text-lg font-bold text-gray-900 flex items-center gap-2">
+          <KeyRound className="w-5 h-5 text-[#009b7a]" />
+          <span>Đổi mật khẩu tài khoản</span>
+        </h2>
+        <p className="text-xs text-gray-500 mt-1">
+          Để bảo vệ tài khoản tốt nhất, vui lòng sử dụng mật khẩu mạnh và không chia sẻ cho người khác.
+        </p>
+      </div>
+
+      <div className="bg-[#eefbf6] border border-[#d9f7eb] rounded-xl p-3.5 text-xs text-[#006b5a] flex items-start gap-2.5">
+        <Shield className="w-4 h-4 text-[#009b7a] shrink-0 mt-0.5" />
+        <span>
+          Mật khẩu mới phải có ít nhất 6 ký tự. Nên kết hợp chữ cái viết hoa, viết thường, chữ số và ký tự đặc biệt để tài khoản an toàn hơn.
+        </span>
+      </div>
 
       <form
         onSubmit={handleSubmitPassword(handleChangePassword, (errors) =>
@@ -67,10 +76,9 @@ const ChangePassword = () => {
         )}
         className="space-y-5 max-w-lg"
       >
-        {/* Mật khẩu hiện tại */}
         <div className="space-y-1.5">
           <label className="text-xs font-semibold text-gray-700">
-            Mật khẩu hiện tại
+            Mật khẩu hiện tại <span className="text-red-500">*</span>
           </label>
           <div className="relative">
             <input
@@ -78,13 +86,13 @@ const ChangePassword = () => {
               {...registerPassword("current_password", {
                 required: "Vui lòng nhập mật khẩu hiện tại.",
               })}
-              placeholder="Nhập mật khẩu hiện tại"
-              className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all pr-10"
+              placeholder="Nhập mật khẩu hiện tại của bạn"
+              className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#009b7a]/20 focus:border-[#009b7a] transition-all pr-10 bg-white"
             />
             <button
               type="button"
               onClick={() => setShowCurrentPass(!showCurrentPass)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#009b7a] transition-colors cursor-pointer"
             >
               {showCurrentPass ? (
                 <EyeOff className="w-4 h-4" />
@@ -95,10 +103,9 @@ const ChangePassword = () => {
           </div>
         </div>
 
-        {/* Mật khẩu mới */}
         <div className="space-y-1.5">
           <label className="text-xs font-semibold text-gray-700">
-            Mật khẩu mới (tối thiểu 6 ký tự)
+            Mật khẩu mới (tối thiểu 6 ký tự) <span className="text-red-500">*</span>
           </label>
           <div className="relative">
             <input
@@ -111,12 +118,12 @@ const ChangePassword = () => {
                 },
               })}
               placeholder="Nhập mật khẩu mới"
-              className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all pr-10"
+              className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#009b7a]/20 focus:border-[#009b7a] transition-all pr-10 bg-white"
             />
             <button
               type="button"
               onClick={() => setShowNewPass(!showNewPass)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#009b7a] transition-colors cursor-pointer"
             >
               {showNewPass ? (
                 <EyeOff className="w-4 h-4" />
@@ -127,10 +134,9 @@ const ChangePassword = () => {
           </div>
         </div>
 
-        {/* Xác nhận mật khẩu mới */}
         <div className="space-y-1.5">
           <label className="text-xs font-semibold text-gray-700">
-            Xác nhận mật khẩu mới
+            Xác nhận mật khẩu mới <span className="text-red-500">*</span>
           </label>
           <div className="relative">
             <input
@@ -142,12 +148,12 @@ const ChangePassword = () => {
                   "Xác nhận mật khẩu mới không khớp!",
               })}
               placeholder="Nhập lại mật khẩu mới"
-              className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all pr-10"
+              className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#009b7a]/20 focus:border-[#009b7a] transition-all pr-10 bg-white"
             />
             <button
               type="button"
               onClick={() => setShowNewPass(!showNewPass)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#009b7a] transition-colors cursor-pointer"
             >
               {showNewPass ? (
                 <EyeOff className="w-4 h-4" />
@@ -158,14 +164,14 @@ const ChangePassword = () => {
           </div>
         </div>
 
-        <div className="pt-3">
+        <div className="pt-2">
           <button
             type="submit"
             disabled={isChangingPassword}
-            className="inline-flex items-center gap-2 px-6 py-2.5 bg-emerald-600 text-white rounded-xl font-semibold text-sm hover:bg-emerald-700 shadow-md shadow-emerald-600/20 active:scale-95 transition-all disabled:opacity-60"
+            className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#009b7a] text-white rounded-xl font-bold text-xs uppercase tracking-wide hover:bg-[#006b5a] shadow-xs active:scale-[0.99] transition-all disabled:opacity-50 cursor-pointer"
           >
             <KeyRound className="w-4 h-4" />
-            {isChangingPassword ? "Đang cập nhật..." : "Cập nhật mật khẩu"}
+            <span>{isChangingPassword ? "Đang cập nhật..." : "Cập nhật mật khẩu"}</span>
           </button>
         </div>
       </form>
