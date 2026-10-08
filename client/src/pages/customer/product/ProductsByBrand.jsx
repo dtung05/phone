@@ -50,32 +50,7 @@ const ProductsByBrand = () => {
 
   return (
     <div className="max-w-[1440px] mx-auto p-3 sm:p-5 lg:p-6 space-y-5">
-      <div className="bg-white rounded-2xl border border-gray-200/80 p-5 sm:p-6 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="flex items-center gap-3.5">
-          <div className="w-12 h-12 rounded-xl bg-[#d9f7eb] text-[#009b7a] flex items-center justify-center text-xl font-black shadow-xs shrink-0">
-            {brandName.charAt(0).toUpperCase()}
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h1 className="text-lg sm:text-xl font-bold text-gray-900">
-                Sản phẩm {brandName}
-              </h1>
-              <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-[#d9f7eb] text-[#006b5a]">
-                Chính hãng
-              </span>
-            </div>
-            <p className="text-xs text-gray-500 mt-0.5">
-              Khám phá các dòng thiết bị công nghệ chính hãng từ {brandName}
-            </p>
-          </div>
-        </div>
 
-        <div className="flex items-center gap-1.5 text-xs font-medium text-gray-500">
-          <Link to="/" className="hover:text-[#009b7a]">Trang chủ</Link>
-          <ChevronRight size={13} />
-          <span className="text-gray-800 font-semibold">{brandName}</span>
-        </div>
-      </div>
 
       <ProductFilterBar
         title={`Lọc theo danh mục:`}
