@@ -8,7 +8,7 @@ const getImageUrl = (path) => {
   ) {
     return path;
   }
-  return `http://127.0.0.1:8000/storage/${path.replace(/^\/+/, "")}`;
+  return import.meta.env.VITE_URL_IMG + `${path.replace(/^\/+/, "")}`;
 };
 
 export { getImageUrl };
