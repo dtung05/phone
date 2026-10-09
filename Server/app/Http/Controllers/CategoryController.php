@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Repositories\Category\CategoryRepoInter;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class CategoryController extends Controller
 {
@@ -17,7 +18,9 @@ class CategoryController extends Controller
 
     public function index()
     {
-        $categories = $this->categoryRepo->getAll();
+        $categories = Cache::remember('allCategory', 84000, function () {
+            return $this->categoryRepo->getAll();
+        });
         return response()->json($categories);
     }
 
@@ -35,7 +38,7 @@ class CategoryController extends Controller
         $category = $this->categoryRepo->create([
             'name' => trim($request->name),
         ]);
-
+        Cache::forget('allCategory');
         return response()->json([
             'message' => 'Thêm danh mục thành công!',
             'data' => $category,
@@ -60,7 +63,7 @@ class CategoryController extends Controller
         if (!$category) {
             return response()->json(['message' => 'Danh mục không tồn tại.'], 404);
         }
-
+        Cache::forget('allCategory');
         return response()->json([
             'message' => 'Cập nhật danh mục thành công!',
             'data' => $category,
@@ -81,7 +84,7 @@ class CategoryController extends Controller
         }
 
         $this->categoryRepo->delete($id);
-
+        Cache::forget('allCategory');
         return response()->json([
             'message' => 'Xóa danh mục thành công!',
         ]);
@@ -99,7 +102,7 @@ class CategoryController extends Controller
         if (!$category) {
             return response()->json(['message' => 'Không tìm thấy danh mục trong thùng rác.'], 404);
         }
-
+        Cache::forget('allCategory');
         return response()->json([
             'message' => "Đã khôi phục danh mục '{$category->name}' thành công!",
             'data' => $category,

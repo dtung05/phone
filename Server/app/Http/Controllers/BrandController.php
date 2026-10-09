@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Repositories\Brand\BrandRepoInter;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class BrandController extends Controller
 {
@@ -15,9 +16,11 @@ class BrandController extends Controller
         $this->brandRepo = $brandRepo;
     }
 
-    public function index()
+    public function index() // cache 1 ngày nếu kh có gì thay đổi
     {
-        $brands = $this->brandRepo->getAll();
+        $brands =  Cache::remember('allBrand', 86400, function () {
+            return $this->brandRepo->getAll();
+        });
         return response()->json($brands);
     }
 
@@ -35,7 +38,7 @@ class BrandController extends Controller
         $brand = $this->brandRepo->create([
             'name' => trim($request->name),
         ]);
-
+        Cache::forget('allBrand');
         return response()->json([
             'message' => 'Thêm thương hiệu thành công!',
             'data' => $brand,
@@ -60,7 +63,7 @@ class BrandController extends Controller
         if (!$brand) {
             return response()->json(['message' => 'Thương hiệu không tồn tại.'], 404);
         }
-
+        Cache::forget('allBrand');
         return response()->json([
             'message' => 'Cập nhật thương hiệu thành công!',
             'data' => $brand,
@@ -81,7 +84,7 @@ class BrandController extends Controller
         }
 
         $this->brandRepo->delete($id);
-
+        Cache::forget('allBrand');
         return response()->json([
             'message' => 'Xóa thương hiệu thành công!',
         ]);
@@ -99,7 +102,7 @@ class BrandController extends Controller
         if (!$brand) {
             return response()->json(['message' => 'Không tìm thấy thương hiệu trong thùng rác.'], 404);
         }
-
+        Cache::forget('allBrand');
         return response()->json([
             'message' => "Đã khôi phục thương hiệu '{$brand->name}' thành công!",
             'data' => $brand,
