@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router";
 import customer from "./customer/customer";
 import E404 from "../components/common/errors/404";
+import E403 from "../components/common/errors/403";
 import staff from "./staff/staff";
 
 import { Register } from "../pages/customer/auth/Register.jsx";
@@ -16,7 +17,12 @@ const router = createBrowserRouter([
   {
     path: "/login",
     Component: Login,
-  },//Ném tất cả url kh tồn tại sang *
+  },
+  {
+    path: "/403",
+    Component: E403,
+  },
+  // Ném tất cả url kh tồn tại sang *
   {
     path: "*",
     Component: E404,
