@@ -1,6 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { useNavigate } from "react-router-dom";
-
+import { showToast } from "../slices/toastSlice";
 const baseQuery = fetchBaseQuery({
   baseUrl: import.meta.env.VITE_BASE_URL,
   credentials: "include", // cho phép gửi cookie kèm theoo
@@ -42,6 +41,15 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
   }
   if (result.error?.status === 403) {
     window.location.href = "/403";
+  }
+  if (result.error?.status === 429) {
+    
+    api.dispatch(
+      showToast({
+        message: result.error.data.message,
+        type: result.error.data.status,
+      }),
+    );
   }
   return result;
 };
