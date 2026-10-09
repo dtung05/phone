@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\RateLimiter;
 use App\Repositories\Banner\BannerRepo;
 use App\Repositories\Banner\BannerRepoInter;
 use App\Repositories\Brand\BrandRepo;
@@ -83,6 +86,24 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        RateLimiter::for('api', function (Request $request) {
+            return Limit::perMinute(80)->by($request->user()?->id ?: $request->ip())->response(function (Request $request, array $headers) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Bạn đã gửi quá nhiều yêu cầu, vui lòng thử lại sau.'
+                ], 429, $headers);
+            });
+        });
+        RateLimiter::for('login', function (Request $request) {
+            return [
+                Limit::perMinute(20)->by($request->ip()),
+                Limit::perMinutes(5, 3)->by($request->input('email'))->response(function (Request $request, array $headers) {
+                    return response()->json([
+                        'status' => "error",
+                        'message' => "Thử đăng nhập lại sau 5 phút"
+                    ], 429, $headers);
+                }),
+            ];
+        });
     }
 }
