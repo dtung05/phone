@@ -2,25 +2,25 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { FolderTree, Tag, Layers } from "lucide-react";
 import {
-  useGetCategoryQuery,
-  useGetTrashedCategoriesQuery,
-  useCreateCategoryMutation,
-  useUpdateCategoryMutation,
-  useDeleteCategoryMutation,
-  useRestoreCategoryMutation,
-} from "../../../store/api/CategoryApi";
-import {
   useGetBrandsQuery,
   useGetTrashedBrandsQuery,
   useCreateBrandMutation,
   useUpdateBrandMutation,
   useDeleteBrandMutation,
   useRestoreBrandMutation,
-} from "../../../store/api/brandApi";
+} from "@/store/api/brandApi";
 import { showToast } from "../../../store/slices/toastSlice";
 import EntityManageSection from "../../../components/staff/category-brand/EntityManageSection";
 import EntityModal from "../../../components/staff/category-brand/EntityModal";
 import ConfirmDeleteModal from "../../../components/staff/category-brand/ConfirmDeleteModal";
+import {
+  useGetCategoryQuery,
+  useGetTrashedCategoriesQuery,
+  useCreateCategoryMutation,
+  useUpdateCategoryMutation,
+  useDeleteCategoryMutation,
+  useRestoreCategoryMutation,
+} from "@/store/api/categoryApi";
 
 const CategoryBrandManage = () => {
   const dispatch = useDispatch();
@@ -65,8 +65,8 @@ const CategoryBrandManage = () => {
   // Modal states
   const [modalState, setModalState] = useState({
     isOpen: false,
-    type: "category", 
-    mode: "create", 
+    type: "category",
+    mode: "create",
     item: null,
   });
 
@@ -78,11 +78,11 @@ const CategoryBrandManage = () => {
 
   const totalCategoryProducts = categories.reduce(
     (sum, c) => sum + (c.products_count || 0),
-    0
+    0,
   );
   const totalBrandProducts = brands.reduce(
     (sum, b) => sum + (b.products_count || 0),
-    0
+    0,
   );
 
   // Handlers for Add/Edit Modal
@@ -124,7 +124,7 @@ const CategoryBrandManage = () => {
             showToast({
               message: res?.message || "Thêm danh mục thành công!",
               type: "success",
-            })
+            }),
           );
         } else {
           const res = await updateCategory({ id: item.id, name }).unwrap();
@@ -132,7 +132,7 @@ const CategoryBrandManage = () => {
             showToast({
               message: res?.message || "Cập nhật danh mục thành công!",
               type: "success",
-            })
+            }),
           );
         }
       } else {
@@ -143,7 +143,7 @@ const CategoryBrandManage = () => {
             showToast({
               message: res?.message || "Thêm thương hiệu thành công!",
               type: "success",
-            })
+            }),
           );
         } else {
           const res = await updateBrand({ id: item.id, name }).unwrap();
@@ -151,7 +151,7 @@ const CategoryBrandManage = () => {
             showToast({
               message: res?.message || "Cập nhật thương hiệu thành công!",
               type: "success",
-            })
+            }),
           );
         }
       }
@@ -167,7 +167,7 @@ const CategoryBrandManage = () => {
         showToast({
           message: serverMessage,
           type: "error",
-        })
+        }),
       );
     }
   };
@@ -200,7 +200,7 @@ const CategoryBrandManage = () => {
           showToast({
             message: res?.message || "Xóa mềm danh mục thành công!",
             type: "success",
-          })
+          }),
         );
       } else {
         const res = await deleteBrand(item.id).unwrap();
@@ -208,19 +208,20 @@ const CategoryBrandManage = () => {
           showToast({
             message: res?.message || "Xóa mềm thương hiệu thành công!",
             type: "success",
-          })
+          }),
         );
       }
       handleCloseDelete();
     } catch (error) {
       console.error(error);
       const serverMessage =
-        error?.data?.message || "Không thể xóa mục này do còn sản phẩm liên kết!";
+        error?.data?.message ||
+        "Không thể xóa mục này do còn sản phẩm liên kết!";
       dispatch(
         showToast({
           message: serverMessage,
           type: "error",
-        })
+        }),
       );
     }
   };
@@ -231,17 +232,19 @@ const CategoryBrandManage = () => {
         const res = await restoreCategory(item.id).unwrap();
         dispatch(
           showToast({
-            message: res?.message || `Đã bỏ xóa mềm và khôi phục "${item.name}"!`,
+            message:
+              res?.message || `Đã bỏ xóa mềm và khôi phục "${item.name}"!`,
             type: "success",
-          })
+          }),
         );
       } else {
         const res = await restoreBrand(item.id).unwrap();
         dispatch(
           showToast({
-            message: res?.message || `Đã bỏ xóa mềm và khôi phục "${item.name}"!`,
+            message:
+              res?.message || `Đã bỏ xóa mềm và khôi phục "${item.name}"!`,
             type: "success",
-          })
+          }),
         );
       }
     } catch (error) {
@@ -252,7 +255,7 @@ const CategoryBrandManage = () => {
         showToast({
           message: serverMessage,
           type: "error",
-        })
+        }),
       );
     }
   };
@@ -376,7 +379,9 @@ const CategoryBrandManage = () => {
         onClose={handleCloseDelete}
         onConfirm={handleConfirmDelete}
         entityName={deleteState.item?.name || ""}
-        entityType={deleteState.type === "category" ? "danh mục" : "thương hiệu"}
+        entityType={
+          deleteState.type === "category" ? "danh mục" : "thương hiệu"
+        }
         productsCount={deleteState.item?.products_count || 0}
         isLoading={isDeleteLoading}
       />
