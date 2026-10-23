@@ -1,0 +1,13 @@
+.env
+.env.local
+.env.production
+.env.backup
+.env.*.local
+
+#// Cho phép đẩy file mẫu lên
+!.env.production.example
+
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

@@ -96,7 +96,6 @@ function App() {
               <div>
                 <h2 className="text-base sm:text-lg font-bold text-gray-900 tracking-tight flex items-center gap-2">
                   <span>GỢI Ý HÔM NAY</span>
-                 
                 </h2>
                 <p className="text-xs text-gray-500">
                   {currentCategoryObj
