@@ -7,13 +7,10 @@ use Illuminate\Support\Facades\DB;
 
 class SupplierSeeder extends Seeder
 {
-    /**
-     * Tạo danh sách các Nhà cung cấp công nghệ chính hãng
-     */
+    // tạo danh sách các nhà cung cấp
     public function run(): void
     {
         $now = now();
-
         $suppliers = [
             [
                 'company_name' => 'Công ty TNHH Apple Việt Nam',
@@ -30,7 +27,7 @@ class SupplierSeeder extends Seeder
                 'updated_at'   => $now,
             ],
             [
-                'company_name' => 'Công ty Cổ phần Thế Giới Số (Digiworld)',
+                'company_name' => 'Công ty Cổ phần Thế Giới Số Digiworld',
                 'address'      => '195 Cô Bắc, Phường Cô Giang, Quận 1, TP.HCM',
                 'phone_number' => '02839201999',
                 'created_at'   => $now,
@@ -51,7 +48,7 @@ class SupplierSeeder extends Seeder
                 'updated_at'   => $now,
             ],
             [
-                'company_name' => 'Công ty TNHH Thương mại Viettel (Viettel Commerce)',
+                'company_name' => 'Công ty TNHH Thương mại Viettel Commerce',
                 'address'      => 'Số 1 Giang Văn Minh, Kim Mã, Ba Đình, Hà Nội',
                 'phone_number' => '02462556789',
                 'created_at'   => $now,
