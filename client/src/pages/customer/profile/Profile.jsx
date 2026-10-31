@@ -59,9 +59,9 @@ const Profile = () => {
                     {profile?.full_name || "Khách hàng"}
                   </h1>
                   <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#d9f7eb] text-[#006b5a] border border-[#bbf0dc]">
-                    {profile?.role === "admin"
-                      ? "Quản trị viên"
-                      : "Thành viên thân thiết"}
+                    {profile?.role === "Quản trị viên"
+                      ? profile.role
+                      : ""}
                   </span>
                 </div>
 

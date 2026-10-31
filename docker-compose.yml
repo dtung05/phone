@@ -58,6 +58,7 @@ services:
       - DB_PASSWORD=secret_password
       - REDIS_HOST=redis
       - REDIS_PORT=6379
+      - REVERB_HOST=reverb 
     depends_on:
       - mysql
       - redis
@@ -78,6 +79,7 @@ services:
     volumes:
       - ./Server:/var/www
       - /var/www/vendor
+      - /var/www/bootstrap/cache
     environment:
       - REVERB_SERVER_HOST=0.0.0.0
       - REVERB_SERVER_PORT=8080
