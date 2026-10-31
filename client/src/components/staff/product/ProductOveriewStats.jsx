@@ -48,7 +48,7 @@ const ProductOveriewStats = ( {product,variants,unrepliedCount }) => {
           <h3 className="text-lg font-black text-slate-900">
             {avgRating}{" "}
             <span className="text-xs font-normal text-slate-400">
-              / 5★ ({product.reviews_count} lượt)
+              / 5 
             </span>
           </h3>
         </div>
