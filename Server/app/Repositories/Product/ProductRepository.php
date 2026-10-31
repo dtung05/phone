@@ -113,6 +113,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     public function getStaffProducts($search = null, $categoryId = null, $brandId = null, $isSale = null, $perPage = 10)
     {
         $query = $this->model
+            ->select("id", "product_name", "thumbnail", 'slug', 'is_sale', 'discount_perventage', 'brand_id', 'category_id')
             ->with([
                 'brand:id,name',
                 'category:id,name',
