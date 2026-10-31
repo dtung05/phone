@@ -47,20 +47,20 @@ class ProductController extends Controller
     public function productSale(Request $request)
     {
         $perPage = (int) $request->query('per_page', 10);
-        if ($request->has('page') || $request->has('paginate')) {
-            $filters = [
-                'brand_id' => $request->query('brand_id'),
-                'category_id' => $request->query('category_id'),
-            ];
-            return response()->json($this->productRepo->getProductSale($perPage, $filters));
-        }
-        return response()->json($this->productRepo->getProductSale($perPage));
+        $filters = [
+            'brand_id' => $request->query('brand_id'),
+            'category_id' => $request->query('category_id'),
+        ];
+        return response()->json(
+            $this->productRepo->getProductSale($perPage, $filters)
+        );
     }
 
     // lấy ra sản phẩm mới thêm
-    public function productNew()
+    public function productNew(Request $request)
     {
-        return $this->productRepo->getProductNew();
+        $category = $request->query('category');
+        return $this->productRepo->getProductNew($category);
     }
 
     // Lấy danh sách biến thể kèm thông tin sản phẩm phục vụ nhập kho & bán hàng

@@ -10,7 +10,7 @@ interface ProductRepositoryInterface extends RepositoryInterface
     public function productSearch($name);
     public function getProductsByBrand($id, $categoryId = null);
     public function getProductSale($perPage = null, $filters = []);
-    public function getProductNew();
+    public function getProductNew($category=null);
     public function getStaffProducts($search = null, $categoryId = null, $brandId = null, $isSale = null, $perPage = 10);
     public function getStaffProductDetail($id);
     public function toggleSale($id);

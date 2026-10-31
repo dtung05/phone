@@ -239,13 +239,14 @@ export default function HomeHero({
             </div>
           )}
 
-          <div
-            className="relative overflow-hidden rounded-2xl bg-gray-900 text-white shadow-2xs aspect-[16/9] sm:aspect-[21/10] md:aspect-[16/8] flex flex-col justify-between group"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-          >
-            {currentBanner ? (
-              <>
+          {currentBanner ? (
+            <>
+              {" "}
+              <div
+                className="relative overflow-hidden rounded-2xl bg-gray-900 text-white shadow-2xs aspect-[16/9] sm:aspect-[21/10] md:aspect-[16/8] flex flex-col justify-between group"
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+              >
                 <Link
                   to={currentBanner.link || "/products"}
                   className="absolute inset-0 block"
@@ -307,21 +308,24 @@ export default function HomeHero({
                     </div>
                   </>
                 )}
-              </>
-            ) : (
-              <div className="h-full w-full flex items-center justify-center bg-gradient-to-r from-[#009b7a] to-[#006b5a] text-white p-6 text-center">
-                <div>
-                  <h3 className="text-xl sm:text-2xl font-bold">
-                    DIDONG.COM - CÔNG NGHỆ CHÍNH HÃNG
-                  </h3>
-                  <p className="text-xs sm:text-sm text-white/90 mt-1">
-                    Điện thoại thông minh, phụ kiện cao cấp với mức giá ưu đãi
-                    nhất
-                  </p>
-                </div>
               </div>
-            )}
-          </div>
+            </>
+          ) : (
+            <div className="relative overflow-hidden w-full bg-[#E8F3EF] rounded-2xl px-5 sm:px-8 py-5 aspect-[16/9] sm:aspect-[21/10] md:aspect-[16/8] flex flex-col justify-end">
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-2 max-w-6xl mx-auto w-full">
+                <h3 className="text-sm sm:text-base font-bold tracking-wider text-[#174C40]">
+                  DIDONG.COM
+                  <span className="mx-2 font-normal text-[#8AA69C]">|</span>
+                  <span className="text-xs sm:text-sm font-medium tracking-normal">
+                    CÔNG NGHỆ CHÍNH HÃNG
+                  </span>
+                </h3>
+                <p className="text-xs sm:text-sm text-[#55776C]">
+                  Hiện tại chưa có chương trình quảng cáo nào
+                </p>
+              </div>
+            </div>
+          )}
 
           <div className="grid grid-cols-3 gap-2 sm:gap-2.5">
             {featuredProducts && featuredProducts.length >= 3 ? (

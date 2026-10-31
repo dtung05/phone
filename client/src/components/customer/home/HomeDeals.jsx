@@ -10,6 +10,7 @@ import {
   Star,
   Zap,
 } from "lucide-react";
+import NoResult from "@/components/common/feedback/NoResult";
 
 const extractRealSpecs = (specs) => {
   if (!specs) return ["Chính hãng", "Bảo hành 12T"];
@@ -27,13 +28,13 @@ export default function HomeDeals({
   products = [],
   categories = [],
   brands = [],
+  selectedCategory,
+  selectedBrand,
+  setSelectedBrand,
+  setSelectedCategory,
 }) {
-  const [selectedCatId, setSelectedCatId] = useState(null);
-  const [selectedBrandId, setSelectedBrandId] = useState(null);
   const [likedIds, setLikedIds] = useState([]);
   const sliderRef = useRef(null);
-
-  if (!products || products.length === 0) return null;
 
   const toggleLike = (id) => {
     setLikedIds((prev) =>
@@ -54,8 +55,8 @@ export default function HomeDeals({
   };
 
   const filteredProducts = products.filter((p) => {
-    if (selectedCatId && p.category_id !== selectedCatId) return false;
-    if (selectedBrandId && p.brand_id !== selectedBrandId) return false;
+    if (selectedCategory && p.category_id !== selectedCategory) return false;
+    if (selectedBrand && p.brand_id !== selectedBrand) return false;
     return true;
   });
 
@@ -87,9 +88,9 @@ export default function HomeDeals({
         {categories.length > 0 && (
           <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide py-1">
             <button
-              onClick={() => setSelectedCatId(null)}
+              onClick={() => setSelectedCategory(null)}
               className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
-                selectedCatId === null
+                selectedCategory === null
                   ? "bg-[#009b7a] text-white shadow-xs"
                   : "bg-white text-gray-700 border border-gray-200 hover:border-[#009b7a] hover:text-[#009b7a]"
               }`}
@@ -98,11 +99,13 @@ export default function HomeDeals({
             </button>
 
             {categories.map((cat) => {
-              const isSelected = selectedCatId === cat.id;
+              const isSelected = selectedCategory === cat.id;
               return (
                 <button
                   key={cat.id}
-                  onClick={() => setSelectedCatId(isSelected ? null : cat.id)}
+                  onClick={() =>
+                    setSelectedCategory(isSelected ? null : cat.id)
+                  }
                   className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
                     isSelected
                       ? "bg-[#009b7a] text-white shadow-xs"
@@ -124,9 +127,9 @@ export default function HomeDeals({
               Thương hiệu:
             </span>
             <button
-              onClick={() => setSelectedBrandId(null)}
+              onClick={() => setSelectedBrand(null)}
               className={`px-3 py-1 rounded-xl text-xs font-medium whitespace-nowrap transition-all cursor-pointer ${
-                selectedBrandId === null
+                selectedBrand === null
                   ? "bg-[#eefbf6] border border-[#009b7a] text-[#006b5a] font-bold"
                   : "bg-gray-50 border border-gray-200 text-gray-600 hover:bg-gray-100"
               }`}
@@ -135,13 +138,11 @@ export default function HomeDeals({
             </button>
 
             {brands.map((brand) => {
-              const isSelected = selectedBrandId === brand.id;
+              const isSelected = selectedBrand === brand.id;
               return (
                 <button
                   key={brand.id}
-                  onClick={() =>
-                    setSelectedBrandId(isSelected ? null : brand.id)
-                  }
+                  onClick={() => setSelectedBrand(isSelected ? null : brand.id)}
                   className={`px-3 py-1 rounded-xl text-xs font-medium whitespace-nowrap transition-all cursor-pointer ${
                     isSelected
                       ? "bg-[#eefbf6] border border-[#009b7a] text-[#006b5a] font-bold"
@@ -154,160 +155,180 @@ export default function HomeDeals({
             })}
           </div>
         )}
-
-        <div className="relative group/slider">
-          {displayList.length > 4 && (
-            <>
-              <button
-                onClick={scrollLeft}
-                className="absolute -left-3 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white border border-gray-200 shadow-md text-gray-700 hover:bg-[#009b7a] hover:text-white hover:border-[#009b7a] flex items-center justify-center transition-all cursor-pointer opacity-90 group-hover/slider:opacity-100"
-                aria-label="Scroll left"
-              >
-                <ChevronLeft size={18} />
-              </button>
-
-              <button
-                onClick={scrollRight}
-                className="absolute -right-3 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white border border-gray-200 shadow-md text-gray-700 hover:bg-[#009b7a] hover:text-white hover:border-[#009b7a] flex items-center justify-center transition-all cursor-pointer opacity-90 group-hover/slider:opacity-100"
-                aria-label="Scroll right"
-              >
-                <ChevronRight size={18} />
-              </button>
-            </>
-          )}
-
-          <div
-            ref={sliderRef}
-            className="flex items-stretch gap-3 sm:gap-4 overflow-x-auto scrollbar-hide py-2 px-1"
-          >
-            {displayList.map((product) => {
-              const originalPrice = Number(product.min_price) || 0;
-              const discountPercent = Number(product.discount_perventage) || 0;
-              const salePrice =
-                discountPercent > 0
-                  ? originalPrice - (originalPrice * discountPercent) / 100
-                  : originalPrice;
-              const specs = extractRealSpecs(product.specifications);
-              const isLiked = likedIds.includes(product.id);
-
-              return (
-                <div
-                  key={product.id || product.slug}
-                  className="w-[190px] sm:w-[220px] shrink-0 bg-white rounded-2xl border border-gray-200/90 p-3 hover:border-[#009b7a]/60 hover:shadow-md transition-all duration-200 flex flex-col justify-between relative group/card"
+        {products.length > 0 ? (
+          <div className="relative group/slider">
+            {displayList.length > 4 && (
+              <>
+                <button
+                  onClick={scrollLeft}
+                  className="absolute -left-3 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white border border-gray-200 shadow-md text-gray-700 hover:bg-[#009b7a] hover:text-white hover:border-[#009b7a] flex items-center justify-center transition-all cursor-pointer opacity-90 group-hover/slider:opacity-100"
+                  aria-label="Scroll left"
                 >
-                  {discountPercent > 0 && (
-                    <div className="absolute top-0 left-0 z-10 bg-red-600 text-white font-bold text-[10px] px-2 py-0.5 rounded-tl-2xl rounded-br-lg shadow-xs">
-                      Giảm {discountPercent}%
-                    </div>
-                  )}
+                  <ChevronLeft size={18} />
+                </button>
 
-                  <Link
-                    to={`/products/${product.slug}`}
-                    className="flex flex-col flex-1"
+                <button
+                  onClick={scrollRight}
+                  className="absolute -right-3 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white border border-gray-200 shadow-md text-gray-700 hover:bg-[#009b7a] hover:text-white hover:border-[#009b7a] flex items-center justify-center transition-all cursor-pointer opacity-90 group-hover/slider:opacity-100"
+                  aria-label="Scroll right"
+                >
+                  <ChevronRight size={18} />
+                </button>
+              </>
+            )}
+
+            <div
+              ref={sliderRef}
+              className="flex items-stretch gap-3 sm:gap-4 overflow-x-auto scrollbar-hide py-2 px-1"
+            >
+              {displayList.map((product) => {
+                const originalPrice = Number(product.min_price) || 0;
+                const discountPercent =
+                  Number(product.discount_perventage) || 0;
+                const salePrice =
+                  discountPercent > 0
+                    ? originalPrice - (originalPrice * discountPercent) / 100
+                    : originalPrice;
+                const specs = extractRealSpecs(product.specifications);
+                const isLiked = likedIds.includes(product.id);
+
+                return (
+                  <div
+                    key={product.id || product.slug}
+                    className="w-[190px] sm:w-[220px] shrink-0 bg-white rounded-2xl border border-gray-200/90 p-3 hover:border-[#009b7a]/60 hover:shadow-md transition-all duration-200 flex flex-col justify-between relative group/card"
                   >
-                    <div className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider text-right mb-1">
-                      {product.brand?.name || "Chính hãng"}
-                    </div>
-
-                    <div className="relative aspect-square w-full mb-2 overflow-hidden rounded-xl bg-gray-50 flex items-center justify-center p-2">
-                      <img
-                        src={getImageUrl(product.thumbnail)}
-                        alt={product.product_name}
-                        className="w-full h-full object-contain group-hover/card:scale-105 transition-transform duration-200"
-                        onError={(e) => {
-                          e.target.src =
-                            "https://placehold.co/300x300?text=No+Image";
-                        }}
-                      />
-                    </div>
-
-                    <div className="flex flex-wrap gap-1 mb-2">
-                      {specs.map((spec, i) => (
-                        <span
-                          key={i}
-                          className="text-[9.5px] font-medium px-1.5 py-0.5 rounded bg-gray-100 text-gray-600 truncate max-w-full"
-                        >
-                          {spec}
-                        </span>
-                      ))}
-                    </div>
-
-                    <h3 className="text-xs sm:text-[13px] font-semibold text-gray-800 line-clamp-2 min-h-[2.4rem] leading-snug group-hover/card:text-[#009b7a] transition-colors mb-2">
-                      {product.product_name}
-                    </h3>
-
-                    <div className="mt-auto mb-2">
-                      <div className="flex items-baseline gap-1.5 flex-wrap">
-                        {originalPrice > 0 ? (
-                          <>
-                            <span className="text-sm sm:text-base font-bold text-red-600">
-                              {formatPrice(salePrice)}
-                            </span>
-                            {discountPercent > 0 && (
-                              <span className="text-[11px] text-gray-400 line-through">
-                                {formatPrice(originalPrice)}
-                              </span>
-                            )}
-                          </>
-                        ) : (
-                          <span className="text-xs font-bold text-[#006b5a]">
-                            Liên hệ giá tốt
-                          </span>
-                        )}
+                    {discountPercent > 0 && (
+                      <div className="absolute top-0 left-0 z-10 bg-red-600 text-white font-bold text-[10px] px-2 py-0.5 rounded-tl-2xl rounded-br-lg shadow-xs">
+                        Giảm {discountPercent}%
                       </div>
-
-                      <div className="mt-1 text-[10px] font-medium text-[#006b5a] bg-[#eefbf6] px-2 py-0.5 rounded-md inline-block">
-                        Nhận hàng 30p trong nội thành.
-                      </div>
-                    </div>
-                  </Link>
-
-                  <div className="flex items-center justify-between pt-2 border-t border-gray-100 text-[11px]">
-                    <div className="flex items-center gap-1 text-[#006b5a] font-semibold bg-[#d9f7eb] px-2 py-0.5 rounded-full">
-                      <Zap
-                        size={11}
-                        className="fill-[#009b7a] text-[#009b7a]"
-                      />
-                      <span>2 Giờ</span>
-                    </div>
-
-                    {Number(product.reviews_count) > 0 && product.avg_rating ? (
-                      <div className="flex items-center gap-1 text-amber-500 font-bold">
-                        <Star
-                          size={12}
-                          className="fill-amber-400 text-amber-400"
-                        />
-                        <span className="text-[10px] text-gray-700">
-                          {Number(product.avg_rating).toFixed(1)}
-                        </span>
-                      </div>
-                    ) : (
-                      <span className="text-[10px] text-gray-400">
-                        Chính hãng
-                      </span>
                     )}
 
-                    <button
-                      type="button"
-                      onClick={() => toggleLike(product.id)}
-                      className={`p-1 rounded-full hover:bg-gray-100 transition-colors cursor-pointer ${
-                        isLiked
-                          ? "text-red-500 fill-red-500"
-                          : "text-gray-400 hover:text-red-500"
-                      }`}
-                      title="Yêu thích"
+                    <Link
+                      to={`/products/${product.slug}`}
+                      className="flex flex-col flex-1"
                     >
-                      <Heart
-                        size={15}
-                        className={isLiked ? "fill-red-500" : ""}
-                      />
-                    </button>
+                      <div className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider text-right mb-1">
+                        {product.brand?.name || "Chính hãng"}
+                      </div>
+
+                      <div className="relative aspect-square w-full mb-2 overflow-hidden rounded-xl bg-gray-50 flex items-center justify-center p-2">
+                        <img
+                          src={getImageUrl(product.thumbnail)}
+                          alt={product.product_name}
+                          className="w-full h-full object-contain group-hover/card:scale-105 transition-transform duration-200"
+                          onError={(e) => {
+                            e.target.src =
+                              "https://placehold.co/300x300?text=No+Image";
+                          }}
+                        />
+                      </div>
+
+                      <div className="flex flex-wrap gap-1 mb-2">
+                        {specs.map((spec, i) => (
+                          <span
+                            key={i}
+                            className="text-[9.5px] font-medium px-1.5 py-0.5 rounded bg-gray-100 text-gray-600 truncate max-w-full"
+                          >
+                            {spec}
+                          </span>
+                        ))}
+                      </div>
+
+                      <h3 className="text-xs sm:text-[13px] font-semibold text-gray-800 line-clamp-2 min-h-[2.4rem] leading-snug group-hover/card:text-[#009b7a] transition-colors mb-2">
+                        {product.product_name}
+                      </h3>
+
+                      <div className="mt-auto mb-2">
+                        <div className="flex items-baseline gap-1.5 flex-wrap">
+                          {originalPrice > 0 ? (
+                            <>
+                              <span className="text-sm sm:text-base font-bold text-red-600">
+                                {formatPrice(salePrice)}
+                              </span>
+                              {discountPercent > 0 && (
+                                <span className="text-[11px] text-gray-400 line-through">
+                                  {formatPrice(originalPrice)}
+                                </span>
+                              )}
+                            </>
+                          ) : (
+                            <span className="text-xs font-bold text-[#006b5a]">
+                              Liên hệ giá tốt
+                            </span>
+                          )}
+                        </div>
+
+                        <div className="mt-1 text-[10px] font-medium text-[#006b5a] bg-[#eefbf6] px-2 py-0.5 rounded-md inline-block">
+                          Nhận hàng 30p trong nội thành.
+                        </div>
+                      </div>
+                    </Link>
+
+                    <div className="flex items-center justify-between pt-2 border-t border-gray-100 text-[11px]">
+                      <div className="flex items-center gap-1 text-[#006b5a] font-semibold bg-[#d9f7eb] px-2 py-0.5 rounded-full">
+                        <Zap
+                          size={11}
+                          className="fill-[#009b7a] text-[#009b7a]"
+                        />
+                        <span>2 Giờ</span>
+                      </div>
+
+                      {Number(product.reviews_count) > 0 &&
+                      product.avg_rating ? (
+                        <div className="flex items-center gap-1 text-amber-500 font-bold">
+                          <Star
+                            size={12}
+                            className="fill-amber-400 text-amber-400"
+                          />
+                          <span className="text-[10px] text-gray-700">
+                            {Number(product.avg_rating).toFixed(1)}
+                          </span>
+                        </div>
+                      ) : (
+                        <span className="text-[10px] text-gray-400">
+                          Chính hãng
+                        </span>
+                      )}
+
+                      <button
+                        type="button"
+                        onClick={() => toggleLike(product.id)}
+                        className={`p-1 rounded-full hover:bg-gray-100 transition-colors cursor-pointer ${
+                          isLiked
+                            ? "text-red-500 fill-red-500"
+                            : "text-gray-400 hover:text-red-500"
+                        }`}
+                        title="Yêu thích"
+                      >
+                        <Heart
+                          size={15}
+                          className={isLiked ? "fill-red-500" : ""}
+                        />
+                      </button>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
-        </div>
+        ) : (
+          <NoResult
+            Icon={Flame}
+            title = "Mẫu sản phẩm này hiện tại chưa được sale."
+            content="Có thể tìm kiếm bằng bộ lọc khác."
+            action={
+              <button
+                onClick={() => {
+                  setSelectedCategory(null);
+                  setSelectedBrand(null);
+                }}
+                className="px-5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-[#009b7a] text-white hover:bg-[#006b5a] transition-all shadow-sm cursor-pointer"
+              >
+                Xóa bộ lọc tìm kiếm
+              </button>
+            }
+          />
+        )}
       </div>
     </section>
   );

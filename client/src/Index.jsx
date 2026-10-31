@@ -5,7 +5,6 @@ import Pagination from "./components/common/pagination/Pagination";
 
 import HomeHero from "./components/customer/home/HomeHero";
 import HomeDeals from "./components/customer/home/HomeDeals";
-import HomeCategoryShowcase from "./components/customer/home/HomeCategoryShowcase";
 import FloatingActions from "./components/common/feedback/FloatingActions";
 
 import { useGetBannersQuery } from "./store/api/bannerApi";
@@ -13,7 +12,7 @@ import { useGetCategoryQuery } from "./store/api/categoryApi";
 import { useGetBrandsQuery } from "./store/api/brandApi";
 import {
   useGetProductsNewQuery,
-  useGetProductsSaleQuery,
+  useGetProductsSalePaginatedQuery,
 } from "./store/api/product";
 
 import { Sparkles } from "lucide-react";
@@ -21,35 +20,23 @@ import { Sparkles } from "lucide-react";
 function App() {
   const [page, setPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState(null);
-
+  const [selectedBrand, setSelectedBrand] = useState(null);
   const { data: banners = [], isLoading: bannerLoading } = useGetBannersQuery();
   const { data: categories = [], isLoading: categoryLoading } =
     useGetCategoryQuery();
   const { data: brands = [] } = useGetBrandsQuery();
-  const { data: dataSale } = useGetProductsSaleQuery(10);
+  const { data: dataSale } = useGetProductsSalePaginatedQuery({
+    selectedCategory,
+    selectedBrand,
+  });
   const { data: productResponse, isLoading: productsLoading } =
-    useGetProductsNewQuery({ page });
-
+    useGetProductsNewQuery({ page, selectedCategory });
   const {
     data: productsNew = [],
     current_page,
     last_page,
     total,
   } = productResponse ?? {};
-
-  const handleSelectCategory = (catId) => {
-    setSelectedCategory((prev) => (prev === catId ? null : catId));
-    const element = document.getElementById("main-products-section");
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
-  const displayedProducts = selectedCategory
-    ? productsNew.filter((p) => p.category_id === selectedCategory)
-    : productsNew;
-
-  const currentCategoryObj = categories.find((c) => c.id === selectedCategory);
 
   if (bannerLoading && categoryLoading && productsLoading) {
     return <Loading />;
@@ -63,24 +50,20 @@ function App() {
         categories={categories}
         brands={brands}
         featuredProducts={productsNew}
-        onSelectCategory={handleSelectCategory}
         selectedCategory={selectedCategory}
       />
       {/* //Phần sale */}
-      {dataSale?.data && dataSale.data.length > 0 && (
+      {dataSale?.data &&(
         <HomeDeals
           products={dataSale.data}
           categories={categories}
           brands={brands}
+          selectedCategory={selectedCategory}
+          selectedBrand={selectedBrand}
+          setSelectedBrand={setSelectedBrand}
+          setSelectedCategory={setSelectedCategory}
         />
       )}
-
-      <HomeCategoryShowcase
-        categories={categories}
-        brands={brands}
-        products={productsNew}
-        banners={banners}
-      />
 
       {/* / Snar phẩm mới thêm */}
       <section
@@ -97,30 +80,31 @@ function App() {
                 <h2 className="text-base sm:text-lg font-bold text-gray-900 tracking-tight flex items-center gap-2">
                   <span>GỢI Ý HÔM NAY</span>
                 </h2>
-                <p className="text-xs text-gray-500">
-                  {currentCategoryObj
-                    ? `Đang lọc theo: ${currentCategoryObj.name} (${displayedProducts.length} sản phẩm)`
-                    : "Tất cả sản phẩm điện thoại và phụ kiện chính hãng"}
-                </p>
               </div>
             </div>
 
             <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide py-1">
               <button
-                onClick={() => setSelectedCategory(null)}
+                onClick={() => {
+                  setSelectedCategory(null);
+                  setPage(1);
+                }}
                 className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all shrink-0 cursor-pointer ${
                   selectedCategory === null
                     ? "bg-[#009b7a] text-white shadow-2xs"
                     : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                 }`}
               >
-                Tất cả ({total || productsNew.length})
+                Tất cả
               </button>
 
               {categories.map((cat) => (
                 <button
                   key={cat.id}
-                  onClick={() => setSelectedCategory(cat.id)}
+                  onClick={() => {
+                    setSelectedCategory(cat.id);
+                    setPage(1);
+                  }}
                   className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all shrink-0 cursor-pointer ${
                     selectedCategory === cat.id
                       ? "bg-[#009b7a] text-white shadow-2xs"
@@ -134,10 +118,8 @@ function App() {
               ))}
             </div>
           </div>
-
-          <ProductList products={displayedProducts} />
-
-          {selectedCategory === null && last_page > 1 && (
+          <ProductList products={productsNew} />
+          {last_page > 1 && (
             <div className="mt-8 flex justify-center pt-4 border-t border-gray-100">
               <Pagination
                 currentPage={current_page}
@@ -148,7 +130,6 @@ function App() {
           )}
         </div>
       </section>
-
       <FloatingActions />
     </div>
   );

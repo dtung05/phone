@@ -58,7 +58,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
 
         return $query->paginate(10);
     }
-    public function getProductSale($perPage = null, $filters = [])
+    public function getProductSale($perPage = 10, $filters = [])
     {
         $query = $this->model
             ->where('is_sale', '1')
@@ -86,15 +86,12 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
             $query->where('category_id', $filters['category_id']);
         }
 
-        if ($perPage) {
-            return $query->latest()->paginate($perPage);
-        }
 
-        return $query->get();
+        return $query->latest()->paginate($perPage);
     }
-    public function getProductNew()
+    public function getProductNew($category = null)
     {
-        return $this->model
+        $query = $this->model
             ->select(
                 'id',
                 'category_id',
@@ -106,8 +103,11 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
             )->withMin('productVariants as min_price', 'selling_price')
             ->withAvg('reviews as avg_rating', 'rating')
             ->withCount('reviews as reviews_count')
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
+            ->orderBy('created_at', 'desc');
+        if ($category) {
+            $query->where('category_id', $category);
+        }
+        return $query->paginate(10);
     }
 
     public function getStaffProducts($search = null, $categoryId = null, $brandId = null, $isSale = null, $perPage = 10)
@@ -166,11 +166,11 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                 ])->latest('id');
             }
         ])
-        ->withCount(['reviews', 'reviews as unreplied_reviews_count' => function ($q) {
-            $q->where('is_replied', false);
-        }])
-        ->withAvg('reviews as average_rating', 'rating')
-        ->withSum('productVariants as total_stock', 'stock_quantity')
-        ->find($id);
+            ->withCount(['reviews', 'reviews as unreplied_reviews_count' => function ($q) {
+                $q->where('is_replied', false);
+            }])
+            ->withAvg('reviews as average_rating', 'rating')
+            ->withSum('productVariants as total_stock', 'stock_quantity')
+            ->find($id);
     }
 }

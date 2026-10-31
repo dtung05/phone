@@ -18,7 +18,7 @@ class BannerRepo extends BaseRepository implements BannerRepoInter
         return $this->model->where('is_active', '1')
             ->where('start_date', '<=', $today)
             ->where('end_date', '>=', $today)
-            ->select('id', 'title', 'imager', 'link', 'position', 'is_active', 'start_date', 'end_date')
+            ->select('id', 'title', 'imager', 'link', 'is_active', 'start_date', 'end_date')
             ->orderBy('id', 'desc')
             ->get();
     }

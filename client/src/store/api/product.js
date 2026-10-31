@@ -36,15 +36,30 @@ const productApi = baseApi.injectEndpoints({
       providesTags: ["Products"],
     }),
     getProductsSalePaginated: builder.query({
-      query: ({ page = 1, brand_id = "", category_id = "" } = {}) => ({
-        url: `products/sale?page=${page}&brand_id=${brand_id}&category_id=${category_id}&per_page=10`,
+      query: ({
+        page = 1,
+        selectedBrand = "",
+        selectedCategory = "",
+      } = {}) => ({
+        url: `products/sale`,
+        params: {
+          page, 
+          brand_id : selectedBrand ?? undefined,
+          category_id : selectedCategory ?? undefined,
+          per_page: 10
+         
+        },
         method: "GET",
       }),
       providesTags: ["Products"],
     }),
     getProductsNew: builder.query({
-      query: ({ page }) => ({
-        url: `products/new?page=${page}`,
+      query: ({ page, selectedCategory }) => ({
+        url: "products/new",
+        params: {
+          page,
+          category: selectedCategory ?? undefined,
+        },
       }),
       providesTags: ["Products"],
     }),
