@@ -60,7 +60,7 @@ const MyOrders = () => {
     );
 
   const orders = response?.data || [];
-  const total = response?.total || 0;
+
   const lastPage = response?.last_page || 1;
 
   const handleCancelOrder = async (orderId) => {
@@ -90,31 +90,21 @@ const MyOrders = () => {
   return (
     <div className="bg-[#f8faf9] min-h-screen py-5 sm:py-7">
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 space-y-5">
-        <nav
-          aria-label="Breadcrumb"
-          className="text-xs text-gray-500 flex items-center gap-1.5 flex-wrap"
-        >
-          <Link to="/" className="hover:text-[#009b7a] transition-colors">
-            Trang chủ
-          </Link>
-          <span className="text-gray-300">/</span>
-          <span className="text-gray-800 font-semibold">Đơn hàng của tôi</span>
-        </nav>
-
         <div className="flex items-center justify-between flex-wrap gap-3">
-          <div className="flex items-center gap-2.5">
-            <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
+          <nav
+            aria-label="Breadcrumb"
+            className="text-xs text-gray-500 flex items-center gap-1.5 flex-wrap"
+          >
+            <Link to="/" className="hover:text-[#009b7a] transition-colors">
+              Trang chủ
+            </Link>
+            <span className="text-gray-300">/</span>
+            <span className="text-gray-800 font-semibold">
               Đơn hàng của tôi
-            </h1>
-            {total > 0 && (
-              <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-[#d9f7eb] text-[#006b5a] border border-[#bbf0dc]">
-                {total} đơn hàng
-              </span>
-            )}
-          </div>
-
+            </span>
+          </nav>
           <Link
-            to="/products"
+            to="/"
             className="text-xs text-[#009b7a] hover:text-[#006b5a] hover:underline font-semibold flex items-center gap-1 cursor-pointer"
           >
             <ArrowLeft size={14} />
@@ -145,7 +135,6 @@ const MyOrders = () => {
                 }
               />
             ) : (
-             
               <OrderList
                 orders={orders}
                 handleCancelOrder={handleCancelOrder}
@@ -167,16 +156,6 @@ const MyOrders = () => {
               </h3>
 
               <div className="space-y-2 text-xs">
-                <div className="flex items-center justify-between py-2 px-3 rounded-xl bg-gray-50 text-gray-700">
-                  <span className="flex items-center gap-2">
-                    <Package className="w-3.5 h-3.5 text-[#009b7a]" />
-                    <span>Tổng đơn trong danh mục:</span>
-                  </span>
-                  <span className="font-bold text-gray-900 font-mono text-sm">
-                    {total}
-                  </span>
-                </div>
-
                 <div className="flex items-center justify-between py-2 px-3 rounded-xl bg-gray-50 text-gray-700">
                   <span className="flex items-center gap-2">
                     <Truck className="w-3.5 h-3.5 text-[#009b7a]" />
