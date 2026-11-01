@@ -323,7 +323,7 @@ const CategoryBrandManage = () => {
         <EntityManageSection
           title="Danh mục sản phẩm"
           entityName="danh mục"
-          description="Phân nhóm thiết bị (Điện thoại, Tablet, Laptop, Phụ kiện...)"
+          description="Phân nhóm thiết bị "
           items={categories}
           trashedItems={trashedCategories}
           isLoading={isLoadingCats}
@@ -340,7 +340,7 @@ const CategoryBrandManage = () => {
         <EntityManageSection
           title="Thương hiệu sản phẩm"
           entityName="thương hiệu"
-          description="Hãng công nghệ sản xuất (Apple, Samsung, Xiaomi, OPPO...)"
+          description="Hãng công nghệ sản xuất "
           items={brands}
           trashedItems={trashedBrands}
           isLoading={isLoadingBrands}
