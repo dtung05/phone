@@ -1,14 +1,16 @@
 # Hệ Thống Website Bán Điện Thoại Trực Tuyến & Quản Lý Hàng Tồn Kho
 
->Laravel 12 RESTful API + React
+> Laravel 12 RESTful API + React
+
+<!-- Muốn chạy trải nghiệm dự án nhắn tin qua 0862527719 để lấy file env hoặc tự cấu hình lại theo mẫu file env.production.example -->
 
 ## MỤC LỤC
+
 1. [Giới Thiệu Dự Án](#1-giới-thiệu-dự-án)
 2. [Điểm Nổi Bật Về Kỹ Thuật & Kiến Trúc](#2-điểm-nổi-bật-về-kỹ-thuật--kiến-trúc)
 3. [Công Nghệ Sử Dụng ](#3-công-nghệ-sử-dụng-tech-stack)
 4. [Hướng Dẫn Cài Đặt ](#4-hướng-dẫn-cài-đặt-dev-environment)
 5. [Tài Khoản Mẫu Trải Nghiệm Hệ Thống](#5-tài-khoản-mẫu-trải-nghiệm-hệ-thống)
-
 
 ## 1. GIỚI THIỆU DỰ ÁN
 
@@ -23,7 +25,6 @@ Dự án là nền tảng thương mại điện tử chuyên sâu dành cho ng�
   - **Quản lý kho:** Lập và theo dõi phiếu nhập kho từ nhà cung cấp để cập nhật tồn kho chính xác.
   - **Vận hành & Chăm sóc khách hàng:** Quản lý đơn hàng, phản hồi đánh giá sản phẩm, cấu hình chương trình giảm giá và banner quảng cáo.
   - **Thống kê & Báo cáo:** Dashboard trực quan hiển thị biểu đồ thống kê doanh thu theo thời gian thực.
-
 
 ## 2. ĐIỂM NỔI BẬT VỀ KỸ THUẬT & KIẾN TRÚC
 
@@ -45,14 +46,18 @@ Hệ thống được thiết kế và xây dựng nhằm giải quyết các b�
    - **Rate Limiting:** Giới hạn tần suất gọi API toàn hệ thống ở mức `80 Request/1 Phút`, riêng API đăng nhập giới hạn chặt chẽ `3 Request/5 Phút` nhằm phòng chống tấn công.
 
 ## 3. CÔNG NGHỆ SỬ DỤNG
+
 ### Backend
+
 - **Framework:** Laravel 12 (RESTful API)
 - **Database:** MySQL
 - **Authentication:** JWT Auth
 - **Realtime WebSocket:** Laravel Reverb
 - **Payment Gateway:** VNPay Sandbox
 - **Kiến trúc:** Repository Pattern, Service Layer, Factory Pattern
+
 ### Frontend
+
 - **Framework & Tooling:** React, Vite
 - **State Management:** Redux Toolkit
 - **Routing:** React Router
@@ -72,13 +77,13 @@ _Yêu cầu hệ thống: Đã cài đặt sẵn Docker._
 ### Các câu lệnh quản lý hệ thống:
 
 ```bash
-# 1. Khởi động toàn bộ hệ thống 
+# 1. Khởi động toàn bộ hệ thống
 docker compose up -d --build
 
-# 2. Tạo symbolic link cho storage 
+# 2. Tạo symbolic link cho storage
 docker compose exec app php artisan storage:link
 
-# 3. Chạy migration và seed dữ liệu mẫu cho MySQL 
+# 3. Chạy migration và seed dữ liệu mẫu cho MySQL
 docker compose exec app php artisan migrate --seed
 
 # 4. Xem logs khi cần debug hệ thống
@@ -88,18 +93,19 @@ docker compose logs -f
 docker compose down
 ```
 
-
 ## 5. TÀI KHOẢN MẪU TRẢI NGHIỆM HỆ THỐNG
+
 Sau khi chạy lệnh khởi tạo dữ liệu (`migrate:fresh --seed`), bạn có thể sử dụng các tài khoản dưới đây để đăng nhập và trải nghiệm các phân quyền khác nhau:
 
-| Vai trò                        | Email đăng nhập   | Mật khẩu    |
-| :----------------------------- | :---------------- | :---------- |
-| **Quản trị viên (Admin)**      | `admin@gmail.com` | `ductung05` |
-| **Nhân viên kho (Warehouse)**  | `kho@gmail.com`   | `ductung05` |
-| **Nhân viên bán hàng (Sales)** | `sale@gmail.com`  | `ductung05` |
-| **Khách hàng (Customer)**      | `khach@gmail.com` | `ductung05` |
+| Vai trò                | Email đăng nhập   | Mật khẩu    |
+| :--------------------- | :---------------- | :---------- |
+| **Quản trị viên**      | `admin@gmail.com` | `ductung05` |
+| **Nhân viên kho**      | `kho@gmail.com`   | `ductung05` |
+| **Nhân viên bán hàng** | `sale@gmail.com`  | `ductung05` |
+| **Khách hàng**         | `khach@gmail.com` | `ductung05` |
 
 ### Phân quyền chi tiết:
+
 - **Quản trị viên:** Quản lý toàn bộ hệ thống, theo dõi thống kê doanh thu, quản lý sản phẩm, danh mục và đơn hàng.
 - **Nhân viên kho:** Quản lý nhà cung cấp, lập phiếu nhập kho và theo dõi biến động tồn kho sản phẩm.
 - **Nhân viên bán hàng:** Xử lý đơn hàng, phản hồi đánh giá của khách hàng, quản lý chương trình khuyến mãi và banner quảng cáo.
