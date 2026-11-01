@@ -7,13 +7,11 @@ import { getImageUrl } from "../../../utils/image";
 import {
   Calendar,
   MapPin,
-  Clock,
   CheckCircle2,
   Truck,
   XCircle,
   CreditCard,
   Banknote,
-  Package,
 } from "lucide-react";
 
 const OrderList = ({ orders, handleCancelOrder }) => {

@@ -30,7 +30,7 @@ class OrderRepo extends BaseRepository implements OrderRepositoryInterface
                 'product_thumbnail' => $product['product']['thumbnail'],
                 'variant_attributes' => $product['attributes'],
                 'quantity' => $product['quantity'],
-                'unit_price' => $product['selling_price'],
+                'unit_price' => $product['unit_price'],
                 'total_amount' => $product['total_amount'],
             ]);
         }

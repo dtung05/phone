@@ -54,11 +54,16 @@ const Checkout = () => {
     (sum, item) => sum + item.selling_price * item.quantity,
     0,
   );
+  const totalSale =  products.reduce(
+    (sum, item) =>
+      sum +
+      (((item.selling_price * item.product.discount_perventage) / 100) * item.quantity),
+    0,
+  );
 
   return (
     <div className="bg-[#f8faf9] min-h-screen py-5 sm:py-7">
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 space-y-5">
-        {/* BREADCRUMB */}
         <nav
           aria-label="Breadcrumb"
           className="text-xs text-gray-500 flex items-center gap-1.5 flex-wrap"
@@ -71,7 +76,9 @@ const Checkout = () => {
             Giỏ hàng
           </Link>
           <span className="text-gray-300">/</span>
-          <span className="text-gray-800 font-semibold">Thanh toán & Đặt hàng</span>
+          <span className="text-gray-800 font-semibold">
+            Thanh toán & Đặt hàng
+          </span>
         </nav>
 
         <div className="flex items-center justify-between flex-wrap gap-3">
@@ -111,7 +118,7 @@ const Checkout = () => {
                   <ProductCheckout key={item.id} item={item} />
                 ))}
               </div>
-              <TotalPrice totalPrice={totalPrice} />
+              <TotalPrice totalPrice={totalPrice} totalSale = {totalSale}/>
             </div>
 
             <div className="bg-white rounded-2xl border border-gray-200/80 p-4 sm:p-5 shadow-2xs space-y-2.5 text-xs text-gray-600">
@@ -121,11 +128,15 @@ const Checkout = () => {
               </div>
               <div className="flex items-center gap-2.5">
                 <Truck size={16} className="text-[#009b7a] shrink-0" />
-                <span>Giao hàng miễn phí toàn quốc, kiểm tra trước khi nhận</span>
+                <span>
+                  Giao hàng miễn phí toàn quốc, kiểm tra trước khi nhận
+                </span>
               </div>
               <div className="flex items-center gap-2.5">
                 <RotateCcw size={16} className="text-[#009b7a] shrink-0" />
-                <span>1 đổi 1 trong 30 ngày nếu phát sinh lỗi nhà sản xuất</span>
+                <span>
+                  1 đổi 1 trong 30 ngày nếu phát sinh lỗi nhà sản xuất
+                </span>
               </div>
             </div>
           </div>
