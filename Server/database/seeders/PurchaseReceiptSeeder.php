@@ -67,7 +67,6 @@ class PurchaseReceiptSeeder extends Seeder
                     'note'                => $receiptNotes[array_rand($receiptNotes)],
                 ]);
             }
-
             DB::table('purchase_receipts')->where('id', $receiptId)->update([
                 'total_amount' => $receiptTotal,
             ]);

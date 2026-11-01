@@ -11,7 +11,7 @@ const BrandMenu = () => {
       <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
         <div className="flex h-12 items-center gap-2 overflow-x-auto no-scrollbar py-1">
           <NavLink
-            to="/products"
+            to="/"
             end
             className={({ isActive }) =>
               `shrink-0 inline-flex items-center gap-1.5 rounded-xl px-4 py-2 text-sm font-semibold transition-all ${

@@ -14,8 +14,7 @@ const PurchaseHead = ({ receipt}) => {
             Địa chỉ: Cầu Giấy, Hà Nội, Việt Nam
           </p>
           <p className="text-xs text-slate-600">
-            Hotline: 0862527719 <br></br>Email: ductunng05@gmail.com Website:
-            www.phonestore.vn
+            Hotline: 0862527719 <br></br>Email: ductunng05@gmail.com 
           </p>
         </div>
 

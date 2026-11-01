@@ -1,19 +1,14 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import {
-  Users,
   Search,
   UserPlus,
-  Shield,
   Lock,
   Unlock,
   Edit2,
-  CheckCircle,
-  XCircle,
-  Mail,
-  Filter,
   Eye,
   RotateCcw,
+  X,
 } from "lucide-react";
 import {
   useGetUsersQuery,
@@ -26,6 +21,7 @@ import UserDetail from "../../../components/staff/user/UserDetail";
 import Loading from "../../../components/common/feedback/Loading";
 import NoResult from "../../../components/common/feedback/NoResult";
 import Pagination_2 from "../../../components/common/pagination/Pagination_2";
+import Button from "../../../components/common/form/Button";
 
 const UserListStaff = () => {
   const dispatch = useDispatch();
@@ -42,9 +38,10 @@ const UserListStaff = () => {
     const timer = setTimeout(() => {
       setDebouncedSearch(search);
       setPage(1);
-    }, 600);
+    }, 400);
     return () => clearTimeout(timer);
   }, [search]);
+
   const { data, isLoading } = useGetUsersQuery({
     search: debouncedSearch || undefined,
     role: role || undefined,
@@ -72,232 +69,240 @@ const UserListStaff = () => {
       );
     }
   };
+
   const resetStatus = () => {
     setStatus("");
-    setPage(1);
-    setSearch("");
     setRole("");
+    setSearch("");
     setDebouncedSearch("");
+    setPage(1);
   };
+
   const handleOpenEditModal = (user) => {
     setSelectedUser(user);
   };
-  console.log(data);
+
   const users = data?.data || [];
+  const totalUsers = data?.total || 0;
 
   return (
-    <div className="space-y-6 pb-12">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
+    <div className="space-y-3 pb-12">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-slate-200">
         <div>
-          <h1 className="text-2xl font-bold text-gray-800 tracking-tight flex items-center gap-2">
-            <Users className="w-6 h-6 text-emerald-600" />
-            Quản lý tài khoản & Phân quyền
+          <h1 className="text-lg font-semibold text-slate-900 tracking-tight">
+            Quản lý tài khoản
           </h1>
+          <p className="text-xs text-slate-500">
+            Tổng cộng {totalUsers} người dùng trong hệ thống
+          </p>
         </div>
 
-        <button
+        <Button
+          type="button"
           onClick={() => setIsCreateModalOpen(true)}
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-emerald-600 text-white text-xs font-semibold hover:bg-emerald-700 shadow-md shadow-emerald-600/20 active:scale-95 transition-all self-start sm:self-auto"
+          variant="primary"
+          size="sm"
+          icon={UserPlus}
         >
-          <UserPlus className="w-4 h-4" />
-          <span>Thêm nhân viên mới</span>
-        </button>
+          Thêm nhân viên
+        </Button>
       </div>
 
-      <div className="bg-white p-5 rounded-3xl border border-gray-100 shadow-sm flex flex-wrap items-center gap-4">
-        <div className="relative flex-1 min-w-[240px]">
-          <Search className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+      <div className="bg-white border border-slate-200 rounded-md p-2.5 flex flex-wrap items-center gap-2">
+        <div className="relative flex-1 min-w-[200px]">
+          <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
           <input
             type="text"
             value={search}
-            onChange={(e) => {
-              setSearch(e.target.value);
-              setPage(1);
-            }}
-            placeholder="Tìm theo tên hoặc email người dùng..."
-            className="w-full pl-10 pr-4 py-2.5 rounded-2xl border border-gray-200 text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Tìm theo tên, email..."
+            className="w-full pl-8 pr-6 py-1.5 bg-white border border-slate-200 hover:border-slate-300 focus:border-emerald-600 rounded text-xs text-slate-800 placeholder-slate-400 outline-none transition-colors"
           />
+          {search && (
+            <button
+              type="button"
+              onClick={() => setSearch("")}
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+            >
+              <X size={12} />
+            </button>
+          )}
         </div>
-        <div className="flex items-center gap-2 min-w-[170px]">
-          <Filter className="w-3.5 h-3.5 text-gray-400" />
-          <select
-            value={role}
-            onChange={(e) => {
-              setRole(e.target.value);
-              setPage(1);
-            }}
-            className="w-full px-3 py-2.5 rounded-2xl border border-gray-200 text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all bg-white"
-          >
-            <option value="">Tất cả vai trò</option>
-            <option value="Khách hàng">Khách hàng</option>
-            <option value="Nhân viên sale">Nhân viên sale</option>
-            <option value="Nhân viên kho">Nhân viên kho</option>
-            <option value="Quản trị viên">Quản trị viên</option>
-          </select>
-        </div>
-        <div className="min-w-[150px]">
-          <select
-            value={status}
-            onChange={(e) => {
-              setStatus(e.target.value);
-              setPage(1);
-            }}
-            className="w-full px-3 py-2.5 rounded-2xl border border-gray-200 text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all bg-white"
-          >
-            <option value="">Tất cả trạng thái</option>
-            <option value="Active">Hoạt động (Active)</option>
-            <option value="Locked">Đã khóa (Locked)</option>
-          </select>
-        </div>
-        <button
-          onClick={resetStatus}
-          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-2xl border border-emerald-200 bg-emerald-50 text-emerald-700 text-xs font-semibold hover:bg-emerald-100 hover:border-emerald-300 active:scale-95 transition-all self-start sm:self-auto"
+
+        <select
+          value={role}
+          onChange={(e) => {
+            setRole(e.target.value);
+            setPage(1);
+          }}
+          className="px-2.5 py-1.5 bg-white border border-slate-200 hover:border-slate-300 focus:border-emerald-600 rounded text-xs text-slate-700 outline-none transition-colors cursor-pointer"
         >
-          <RotateCcw className="w-3.5 h-3.5" />
-          <span>Đặt lại</span>
-        </button>
+          <option value="">Tất cả vai trò</option>
+          <option value="Quản trị viên">Quản trị viên</option>
+          <option value="Nhân viên sale">Nhân viên sale</option>
+          <option value="Nhân viên kho">Nhân viên kho</option>
+          <option value="Khách hàng">Khách hàng</option>
+        </select>
+
+        <select
+          value={status}
+          onChange={(e) => {
+            setStatus(e.target.value);
+            setPage(1);
+          }}
+          className="px-2.5 py-1.5 bg-white border border-slate-200 hover:border-slate-300 focus:border-emerald-600 rounded text-xs text-slate-700 outline-none transition-colors cursor-pointer"
+        >
+          <option value="">Tất cả trạng thái</option>
+          <option value="Active">Hoạt động</option>
+          <option value="Locked">Đã khóa</option>
+        </select>
+
+        {(search || role || status) && (
+          <button
+            type="button"
+            onClick={resetStatus}
+            title="Đặt lại bộ lọc"
+            className="px-2 py-1.5 text-xs text-slate-500 hover:text-slate-900 rounded transition-colors flex items-center gap-1 cursor-pointer"
+          >
+            <RotateCcw size={12} />
+            <span>Đặt lại</span>
+          </button>
+        )}
       </div>
-      {/* List user  */}
-      <div className="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+
+      <div className="bg-white border border-slate-200 rounded-md overflow-hidden">
         {isLoading ? (
-          <Loading text="Đang tải danh sách người dùng" />
+          <div className="py-20 text-center">
+            <Loading text="Đang tải dữ liệu..." />
+          </div>
         ) : users.length === 0 ? (
-          <NoResult title="Không tìm thấy người dùng" />
+          <div className="py-16 text-center">
+            <NoResult
+              title="Không tìm thấy người dùng"
+              content="Thử kiểm tra lại từ khóa hoặc bỏ lọc."
+            />
+          </div>
         ) : (
-          // Danh sách trang tài khonar
           <>
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
+            <div className="overflow-x-auto min-h-[300px]">
+              <table className="w-full text-left border-collapse min-w-[720px]">
                 <thead>
-                  <tr className="border-b border-gray-100 bg-gray-50/50 text-gray-500 font-semibold uppercase tracking-wider">
-                    <th className="py-3.5 pl-6">ID</th>
-                    <th className="py-3.5">Người dùng</th>
-                    <th className="py-3.5">Vai trò</th>
-                    <th className="py-3.5">Trạng thái</th>
-                    <th className="py-3.5">Đơn hàng</th>
-                    <th className="py-3.5 pr-6 text-right">Thao tác</th>
+                  <tr className="bg-slate-50 border-b border-slate-200 text-xs font-medium text-slate-500">
+                    <th className="py-2.5 px-4 w-16 text-center font-normal">Mã</th>
+                    <th className="py-2.5 px-4">Họ và tên</th>
+                    <th className="py-2.5 px-4">Email</th>
+                    <th className="py-2.5 px-4">Vai trò</th>
+                    <th className="py-2.5 px-4 text-center">Trạng thái</th>
+                    <th className="py-2.5 px-4 text-center">Đơn hàng</th>
+                    <th className="py-2.5 px-4 text-right pr-4">Thao tác</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-50">
+                <tbody className="divide-y divide-slate-100 text-xs text-slate-700">
                   {users.map((u) => (
                     <tr
                       key={u.id}
-                      className="hover:bg-gray-50/60 transition-colors"
+                      className="hover:bg-slate-50/50 transition-colors"
                     >
-                      <td className="py-3.5 pl-6 font-mono font-bold text-gray-700">
+                      <td className="py-2.5 px-4 text-center text-slate-400 font-mono">
                         #{u.id}
                       </td>
-                      <td className="py-3.5">
-                        <div>
-                          <p className="font-semibold text-gray-800">
-                            {u.full_name}
-                          </p>
-                          <p className="text-[11px] text-gray-400 flex items-center gap-1 mt-0.5">
-                            <Mail className="w-3 h-3 text-gray-400" />
-                            {u.email}
-                          </p>
+
+                      <td className="py-2.5 px-4 font-medium text-slate-900">
+                        {u.full_name || "—"}
+                      </td>
+
+                      <td className="py-2.5 px-4 text-slate-600">
+                        {u.email}
+                      </td>
+
+                      <td className="py-2.5 px-4 text-slate-800">
+                        {u.role || "Khách hàng"}
+                      </td>
+
+                      <td className="py-2.5 px-4 text-center">
+                        {u.status === "Active" ? (
+                          <span className="inline-flex items-center gap-1.5 text-xs text-emerald-700 font-medium">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                            Hoạt động
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1.5 text-xs text-slate-400">
+                            <span className="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+                            Đã khóa
+                          </span>
+                        )}
+                      </td>
+
+                      <td className="py-2.5 px-4 text-center text-slate-500 font-mono">
+                        {u.orders_count || 0}
+                      </td>
+
+                      <td className="py-2.5 px-4 text-right pr-4">
+                        <div className="inline-flex items-center justify-end gap-1">
+                          <button
+                            type="button"
+                            onClick={() => setDetailUserId(u.id)}
+                            className="p-1 text-slate-400 hover:text-slate-700 rounded transition-colors"
+                            title="Xem chi tiết"
+                          >
+                            <Eye size={14} />
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => handleOpenEditModal(u)}
+                            className="p-1 text-slate-400 hover:text-slate-700 rounded transition-colors"
+                            title="Phân quyền"
+                          >
+                            <Edit2 size={14} />
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => handleToggleStatus(u)}
+                            className={`p-1 rounded transition-colors ${
+                              u.status === "Active"
+                                ? "text-slate-400 hover:text-rose-600"
+                                : "text-slate-400 hover:text-emerald-700"
+                            }`}
+                            title={
+                              u.status === "Active"
+                                ? "Khóa tài khoản"
+                                : "Mở khóa tài khoản"
+                            }
+                          >
+                            {u.status === "Active" ? (
+                              <Lock size={14} />
+                            ) : (
+                              <Unlock size={14} />
+                            )}
+                          </button>
                         </div>
-                      </td>
-                      <td className="py-3.5">
-                        <span
-                          className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold ${
-                            u.role === "Quản trị viên"
-                              ? "bg-purple-100 text-purple-800"
-                              : u.role === "Nhân viên sale"
-                                ? "bg-blue-100 text-blue-800"
-                                : u.role === "Nhân viên kho"
-                                  ? "bg-amber-100 text-amber-800"
-                                  : "bg-emerald-100 text-emerald-800"
-                          }`}
-                        >
-                          <Shield className="w-3 h-3" />
-                          {u.role}
-                        </span>
-                      </td>
-                      <td className="py-3.5">
-                        <span
-                          className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold ${
-                            u.status === "Active"
-                              ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
-                              : "bg-rose-50 text-rose-700 border border-rose-200"
-                          }`}
-                        >
-                          {u.status === "Active" ? (
-                            <>
-                              <CheckCircle className="w-3 h-3 text-emerald-500" />
-                              Hoạt động
-                            </>
-                          ) : (
-                            <>
-                              <XCircle className="w-3 h-3 text-rose-500" />
-                              Đã khóa
-                            </>
-                          )}
-                        </span>
-                      </td>
-                      <td className="py-3.5 text-gray-600 font-medium">
-                        {u.orders_count || 0} đơn
-                      </td>
-                      <td className="py-3.5 pr-6 text-right space-x-2">
-                        <button
-                          onClick={() => setDetailUserId(u.id)}
-                          className="p-1.5 rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-100 hover:text-emerald-600 transition-colors"
-                          title="Xem chi tiết tài khoản"
-                        >
-                          <Eye className="w-3.5 h-3.5" />
-                        </button>
-
-                        <button
-                          onClick={() => handleOpenEditModal(u)}
-                          className="p-1.5 rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-100 transition-colors"
-                          title="Đổi vai trò"
-                        >
-                          <Edit2 className="w-3.5 h-3.5" />
-                        </button>
-
-                        <button
-                          onClick={() => handleToggleStatus(u)}
-                          className={`p-1.5 rounded-xl border transition-colors ${
-                            u.status === "Active"
-                              ? "border-rose-200 text-rose-600 hover:bg-rose-50"
-                              : "border-emerald-200 text-emerald-600 hover:bg-emerald-50"
-                          }`}
-                          title={
-                            u.status === "Active"
-                              ? "Khóa tài khoản"
-                              : "Mở khóa tài khoản"
-                          }
-                        >
-                          {u.status === "Active" ? (
-                            <Lock className="w-3.5 h-3.5" />
-                          ) : (
-                            <Unlock className="w-3.5 h-3.5" />
-                          )}
-                        </button>
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
-            <Pagination_2 meta={data} setPage={setPage} page={page} />
+
+            <div className="p-2.5 bg-slate-50/50 border-t border-slate-200">
+              <Pagination_2 meta={data} setPage={setPage} page={page} />
+            </div>
           </>
         )}
       </div>
 
-      {/* Thêm nhân viên */}
       {isCreateModalOpen && (
         <CreateUser setIsCreateModalOpen={setIsCreateModalOpen} />
       )}
 
-      {/*đổi vai trò */}
       {selectedUser && (
         <UpdateUser
           selectedUser={selectedUser}
           setSelectedUser={setSelectedUser}
         />
       )}
-      {/* Mở trang chi tiết */}
+
       {detailUserId && (
         <UserDetail
           userId={detailUserId}

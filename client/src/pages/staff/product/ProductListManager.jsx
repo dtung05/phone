@@ -45,11 +45,10 @@ export const ProductListManager = ({ products }) => {
             <th className="py-3 px-4">Phân loại</th>
             <th className="py-3 px-4">Giá khởi điểm</th>
             {profile?.role != "Nhân viên kho" && (
-               <th className="py-3 px-4 text-center">Trạng thái Sale</th>
+              <th className="py-3 px-4 text-center">Sale</th>
             )}
-           
 
-            <th className="py-3 px-4">Biến thể & Kho</th>
+            <th className="py-3 px-4">Biến thể </th>
             <th className="py-3 px-4 text-center w-28">Thao tác</th>
           </tr>
         </thead>
@@ -103,13 +102,26 @@ export const ProductListManager = ({ products }) => {
                 </td>
 
                 <td className="py-3.5 px-4">
-                  <div className="flex items-center gap-1.5">
-                    <span className="font-bold text-red-600 text-sm">
-                      {formatPrice(item.min_price || 0)}
-                    </span>
-                    {hasDiscount && (
-                      <span className="bg-red-50 text-red-600 border border-red-200 text-[10px] font-bold px-1.5 py-0.5 rounded">
-                        -{item.discount_perventage}%
+                  <div className="flex items-center gap-2 flex-wrap">
+                    {hasDiscount ? (
+                      <>
+                        <span className="font-bold text-red-600 text-sm font-mono">
+                          {formatPrice(
+                            item.min_price -
+                              (item.min_price * item.discount_perventage) / 100,
+                          )}
+                        </span>
+                        <span className="bg-red-50 text-red-600 border border-red-200/80 text-[10px] font-semibold px-1.5 py-0.5 rounded">
+                          -{item.discount_perventage}%
+                        </span>
+                        <span className="text-gray-400 text-xs line-through font-mono">
+                          {formatPrice(item.min_price)}
+                        </span>
+
+                      </>
+                    ) : (
+                      <span className="font-bold text-red-600 text-sm font-mono">
+                        {formatPrice(item.min_price || 0)}
                       </span>
                     )}
                   </div>
@@ -149,7 +161,7 @@ export const ProductListManager = ({ products }) => {
                             size={11}
                             className="fill-red-600 text-red-600"
                           />
-                          Đang Sale
+                           Sale
                         </span>
                       ) : (
                         <span className="text-[10px] text-slate-400 font-medium">

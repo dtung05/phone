@@ -58,14 +58,12 @@ const ConfirmDeleteModal = ({
                 <strong className="font-bold text-red-600">
                   {productsCount} sản phẩm
                 </strong>{" "}
-                thuộc {entityType} này. Hệ thống sẽ không cho phép xóa để bảo toàn
-                tính toàn vẹn của sản phẩm.
+                thuộc {entityType} này. Hệ thống sẽ không cho phép xóa.
               </p>
             </div>
           ) : (
             <p className="text-[11px] text-slate-400">
-              Hành động này có thể khôi phục lại từ thùng rác xóa mềm (Soft
-              delete).
+              Hành động này có thể khôi phục lại từ thùng rác.
             </p>
           )}
         </div>

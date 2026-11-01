@@ -47,20 +47,20 @@ class ProductController extends Controller
     public function productSale(Request $request)
     {
         $perPage = (int) $request->query('per_page', 10);
-        if ($request->has('page') || $request->has('paginate')) {
-            $filters = [
-                'brand_id' => $request->query('brand_id'),
-                'category_id' => $request->query('category_id'),
-            ];
-            return response()->json($this->productRepo->getProductSale($perPage, $filters));
-        }
-        return response()->json($this->productRepo->getProductSale($perPage));
+        $filters = [
+            'brand_id' => $request->query('brand_id'),
+            'category_id' => $request->query('category_id'),
+        ];
+        return response()->json(
+            $this->productRepo->getProductSale($perPage, $filters)
+        );
     }
 
     // lấy ra sản phẩm mới thêm
-    public function productNew()
+    public function productNew(Request $request)
     {
-        return $this->productRepo->getProductNew();
+        $category = $request->query('category');
+        return $this->productRepo->getProductNew($category);
     }
 
     // Lấy danh sách biến thể kèm thông tin sản phẩm phục vụ nhập kho & bán hàng
@@ -172,7 +172,6 @@ class ProductController extends Controller
                 }
                 return true;
             });
-
             return response()->json([
                 'message' => 'Thêm sản phẩm thành công',
                 'type' => 'success',
@@ -194,9 +193,6 @@ class ProductController extends Controller
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(ProductUpdateValidation $request, string $id)
     {
         $product = $this->productRepo->find($id);
@@ -210,7 +206,6 @@ class ProductController extends Controller
         $uploadedFiles = [];
         try {
             DB::transaction(function () use ($request, $product, &$uploadedFiles) {
-                // 1. Cập nhật Thumbnail
                 if ($request->hasFile('thumbnail')) {
                     $this->uploadService->deleteFile($product->thumbnail);
                     $product->thumbnail = $this->uploadService->uploadSingle($request->file('thumbnail'), 'products');
@@ -218,7 +213,6 @@ class ProductController extends Controller
                         $uploadedFiles[] = $product->thumbnail;
                     }
                 }
-                // 2. Cập nhật Gallery Images
                 $newImages = $this->uploadService->uploadMultiple($request->file('images'), 'products');
                 if (!empty($newImages)) {
                     array_push($uploadedFiles, ...$newImages);
@@ -253,7 +247,6 @@ class ProductController extends Controller
                 }
                 $product->save();
 
-                // 5. Đồng bộ biến thể thông minh 
                 $variants = is_array($request->variants)
                     ? $request->variants
                     : json_decode($request->variants, true);
@@ -286,7 +279,6 @@ class ProductController extends Controller
                             $retainedVariantIds[] = $newVariant->id;
                         }
                     }
-                    // Xóa những biến thể bị gỡ khỏi form
                     foreach ($existingVariants as $oldId => $oldVariant) {
                         if (!in_array($oldId, $retainedVariantIds)) {
                             $oldVariant->delete();

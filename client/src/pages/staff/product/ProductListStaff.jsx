@@ -1,14 +1,15 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Search, Plus, RotateCcw, Package } from "lucide-react";
+import { Search, Plus, RotateCcw, Package,  } from "lucide-react";
 import { useGetStaffProductsQuery } from "../../../store/api/product";
 import { useGetBrandsQuery } from "../../../store/api/brandApi";
-import { useGetCategoryQuery } from "../../../store/api/CategoryApi";
+
 import Loading from "../../../components/common/feedback/Loading";
 import Pagination from "../../../components/common/pagination/Pagination";
 
 import Error from "../../../components/common/feedback/Error";
 import { ProductListManager } from "./ProductListManager";
+import { useGetCategoryQuery } from "@/store/api/categoryApi";
 
 const ProductListStaff = () => {
   const [search, setSearch] = useState("");
@@ -69,18 +70,18 @@ const ProductListStaff = () => {
             </span>
           </div>
           <p className="text-xs text-slate-500 mt-1">
-            Tra cứu, lọc danh mục, theo dõi tồn kho và cập nhật thông tin biến
-            thể
+            Theo dõi sản phẩm và cập nhật
           </p>
         </div>
 
         <Link
           to="/staff/products/create"
-          className="inline-flex items-center justify-center gap-2 bg-slate-900 hover:bg-slate-800 text-white px-4 py-2.5 rounded-lg text-xs font-semibold shadow-sm transition-all shrink-0"
+          className="text-xs text-[#009b7a] hover:text-[#006b5a] hover:underline font-semibold flex items-center gap-1 cursor-pointer"
         >
-          <Plus size={16} />
+          <Plus size={14} />
           <span>Thêm sản phẩm mới</span>
         </Link>
+       
       </div>
 
       <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm space-y-3">
@@ -145,7 +146,7 @@ const ProductListStaff = () => {
               className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs font-semibold text-slate-700 outline-none focus:bg-white focus:border-slate-600 transition-all cursor-pointer"
             >
               <option value="">-- Khuyến mãi --</option>
-              <option value="1">🔥 Đang Flash Sale</option>
+              <option value="1">Đang Flash Sale</option>
               <option value="0">Không Sale</option>
             </select>
           </div>

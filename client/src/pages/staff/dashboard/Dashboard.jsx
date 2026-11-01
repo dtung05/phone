@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { TrendingUp, RotateCcw, AlertCircle, Filter } from "lucide-react";
-
+import { RotateCcw, AlertCircle, Filter } from "lucide-react";
 import { useGetDashboardStatsQuery } from "../../../store/api/dashboardApi";
 import KpiDashboard from "@/components/staff/dashboard/KpiDashboard";
 import DashboardRevenueBreakDown from "@/components/staff/dashboard/DashboardRevenueBreakDown";
 import ProductTopSales from "@/components/staff/dashboard/ProductTopSales";
 import { useForm } from "react-hook-form";
 import { getPresetRange } from "@/utils/date_time";
+import Button from "@/components/common/form/Button";
 
 const Dashboard = () => {
- 
   const [activePreset, setActivePreset] = useState("30days");
   const initialRange = getPresetRange("30days");
-
   const [filterParams, setFilterParams] = useState(initialRange);
 
   const { data, isLoading, isFetching, isError, refetch } =
@@ -20,6 +18,7 @@ const Dashboard = () => {
       start_date: filterParams.start,
       end_date: filterParams.end,
     });
+
   const stats = data?.data || {};
   const kpi = stats.kpi || {};
   const topProducts = stats.top_products || [];
@@ -40,123 +39,100 @@ const Dashboard = () => {
   const onSubmit = (data) => {
     setFilterParams({ start: data.start_date, end: data.end_date });
   };
+
   return (
-    <div className="p-6 max-w-7xl mx-auto space-y-6">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-5 rounded-xl border border-slate-200 shadow-xs">
+    <div className="space-y-4 pb-12">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 pb-2 border-b border-slate-200">
         <div>
-          <h1 className="text-xl font-bold text-slate-800 flex items-center gap-2">
-            <TrendingUp className="w-6 h-6 text-emerald-600" />
-            Báo cáo Doanh thu & Lợi nhuận
+          <h1 className="text-lg font-semibold text-slate-900 tracking-tight">
+            Báo cáo doanh thu & Lợi nhuận
           </h1>
-          <p className="text-xs text-slate-500 mt-1">
-            Theo dõi dòng tiền, giá vốn bình quân và lợi nhuận gộp thực tế
+          <p className="text-xs text-slate-500">
+            Theo dõi dòng tiền, giá vốn bình quân và kết quả kinh doanh thực tế
           </p>
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
-          <div className="inline-flex rounded-lg border border-slate-200 p-0.5 bg-slate-50">
-            <button
-              type="button"
-              onClick={() => handleApplyPreset("today")}
-              className={`px-2.5 py-1.5 text-xs font-semibold rounded-md transition-colors ${
-                activePreset === "today"
-                  ? "bg-white text-emerald-700 shadow-xs"
-                  : "text-slate-600 hover:text-slate-900"
-              }`}
-            >
-              Hôm nay
-            </button>
-            <button
-              type="button"
-              onClick={() => handleApplyPreset("7days")}
-              className={`px-2.5 py-1.5 text-xs font-semibold rounded-md transition-colors ${
-                activePreset === "7days"
-                  ? "bg-white text-emerald-700 shadow-xs"
-                  : "text-slate-600 hover:text-slate-900"
-              }`}
-            >
-              7 ngày
-            </button>
-            <button
-              type="button"
-              onClick={() => handleApplyPreset("30days")}
-              className={`px-2.5 py-1.5 text-xs font-semibold rounded-md transition-colors ${
-                activePreset === "30days"
-                  ? "bg-white text-emerald-700 shadow-xs"
-                  : "text-slate-600 hover:text-slate-900"
-              }`}
-            >
-              30 ngày
-            </button>
-            <button
-              type="button"
-              onClick={() => handleApplyPreset("this_month")}
-              className={`px-2.5 py-1.5 text-xs font-semibold rounded-md transition-colors ${
-                activePreset === "this_month"
-                  ? "bg-white text-emerald-700 shadow-xs"
-                  : "text-slate-600 hover:text-slate-900"
-              }`}
-            >
-              Tháng này
-            </button>
+          <div className="inline-flex rounded border border-slate-200 p-0.5 bg-slate-50 text-xs">
+            {[
+              { id: "today", label: "Hôm nay" },
+              { id: "7days", label: "7 ngày" },
+              { id: "30days", label: "30 ngày" },
+              { id: "this_month", label: "Tháng này" },
+            ].map((p) => (
+              <button
+                key={p.id}
+                type="button"
+                onClick={() => handleApplyPreset(p.id)}
+                className={`px-2.5 py-1 rounded transition-colors ${
+                  activePreset === p.id
+                    ? "bg-white text-slate-900 font-medium shadow-2xs"
+                    : "text-slate-600 hover:text-slate-900"
+                }`}
+              >
+                {p.label}
+              </button>
+            ))}
           </div>
+
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="flex items-center gap-2 text-xs"
+            className="flex items-center gap-1.5 text-xs"
           >
             <input
               type="date"
               {...register("start_date")}
-              className="px-2.5 py-1.5 border border-slate-200 rounded-lg text-slate-700 bg-white focus:outline-hidden focus:border-emerald-600"
+              className="px-2 py-1 border border-slate-200 focus:border-emerald-600 rounded text-slate-700 bg-white outline-none"
             />
-            <span className="text-slate-400 font-medium">đến</span>
+            <span className="text-slate-400">—</span>
             <input
               type="date"
               {...register("end_date")}
-              className="px-2.5 py-1.5 border border-slate-200 rounded-lg text-slate-700 bg-white focus:outline-hidden focus:border-emerald-600"
+              className="px-2 py-1 border border-slate-200 focus:border-emerald-600 rounded text-slate-700 bg-white outline-none"
             />
-            <button
+            <Button
               type="submit"
-              className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg flex items-center gap-1.5 transition-colors shadow-xs"
+              variant="primary"
+              size="xs"
+              icon={Filter}
             >
-              <Filter className="w-3.5 h-3.5" />
               Lọc
-            </button>
+            </Button>
           </form>
 
-          <button
+          <Button
             type="button"
             onClick={() => refetch()}
             disabled={isFetching}
-            title="Làm mới dữ liệu"
-            className="p-1.5 border border-slate-200 rounded-lg hover:bg-slate-50 text-slate-600 disabled:opacity-50 transition-colors"
+            variant="secondary"
+            size="xs"
+            title="Tải lại dữ liệu"
           >
             <RotateCcw
-              className={`w-4 h-4 ${isFetching ? "animate-spin" : ""}`}
+              size={13}
+              className={isFetching ? "animate-spin text-slate-600" : ""}
             />
-          </button>
+          </Button>
         </div>
       </div>
 
-      {/* loading khung */}
       {isLoading && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 animate-pulse">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 animate-pulse">
           {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="h-32 bg-slate-200 rounded-xl"></div>
+            <div key={i} className="h-24 bg-slate-100 rounded-md"></div>
           ))}
         </div>
       )}
 
-      {/* Error State */}
       {isError && (
-        <div className="p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 flex items-center justify-between">
-          <div className="flex items-center gap-2 text-sm font-medium">
-            <AlertCircle className="w-5 h-5 text-red-600" />
-            Không thể tải dữ liệu báo cáo doanh thu. Vui lòng thử lại!
+        <div className="p-3 bg-rose-50 border border-rose-200 rounded-md text-rose-700 flex items-center justify-between text-xs">
+          <div className="flex items-center gap-2">
+            <AlertCircle size={15} className="text-rose-600 shrink-0" />
+            <span>Không thể tải dữ liệu báo cáo doanh thu. Vui lòng thử lại!</span>
           </div>
           <button
             onClick={() => refetch()}
-            className="text-xs bg-red-600 text-white px-3 py-1.5 rounded-lg hover:bg-red-700 font-semibold"
+            className="px-2.5 py-1 bg-rose-600 text-white rounded hover:bg-rose-700 font-medium"
           >
             Thử lại
           </button>
@@ -166,10 +142,9 @@ const Dashboard = () => {
       {!isLoading && !isError && (
         <>
           <KpiDashboard kpi={kpi} />
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* cột cơ cấu doanh thu */}
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <DashboardRevenueBreakDown kpi={kpi} stats={stats} />
-            {/* // sản phẩm bán chạy nhất */}
             <ProductTopSales topProducts={topProducts} />
           </div>
         </>
