@@ -12,7 +12,7 @@ const toastSlice = createSlice({
       state.message = action.payload.message;
       state.type = action.payload.type || "success";
     },
-    hideToast: (state, action) => {
+    hideToast: (state) => {
       state.message = null;
       state.type = null;
     },
