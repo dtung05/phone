@@ -297,7 +297,7 @@ class ProductFactory extends Factory
             'review_video' => fake()->randomElement($reviews),
             'is_sale' => $isSale,
             'discount_perventage' => $isSale ? fake()->numberBetween(10, 40) : 0,
-            'specifications' => json_encode(fake()->randomElement($phoneSpecifications)),
+            'specifications' => fake()->randomElement($phoneSpecifications),
             'created_at' => $now,
             'updated_at' => $now,
         ];
@@ -322,10 +322,10 @@ class ProductFactory extends Factory
                     'selling_price' => $price,
                     'average_cost' => (int) ($price * 0.82),
                     'stock_quantity' => fake()->numberBetween(20, 100),
-                    'attributes' => json_encode([
+                    'attributes' => [
                         'color' => fake()->randomElement($colors),
                         'storage' => fake()->randomElement($storages),
-                    ]),
+                    ],
                     'created_at' => now(),
                     'updated_at' => now(),
                 ];

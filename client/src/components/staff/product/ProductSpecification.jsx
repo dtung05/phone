@@ -1,10 +1,11 @@
 import React from "react";
 import { getImageUrl } from "../../../utils/image";
 import { ExternalLink } from "lucide-react";
+import { normalizeSpecifications, normalizeImages } from "../../../utils/product";
 
 const ProductSpecification = ({ product }) => {
-  const images = JSON.parse(product.images || "[]");
-  const specifications = JSON.parse(product.specifications || [])
+  const images = normalizeImages(product?.images);
+  const specifications = normalizeSpecifications(product?.specifications);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 font-sans">
@@ -46,8 +47,8 @@ const ProductSpecification = ({ product }) => {
             Ảnh đại diện
           </p>
           <img
-            src={getImageUrl(product.thumbnail)}
-            alt={product.product_name}
+            src={getImageUrl(product?.thumbnail)}
+            alt={product?.product_name || "product"}
             className="w-32 h-32 object-contain border border-gray-200/60 rounded-xl p-2 bg-gray-50/50"
             onError={(e) => {
               e.target.src = "https://placehold.co/100x100?text=No+Img";
@@ -76,7 +77,7 @@ const ProductSpecification = ({ product }) => {
           </div>
         )}
 
-        {product.review_video && (
+        {product?.review_video && (
           <div>
             <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-2">
               Video Review

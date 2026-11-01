@@ -1,18 +1,7 @@
 import { useState } from "react";
 import { Upload, X } from "lucide-react";
 
-const getImageUrl = (path) => {
-  if (!path) return "";
-  if (
-    path.startsWith("http://") ||
-    path.startsWith("https://") ||
-    path.startsWith("blob:") ||
-    path.startsWith("data:")
-  ) {
-    return path;
-  }
-  return `http://127.0.0.1:8000/storage/${path.replace(/^\/+/, "")}`;
-};
+import { getImageUrl } from "@/utils/image";
 
 const ProductImageUpload = ({
   register,
@@ -72,10 +61,9 @@ const ProductImageUpload = ({
           Hình ảnh sản phẩm
         </h2>
 
-        {/* THUMBNAIL */}
         <div className="space-y-2">
           <label className="block text-xs font-semibold text-slate-700">
-            Ảnh đại diện (Thumbnail) <span className="text-red-500">*</span>
+            Ảnh đại diện  <span className="text-red-500">*</span>
           </label>
 
           {currentThumbnail ? (
@@ -117,10 +105,9 @@ const ProductImageUpload = ({
           )}
         </div>
 
-        {/* GALLERY CHI TIẾT */}
         <div className="space-y-2 pt-3 border-t border-slate-100">
           <label className="block text-xs font-semibold text-slate-700">
-            Bộ ảnh chi tiết (Gallery)
+            Bộ ảnh chi tiết 
           </label>
           <label className="flex items-center justify-center p-2.5 border border-dashed border-slate-300 rounded hover:border-slate-400 cursor-pointer bg-slate-50 text-slate-600 text-xs font-medium gap-2 transition-colors">
             <Upload className="w-4 h-4 text-slate-500" />
@@ -134,10 +121,8 @@ const ProductImageUpload = ({
             />
           </label>
 
-          {/* Hiển thị cả ảnh cũ và ảnh mới chọn */}
           {(existingImages.length > 0 || galleryFiles.length > 0) && (
             <div className="grid grid-cols-3 gap-2 pt-2">
-              {/* Ảnh cũ */}
               {existingImages.map((imgPath, idx) => (
                 <div
                   key={`existing-${idx}`}
@@ -159,7 +144,6 @@ const ProductImageUpload = ({
                 </div>
               ))}
 
-              {/* Ảnh mới tải lên */}
               {galleryFiles.map((file, idx) => (
                 <div
                   key={`new-${idx}`}

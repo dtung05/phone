@@ -165,38 +165,43 @@ const ProductForm = ({
         onSubmit={handleSubmit(onSubmit)}
         className="max-w-6xl mx-auto space-y-6"
       >
-        <div className="bg-white border border-slate-200 rounded-lg p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm">
+        <div className="bg-white border border-gray-200/80 rounded-2xl p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xs font-sans">
           <div>
-            <h1 className="text-lg font-bold text-slate-800">
+            <h1 className="text-base sm:text-lg font-bold text-gray-900 tracking-tight">
               {isEdit
                 ? "Cập nhật thông tin sản phẩm"
                 : "Thêm sản phẩm công nghệ mới"}
             </h1>
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-gray-500 mt-0.5">
               {isEdit
                 ? "Chỉnh sửa thông số thiết bị, giá bán và biến thể sản phẩm"
                 : "Quản lý thông tin thiết bị, hình ảnh và biến thể sản phẩm"}
             </p>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2.5">
             <button
               type="button"
               disabled={isLoading}
               onClick={() => navigate(-1)}
-              className="px-4 py-2 text-xs font-medium text-slate-700 bg-white border border-slate-300 rounded hover:bg-slate-50 transition-colors"
+              className="px-4 py-2.5 text-xs font-semibold text-gray-700 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all cursor-pointer shadow-2xs"
             >
               Hủy thay đổi
             </button>
             <button
               type="submit"
               disabled={isLoading}
-              className="px-4 py-2 text-xs font-medium text-white bg-slate-900 rounded hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm"
+              className="px-5 py-2.5 text-xs font-semibold text-white bg-[#009b7a] rounded-xl hover:bg-[#008267] disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm hover:shadow cursor-pointer flex items-center gap-2"
             >
-              {isLoading
-                ? "Đang lưu..."
-                : isEdit
-                  ? "Cập nhật sản phẩm"
-                  : "Lưu sản phẩm"}
+              {isLoading ? (
+                <>
+                  <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  <span>Đang lưu...</span>
+                </>
+              ) : isEdit ? (
+                "Cập nhật sản phẩm"
+              ) : (
+                "Lưu sản phẩm"
+              )}
             </button>
           </div>
         </div>
@@ -231,7 +236,11 @@ const ProductForm = ({
                   )}
                 </div>
 
-                <BrandCategorySelect register={register} errors={errors} />
+                <BrandCategorySelect
+                  control={control}
+                  register={register}
+                  errors={errors}
+                />
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
@@ -261,14 +270,15 @@ const ProductForm = ({
                   </div>
                 </div>
 
-                <div className="p-3.5 bg-red-50/70 border border-red-200/80 rounded-lg flex items-center justify-between gap-4">
+                <div className="p-3.5 rounded-lg flex items-center justify-between gap-4">
                   <div>
                     <p className="text-xs font-bold text-red-900 flex items-center gap-1.5">
                       <span className="w-2 h-2 rounded-full bg-red-600"></span>
-                      Bật hiển thị Khuyến mãi / Flash Sale (is_sale)
+                      Bật hiển thị Flash Sale
                     </p>
                     <p className="text-[11px] text-red-700/80 mt-0.5">
-                      Khi kích hoạt, sản phẩm sẽ xuất hiện tại mục "Deal Sốc Mỗi Ngày" trên trang chủ và trang Sản phẩm giảm giá.
+                      Khi kích hoạt, sản phẩm sẽ xuất hiện tại mục "Deal Sốc Mỗi
+                      Ngày" .
                     </p>
                   </div>
                   <label className="relative inline-flex items-center cursor-pointer shrink-0">
@@ -312,14 +322,14 @@ const ProductForm = ({
                 variantFields={variantFields}
                 removeVariant={removeVariant}
                 register={register}
+                control={control}
                 errors={errors}
               />
             </div>
 
-            {/* THÔNG SỐ KỸ THUẬT */}
             <div className="bg-white border border-slate-200 rounded-lg p-5 space-y-3 shadow-sm">
               <h2 className="text-sm font-semibold text-slate-800 border-b border-slate-100 pb-3">
-                Thông số kỹ thuật chi tiết (JSON)
+                Thông số kỹ thuật chi tiết
               </h2>
               <textarea
                 {...register("specifications", {

@@ -172,7 +172,6 @@ class ProductController extends Controller
                 }
                 return true;
             });
-
             return response()->json([
                 'message' => 'Thêm sản phẩm thành công',
                 'type' => 'success',
@@ -194,9 +193,6 @@ class ProductController extends Controller
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(ProductUpdateValidation $request, string $id)
     {
         $product = $this->productRepo->find($id);
@@ -210,7 +206,6 @@ class ProductController extends Controller
         $uploadedFiles = [];
         try {
             DB::transaction(function () use ($request, $product, &$uploadedFiles) {
-                // 1. Cập nhật Thumbnail
                 if ($request->hasFile('thumbnail')) {
                     $this->uploadService->deleteFile($product->thumbnail);
                     $product->thumbnail = $this->uploadService->uploadSingle($request->file('thumbnail'), 'products');
@@ -218,7 +213,6 @@ class ProductController extends Controller
                         $uploadedFiles[] = $product->thumbnail;
                     }
                 }
-                // 2. Cập nhật Gallery Images
                 $newImages = $this->uploadService->uploadMultiple($request->file('images'), 'products');
                 if (!empty($newImages)) {
                     array_push($uploadedFiles, ...$newImages);
@@ -253,7 +247,6 @@ class ProductController extends Controller
                 }
                 $product->save();
 
-                // 5. Đồng bộ biến thể thông minh 
                 $variants = is_array($request->variants)
                     ? $request->variants
                     : json_decode($request->variants, true);
@@ -286,7 +279,6 @@ class ProductController extends Controller
                             $retainedVariantIds[] = $newVariant->id;
                         }
                     }
-                    // Xóa những biến thể bị gỡ khỏi form
                     foreach ($existingVariants as $oldId => $oldVariant) {
                         if (!in_array($oldId, $retainedVariantIds)) {
                             $oldVariant->delete();

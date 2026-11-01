@@ -74,7 +74,7 @@ class ProductSeeder extends Seeder
                 'brand_id' => fake()->randomElement($brands),
                 'category_id' => fake()->randomElement($categories),
                 'thumbnail' => fake()->randomElement($downloaded),
-                'images' => json_encode($images),
+                'images' => $images,
             ];
         })->create();
     }

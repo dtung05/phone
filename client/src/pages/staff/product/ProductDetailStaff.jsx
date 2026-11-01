@@ -167,7 +167,12 @@ const ProductDetailStaff = () => {
       </div>
 
       <div className="transition-all">
-        {activeTab === "variants" && <ProductVariant variants={variants} />}
+        {activeTab === "variants" && (
+          <ProductVariant
+            variants={variants}
+            discount_perventage={product.discount_perventage}
+          />
+        )}
 
         {activeTab === "reviews" && (
           <ProductReview

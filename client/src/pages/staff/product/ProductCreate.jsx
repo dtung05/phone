@@ -21,7 +21,7 @@ const ProductCreate = () => {
     variants: [
       {
         selling_price: "",
-        attributes_json: '{\n  "storage": "128GB",\n  "color": "Đen"\n}',
+        attributes_json: '{"storage": "128GB", "color": "Đen"}',
       },
     ],
   };

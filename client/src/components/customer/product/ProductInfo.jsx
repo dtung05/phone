@@ -125,12 +125,11 @@ export default function ProductInfo({ data = {} }) {
     }
   };
 
-  const currentPrice = selectedVariant?.selling_price || 0;
+  const basePrice = Number(selectedVariant?.selling_price) || 0;
   const discountRate = Number(discount_perventage) || 0;
   const hasDiscount = discountRate > 0;
-  const originalPrice = hasDiscount
-    ? Math.round(currentPrice / (1 - discountRate / 100))
-    : currentPrice;
+  const finalPrice = hasDiscount ? Math.round(basePrice - (basePrice * discountRate) / 100) : basePrice;
+  const originalPrice = basePrice;
   const stockCount = selectedVariant?.stock_quantity ?? 0;
   const isOutOfStock = stockCount <= 0;
 
@@ -176,7 +175,7 @@ export default function ProductInfo({ data = {} }) {
 
       <div className="bg-[#f8fafc] border border-gray-200/80 rounded-2xl p-4 flex flex-wrap items-baseline gap-3">
         <span className="text-2xl sm:text-3xl font-extrabold text-red-600">
-          {formatPrice(currentPrice)}
+          {formatPrice(finalPrice)}
         </span>
 
         {hasDiscount && (

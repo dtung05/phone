@@ -60,7 +60,12 @@ class OrderService
             foreach ($productInfomation as &$item) {
                 $id = $item['id'];
                 $item['quantity'] = $quantityMap[$id];
-                $item['total_amount'] = $item['quantity'] * $item['selling_price'];
+                $discountRate = (float) ($item->product->discount_perventage ?? 0);
+                $unitPrice = $discountRate > 0
+                    ? (int) round($item['selling_price'] * (1 - $discountRate / 100))
+                    : (int) $item['selling_price'];
+                $item['unit_price'] = $unitPrice;
+                $item['total_amount'] = $item['quantity'] * $unitPrice;
                 $total_amount +=  $item['total_amount'];
             }
             unset($item);

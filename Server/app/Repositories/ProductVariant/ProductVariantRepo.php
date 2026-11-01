@@ -20,7 +20,7 @@ class ProductVariantRepo extends BaseRepository implements ProductVariantRepoInt
     }
     public function getProductVariants($ids)
     {
-        return  $this->model->with('product:id,product_name,thumbnail')
+        return  $this->model->with('product:id,product_name,thumbnail,discount_perventage')
             ->whereIn('id', $ids)->select('id', 'product_id', 'selling_price', 'attributes')->get();
     }
 
