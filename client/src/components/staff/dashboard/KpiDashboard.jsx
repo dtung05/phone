@@ -1,79 +1,52 @@
 import formatPrice from "@/utils/price";
-import { DollarSign, Package, PiggyBank, ShoppingBag } from "lucide-react";
 
 const KpiDashboard = ({ kpi }) => {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs relative overflow-hidden">
-        <div className="flex items-center justify-between">
-          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-            Doanh thu thuần
-          </span>
-        </div>
-        <div className="mt-3">
-          <div className="text-2xl font-black text-slate-800">
-            {formatPrice(kpi.total_revenue)}
-          </div>
-          <div className="flex items-center gap-1.5 text-xs text-slate-500 mt-1">
-            <span className="inline-block w-2 h-2 rounded-full bg-emerald-500"></span>
-            <span>Đơn giao thành công, đã thanh toán</span>
-          </div>
-        </div>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+      <div className="bg-white p-4 rounded-md border border-slate-200">
+        <p className="text-xs text-slate-500 font-medium">Doanh thu thuần</p>
+        <p className="text-xl font-bold text-slate-900 mt-1 font-mono">
+          {formatPrice(kpi.total_revenue)}
+        </p>
+        <p className="text-[11px] text-slate-400 mt-1 flex items-center gap-1.5">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+          Đã thanh toán & hoàn tất
+        </p>
       </div>
 
-      <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs relative overflow-hidden">
-        <div className="flex items-center justify-between">
-          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-            Tổng giá vốn
-          </span>
-        </div>
-        <div className="mt-3">
-          <div className="text-2xl font-black text-slate-800">
-            {formatPrice(kpi.total_cogs)}
-          </div>
-          <div className="text-xs text-slate-500 mt-1">
-            Giá vốn nhập sản phẩm về
-          </div>
-        </div>
+      <div className="bg-white p-4 rounded-md border border-slate-200">
+        <p className="text-xs text-slate-500 font-medium">Tổng giá vốn hàng bán</p>
+        <p className="text-xl font-bold text-slate-900 mt-1 font-mono">
+          {formatPrice(kpi.total_cogs)}
+        </p>
+        <p className="text-[11px] text-slate-400 mt-1">
+          Theo giá nhập bình quân kho
+        </p>
       </div>
 
-      <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs relative overflow-hidden">
-        <div className="flex items-center justify-between">
-          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-            Lợi nhuận ròng
-          </span>
-        </div>
-        <div className="mt-3">
-          <div className="text-2xl font-black text-emerald-700">
-            {formatPrice(kpi.gross_profit)}
-          </div>
-          <div className="flex items-center gap-2 mt-1">
-            <span className="text-xs text-slate-400">(Doanh thu - Vốn)</span>
-          </div>
-        </div>
+      <div className="bg-white p-4 rounded-md border border-slate-200">
+        <p className="text-xs text-slate-500 font-medium">Lợi nhuận gộp</p>
+        <p className="text-xl font-bold text-emerald-700 mt-1 font-mono">
+          {formatPrice(kpi.gross_profit)}
+        </p>
+        <p className="text-[11px] text-slate-400 mt-1">
+          Doanh thu thuần trừ giá vốn
+        </p>
       </div>
 
-      <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs relative overflow-hidden">
-        <div className="flex items-center justify-between">
-          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-            Đơn hàng hoàn tất
+      <div className="bg-white p-4 rounded-md border border-slate-200">
+        <p className="text-xs text-slate-500 font-medium">Đơn hàng hoàn tất</p>
+        <div className="flex items-baseline gap-1.5 mt-1">
+          <span className="text-xl font-bold text-slate-900 font-mono">
+            {kpi.completed_orders_count || 0}
           </span>
-        
+          <span className="text-xs text-slate-400 font-mono">
+            / {kpi.total_orders_count || 0} tổng đơn
+          </span>
         </div>
-        <div className="mt-3">
-          <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-black text-slate-800">
-              {kpi.completed_orders_count}
-            </span>
-            <span className="text-xs text-slate-500">
-              / {kpi.total_orders_count} tổng đơn
-            </span>
-          </div>
-          <div className="text-xs text-red-600 mt-1 flex items-center justify-between">
-            <span>Hủy: {kpi.cancelled_orders_count} đơn</span>
-            <span>Tổng tiền: {formatPrice(kpi.cancelled_amount)}</span>
-          </div>
-        </div>
+        <p className="text-[11px] text-slate-400 mt-1">
+          Hủy: <span className="text-slate-600 font-medium">{kpi.cancelled_orders_count || 0}</span> ({formatPrice(kpi.cancelled_amount || 0)})
+        </p>
       </div>
     </div>
   );

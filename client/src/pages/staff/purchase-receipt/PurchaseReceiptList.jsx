@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { Plus } from "lucide-react";
 import { useGetPurchaseReceiptsQuery } from "../../../store/api/purchaseReceiptApi";
 import Pagination from "../../../components/common/pagination/Pagination";
 import PurchaseList from "../../../components/staff/purchase/PurchaseList";
 import PurchaseSearch from "../../../components/staff/purchase/PurchaseSearch";
+import { ButtonLink } from "../../../components/common/form/Button";
 
 const PurchaseReceiptList = () => {
   const [search, setSearch] = useState("");
@@ -17,8 +17,8 @@ const PurchaseReceiptList = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearch(search);
-      setPage(1); 
-    }, 500);
+      setPage(1);
+    }, 400);
 
     return () => clearTimeout(timer);
   }, [search]);
@@ -41,31 +41,30 @@ const PurchaseReceiptList = () => {
   const currentPage = response?.current_page || 1;
 
   return (
-    <div className="space-y-6 font-sans">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white border border-gray-200/85 p-5 sm:p-6 rounded-2xl shadow-xs">
+    <div className="space-y-5 pb-10">
+      <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-3">
-            <h1 className="text-lg sm:text-xl font-bold text-gray-950 tracking-tight">
-              Phiếu nhập kho
+          <div className="flex items-center gap-2.5">
+            <h1 className="text-xl font-bold text-slate-800 tracking-tight">
+              Quản lý phiếu nhập kho
             </h1>
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-semibold bg-gray-100 text-gray-700 font-mono border border-gray-200">
-              {total} phiếu
+            <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+              {total} phiếu nhập
             </span>
           </div>
-          <p className="text-xs sm:text-sm text-gray-500 mt-1">
-            Quản lý và theo dõi lịch sử các đợt nhập hàng từ nhà cung cấp
+          <p className="text-xs text-slate-500 mt-1">
+            Ghi nhận và quản lý các đợt nhập hàng từ đối tác nhà cung cấp
           </p>
         </div>
 
-        <div className="flex items-center gap-2.5">
-          <Link
-            to="/staff/purchase-receipts/create"
-            className="inline-flex items-center justify-center gap-2 bg-[#009b7a] hover:bg-[#008267] active:bg-[#007057] text-white px-4.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold shadow-sm transition-all cursor-pointer"
-          >
-            <Plus size={16} strokeWidth={2.5} />
-            <span>Lập phiếu nhập kho</span>
-          </Link>
-        </div>
+        <ButtonLink
+          to="/staff/purchase-receipts/create"
+          variant="primary"
+          size="md"
+          icon={Plus}
+        >
+          Lập phiếu nhập kho
+        </ButtonLink>
       </div>
 
       <PurchaseSearch
@@ -79,22 +78,20 @@ const PurchaseReceiptList = () => {
         setToDate={setToDate}
       />
 
-      <div className="space-y-4">
-        <PurchaseList receipts={receipts} isLoading={isLoading} />
+      <PurchaseList receipts={receipts} isLoading={isLoading} />
 
-        {lastPage > 1 && (
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2 px-1">
-            <p className="text-xs sm:text-sm text-gray-500 font-medium">
-              Trang <strong className="text-gray-900 font-bold">{currentPage}</strong> trên <strong className="text-gray-900 font-bold">{lastPage}</strong>
-            </p>
-            <Pagination
-              currentPage={currentPage}
-              lastPage={lastPage}
-              onPageChange={setPage}
-            />
-          </div>
-        )}
-      </div>
+      {lastPage > 1 && (
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
+          <p className="text-xs text-slate-500">
+            Trang <strong>{currentPage}</strong> trên <strong>{lastPage}</strong>
+          </p>
+          <Pagination
+            currentPage={currentPage}
+            lastPage={lastPage}
+            onPageChange={setPage}
+          />
+        </div>
+      )}
     </div>
   );
 };

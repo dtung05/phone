@@ -20,8 +20,8 @@ class ProductFactory extends Factory
      */
     public function definition(): array
     {
-        
-        
+
+
         $phoneNames = [
             'Apple iPhone 17 Pro Max 256GB Titan Đen Chính Hãng',
             'Apple iPhone 17 Pro 512GB Titan Trắng Chính Hãng',
@@ -61,7 +61,7 @@ class ProductFactory extends Factory
             "https://www.youtube.com/embed/0A4wOtCVgKI?si=KuCJHSCRxtVxKnTZ",
             "https://www.youtube.com/embed/5FCGTTfu3Us?si=tFcnIUMiSt1VE4Wv"
         ];
-       
+
         $phoneSpecifications = [
             [
                 'Màn hình: AMOLED 6.9 inch',
@@ -291,7 +291,6 @@ class ProductFactory extends Factory
         $now = now();
         $isSale = fake()->randomElement([0, 1]);
         return [
-           
             'product_name' => $name,
             'slug' => $slug,
             'review_video' => fake()->randomElement($reviews),
@@ -315,17 +314,17 @@ class ProductFactory extends Factory
             $storages = ['128GB', '256GB', '512GB', 'Tiêu chuẩn'];
             $variants = [];
             $variantCount = fake()->numberBetween(3, 5);
-            for ($i = 0; $i < $variantCount ; $i++) {
+            for ($i = 0; $i < $variantCount; $i++) {
                 $price = fake()->numberBetween(600, 35000) * 1000;
                 $variants[] = [
                     'product_id' => $product->id,
                     'selling_price' => $price,
                     'average_cost' => (int) ($price * 0.82),
                     'stock_quantity' => fake()->numberBetween(20, 100),
-                    'attributes' => [
+                    'attributes' => json_encode([
                         'color' => fake()->randomElement($colors),
                         'storage' => fake()->randomElement($storages),
-                    ],
+                    ]),
                     'created_at' => now(),
                     'updated_at' => now(),
                 ];
