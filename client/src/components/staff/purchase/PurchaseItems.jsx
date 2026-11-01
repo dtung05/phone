@@ -2,19 +2,19 @@ import { Trash2 } from "lucide-react";
 import { getImageUrl } from "../../../utils/image";
 import { formatPrice } from "../../../utils/price";
 
-const PurchaseItems = ({fields ,watchItems,register  }) => {
+const PurchaseItems = ({ fields, watchItems, register, remove }) => {
   return (
     <div className="overflow-x-auto">
-      <table className="w-full text-left border-collapse">
+      <table className="w-full text-left border-collapse min-w-[700px]">
         <thead>
           <tr className="bg-slate-50 border-b border-slate-200 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
             <th className="py-2.5 px-3 w-10 text-center">STT</th>
             <th className="py-2.5 px-3">Sản phẩm & Biến thể</th>
-            <th className="py-2.5 px-3 text-center">Tồn cũ</th>
+            <th className="py-2.5 px-3 text-center w-20">Tồn cũ</th>
             <th className="py-2.5 px-3 w-28 text-center">SL Nhập</th>
             <th className="py-2.5 px-3 w-36 text-right">Đơn giá vốn</th>
-            <th className="py-2.5 px-3 text-right">Thành tiền</th>
-            <th className="py-2.5 px-3 w-10 text-center">Xóa</th>
+            <th className="py-2.5 px-3 w-40 text-right whitespace-nowrap">Thành tiền</th>
+            <th className="py-2.5 px-3 w-12 text-center">Xóa</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-slate-100 text-xs">
@@ -36,7 +36,7 @@ const PurchaseItems = ({fields ,watchItems,register  }) => {
                 </td>
 
                 <td className="py-3 px-3">
-                  <div className="flex items-center gap-2.5 min-w-[200px]">
+                  <div className="flex items-center gap-2.5 min-w-[180px]">
                     <img
                       src={getImageUrl(p?.thumbnail)}
                       alt={p?.product_name}
@@ -46,7 +46,7 @@ const PurchaseItems = ({fields ,watchItems,register  }) => {
                       }}
                     />
                     <div>
-                      <p className="font-bold text-slate-900 text-xs">
+                      <p className="font-bold text-slate-900 text-xs line-clamp-1">
                         {p?.product_name || `Sản phẩm #${v?.product_id}`}
                       </p>
                       <div className="flex flex-wrap gap-1 mt-0.5">
@@ -100,15 +100,16 @@ const PurchaseItems = ({fields ,watchItems,register  }) => {
                   />
                 </td>
 
-                <td className="py-3 px-3 text-right font-bold font-mono text-slate-900">
+                <td className="py-3 px-3 text-right font-bold font-mono text-slate-900 whitespace-nowrap">
                   {formatPrice(itemTotal)}
                 </td>
 
                 <td className="py-3 px-3 text-center">
                   <button
                     type="button"
-                    onClick={() => remove(idx)}
+                    onClick={() => remove && remove(idx)}
                     className="p-1 text-slate-400 hover:text-red-600 rounded transition-colors cursor-pointer"
+                    title="Xóa dòng"
                   >
                     <Trash2 size={14} />
                   </button>

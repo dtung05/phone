@@ -1,9 +1,8 @@
-const formatPrice = (price) =>
-  new Intl.NumberFormat("vi-VN", {
-    style: "currency",
-    currency: "VND",
-  }).format(price || 0);
-  
+const formatPrice = (price) => {
+  const num = Number(price) || 0;
+  return new Intl.NumberFormat("vi-VN").format(num) + " đ";
+};
+
 const readNumberToVietnameseWords = (number) => {
   if (!number || isNaN(number) || number === 0) return "Không đồng";
   const digits = [

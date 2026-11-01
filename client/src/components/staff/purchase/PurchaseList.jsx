@@ -5,59 +5,60 @@ import formatPrice from "../../../utils/price";
 
 const PurchaseList = ({ isLoading, receipts }) => {
   return (
-    <div className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
+    <div className="bg-white border border-gray-200/80 rounded-2xl shadow-xs overflow-hidden font-sans">
       {isLoading ? (
-        <div className="py-16">
+        <div className="py-20">
           <Loading />
         </div>
-      ) : receipts.length === 0 ? (
-        <div className="py-16 text-center space-y-3">
-          <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center mx-auto text-slate-400">
-            <FileText size={24} />
+      ) : !receipts || receipts.length === 0 ? (
+        <div className="py-20 px-6 text-center space-y-3">
+          <div className="w-14 h-14 rounded-2xl bg-gray-50 flex items-center justify-center mx-auto text-gray-300 border border-gray-100">
+            <FileText size={28} className="stroke-[1.5]" />
           </div>
-          <p className="text-sm font-semibold text-slate-700">
+          <p className="text-sm font-bold text-gray-800">
             Chưa có phiếu nhập kho nào
           </p>
-          <p className="text-xs text-slate-400 max-w-sm mx-auto">
-            Bấm "Lập phiếu nhập kho" để nhập lô hàng mới
+          <p className="text-xs text-gray-400 max-w-sm mx-auto">
+            Bấm nút <span className="text-[#009b7a] font-semibold">"Lập phiếu nhập kho"</span> để bắt đầu nhập lô hàng mới.
           </p>
         </div>
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-slate-50/75 border-b border-slate-200 text-[11px] font-bold text-slate-500 uppercase tracking-wider">
-                <th className="py-3 px-4 w-20 text-center">Số phiếu</th>
-                <th className="py-3 px-4">Nhà cung cấp</th>
-                <th className="py-3 px-4">Người lập phiếu</th>
-                <th className="py-3 px-4">Ngày nhập</th>
-                <th className="py-3 px-4 text-center">Số mặt hàng</th>
-                <th className="py-3 px-4 text-right">Tổng tiền nhập</th>
-                <th className="py-3 px-4 text-center w-28">Thao tác</th>
+              <tr className="bg-gray-50/80 border-b border-gray-200/80 text-[11px] font-bold text-gray-500 uppercase tracking-wider">
+                <th className="py-3.5 px-4 w-28 text-center">Số phiếu</th>
+                <th className="py-3.5 px-4">Nhà cung cấp</th>
+                <th className="py-3.5 px-4">Người lập phiếu</th>
+                <th className="py-3.5 px-4">Ngày nhập</th>
+                <th className="py-3.5 px-4 text-center">Số mặt hàng</th>
+                <th className="py-3.5 px-4 text-right">Tổng tiền nhập</th>
+                <th className="py-3.5 px-4 text-center w-32">Thao tác</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 text-xs text-slate-700">
+            <tbody className="divide-y divide-gray-100 text-xs text-gray-700">
               {receipts.map((item) => (
                 <tr
                   key={item.id}
-                  className="hover:bg-slate-50/80 transition-colors"
+                  className="hover:bg-gray-50/60 transition-colors group"
                 >
-                  <td className="py-3.5 px-4 text-center font-mono font-bold text-emerald-700 text-[11px]">
+                  {/* Số phiếu: Dùng font-mono, màu thương hiệu nổi bật */}
+                  <td className="py-4 px-4 text-center font-mono font-bold text-[#009b7a] text-xs">
                     #PNK-{String(item.id).padStart(4, "0")}
                   </td>
 
-                  <td className="py-3.5 px-4">
-                    <div className="flex items-center gap-2">
-                      <Building2
-                        size={15}
-                        className="text-slate-400 shrink-0"
-                      />
+                  {/* Nhà cung cấp */}
+                  <td className="py-4 px-4">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-xl bg-gray-100 flex items-center justify-center text-gray-400 shrink-0 group-hover:bg-[#009b7a]/10 group-hover:text-[#009b7a] transition-colors">
+                        <Building2 size={15} />
+                      </div>
                       <div>
-                        <p className="font-semibold text-slate-900">
+                        <p className="font-semibold text-gray-900 text-xs sm:text-sm">
                           {item.supplier?.company_name || "Nhập nội bộ / Khác"}
                         </p>
                         {item.supplier?.phone_number && (
-                          <p className="text-[11px] text-slate-400 font-mono">
+                          <p className="text-[11px] text-gray-400 font-mono mt-0.5 tracking-wide">
                             {item.supplier.phone_number}
                           </p>
                         )}
@@ -65,37 +66,42 @@ const PurchaseList = ({ isLoading, receipts }) => {
                     </div>
                   </td>
 
-                  <td className="py-3.5 px-4">
-                    <div className="flex items-center gap-1.5 text-slate-600">
-                      <User size={13} className="text-slate-400" />
-                      <span>{item.employee?.full_name || "Nhân viên"}</span>
+                  {/* Người lập */}
+                  <td className="py-4 px-4">
+                    <div className="flex items-center gap-1.5 text-gray-600 font-medium">
+                      <User size={14} className="text-gray-400 shrink-0" />
+                      <span className="text-xs text-gray-800">{item.employee?.full_name || "Nhân viên"}</span>
                     </div>
                   </td>
 
-                  <td className="py-3.5 px-4">
-                    <div className="flex items-center gap-1.5 text-slate-600">
-                      <Calendar size={13} className="text-slate-400" />
+                  {/* Ngày nhập */}
+                  <td className="py-4 px-4">
+                    <div className="flex items-center gap-1.5 text-gray-500 font-mono text-[11px]">
+                      <Calendar size={14} className="text-gray-400 shrink-0" />
                       <span>{item.received_at}</span>
                     </div>
                   </td>
 
-                  <td className="py-3.5 px-4 text-center">
-                    <span className="inline-block px-2 py-0.5 rounded-full text-[11px] font-semibold bg-slate-100 text-slate-700">
+                  {/* Số mặt hàng */}
+                  <td className="py-4 px-4 text-center">
+                    <span className="inline-block px-2.5 py-0.5 rounded-lg text-[11px] font-semibold bg-gray-100 text-gray-700 font-mono border border-gray-200/60">
                       {item.items?.length || 0} dòng
                     </span>
                   </td>
 
-                  <td className="py-3.5 px-4 text-right font-bold text-sm text-slate-900 font-mono">
-                    {formatPrice(item.total_amount)}
+                  <td className="py-4 px-4 text-right font-mono font-bold text-xs sm:text-sm text-gray-900 tracking-tight">
+                    <span className=" px-2.5 py-1 rounded-lg ">
+                      {formatPrice(item.total_amount)}
+                    </span>
                   </td>
 
-                  <td className="py-3.5 px-4 text-center">
+                  <td className="py-4 px-4 text-center">
                     <Link
                       to={`/staff/purchase-receipts/${item.id}`}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:text-emerald-700 bg-slate-100 hover:bg-emerald-50 rounded-lg transition-colors"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-gray-700 hover:text-[#009b7a] bg-gray-100 hover:bg-[#009b7a]/10 rounded-xl transition-colors cursor-pointer shadow-2xs"
                     >
-                      <Eye size={13} />
-                      <span>Chi tiết / In</span>
+                      <Eye size={14} />
+                      <span>Chi tiết</span>
                     </Link>
                   </td>
                 </tr>

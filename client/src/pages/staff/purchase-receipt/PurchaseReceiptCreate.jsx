@@ -9,6 +9,9 @@ import {
   Layers,
   CheckCircle2,
   Loader2,
+  FileText,
+  Clock,
+  Info,
 } from "lucide-react";
 import { useCreatePurchaseReceiptMutation } from "../../../store/api/purchaseReceiptApi";
 import { formatPrice } from "../../../utils/price";
@@ -24,6 +27,7 @@ const PurchaseReceiptCreate = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const today = new Date().toISOString().split("T")[0];
+
   const {
     register,
     handleSubmit,
@@ -127,151 +131,217 @@ const PurchaseReceiptCreate = () => {
   );
 
   return (
-    <div className="max-w-6xl mx-auto space-y-6 pb-12">
-      <div className="flex items-center justify-between">
+    <div className="space-y-5 pb-12">
+      {/* 1. HEADER THANH ĐIỀU HƯỚNG TRANG */}
+      <div className="bg-white border border-slate-200 rounded-xl p-4 sm:p-5 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <Link
             to="/staff/purchase-receipts"
-            className="p-2 text-slate-500 hover:text-slate-800 hover:bg-white rounded-lg border border-slate-200 shadow-2xs transition-colors"
+            className="p-2 text-slate-500 hover:text-slate-800 hover:bg-slate-50 rounded-lg border border-slate-200 shadow-2xs transition-colors shrink-0"
+            title="Quay lại danh sách"
           >
             <ArrowLeft size={16} />
           </Link>
           <div>
-            <h1 className="text-xl font-bold text-slate-800">
-              Lập Phiếu Nhập Kho Mới
-            </h1>
-            <p className="text-xs text-slate-500">
-              Nhập hàng từ đối tác phân phối và tự động cập nhật giá vốn bình
-              quân
+            <div className="flex items-center gap-2">
+              <h1 className="text-xl font-bold text-slate-800 tracking-tight">
+                Tạo phiếu nhập hàng
+              </h1>
+              <span className="bg-emerald-50 text-emerald-700 text-xs font-bold px-2.5 py-0.5 rounded-full border border-emerald-200">
+                Phiếu mới
+              </span>
+            </div>
+            <p className="text-xs text-slate-500 mt-1">
+              Nhập kho sản phẩm từ nhà cung cấp và tự động đồng bộ giá vốn bình quân
             </p>
           </div>
         </div>
-      </div>
-      <form onSubmit={handleSubmit(onSubmit, onError)} className="space-y-6">
-        <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm space-y-4">
-          <h2 className="text-sm font-bold text-slate-800 flex items-center gap-2 border-b border-slate-100 pb-3">
-            <Building2 size={16} className="text-emerald-600" />
-            <span>1. Thông tin đợt nhập hàng</span>
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <div className="flex items-center justify-between mb-1">
-                <label className="text-xs font-semibold text-slate-700">
-                  Nhà cung cấp
-                </label>
-                <button
-                  type="button"
-                  onClick={() => setIsSupplierModalOpen(true)}
-                  className="text-[11px] font-bold text-emerald-700 hover:underline flex items-center gap-0.5 cursor-pointer"
-                >
-                  <Plus size={12} /> Thêm nhanh NCC
-                </button>
-              </div>
-              <SupplierSelect
-                register={register}
-                name="supplier_id"
-                error={errors.supplier_id}
-              />
-            </div>
-            <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
-                Ngày nhập hàng <span className="text-red-500">*</span>
-              </label>
-              <div className="relative">
-                <Calendar
-                  size={14}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
-                />
-                <input
-                  type="date"
-                  {...register("received_at", {
-                    required: "Vui lòng chọn ngày nhập hàng",
-                  })}
-                  className="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs text-slate-800 outline-none focus:bg-white focus:border-slate-600"
-                />
-              </div>
-              {errors.received_at && (
-                <span className="text-[11px] text-red-500 mt-1 block">
-                  {errors.received_at.message}
-                </span>
-              )}
-            </div>
-          </div>
-        </div>
 
-        <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
-            <div>
-              <h2 className="text-sm font-bold text-slate-800 flex items-center gap-2">
-                <Layers size={16} className="text-emerald-600" />
-                <span>2. Danh sách biến thể sản phẩm nhập</span>
-              </h2>
-            </div>
-            <button
-              type="button"
-              onClick={() => setIsVariantModalOpen(true)}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold shadow-xs transition-colors cursor-pointer shrink-0"
-            >
-              <Plus size={14} />
-              <span>Thêm sản phẩm nhập</span>
-            </button>
-          </div>
-          {fields.length === 0 ? (
-            <EmptyState
-              icon={Layers}
-              title="Chưa có mặt hàng nào trong phiếu nhập"
-              content='Bấm nút "Thêm sản phẩm nhập" ở trên để chọn các biến thể thiết bị cần nhập kho.'
-            />
-          ) : (
-            <PurchaseItems
-              fields={fields}
-              watchItems={watchItems}
-              register={register}
-            />
-          )}
-        </div>
-
-        {/* tổng tiền sản phẩm */}
-        <div className="bg-white border border-slate-200 rounded-xl p-4 sm:p-5 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 w-full sm:w-auto">
-            <div>
-              <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-                TỔNG MẶT HÀNG
-              </p>
-              <p className="text-sm sm:text-base font-bold text-slate-800 mt-0.5">
-                {fields.length} biến thể{" "}
-                <span className="font-semibold text-slate-500">
-                  ({totalQuantity} chiếc)
-                </span>
-              </p>
-            </div>
-
-            <div className="h-8 w-px bg-slate-200 hidden sm:block"></div>
-
-            <div>
-              <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-                TỔNG GIÁ TRỊ PHIẾU NHẬP
-              </p>
-              <p className="text-2xl sm:text-3xl font-extrabold text-emerald-600 font-mono tracking-tight mt-0.5">
-                {formatPrice(totalAmount)}
-              </p>
-            </div>
-          </div>
+        {/* Nút hành động nhanh trên header cho màn hình máy tính */}
+        <div className="hidden sm:flex items-center gap-2.5">
+          <Link
+            to="/staff/purchase-receipts"
+            className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold transition-colors"
+          >
+            Hủy bỏ
+          </Link>
           <button
-            type="submit"
+            type="button"
+            onClick={handleSubmit(onSubmit, onError)}
             disabled={isSubmitting}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#00A96E] hover:bg-[#008f5d] text-white rounded-lg text-sm font-bold shadow-sm transition-all cursor-pointer disabled:opacity-50 shrink-0"
+            className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-[#00A96E] hover:bg-[#008f5d] text-white rounded-lg text-xs font-bold shadow-sm transition-all cursor-pointer disabled:opacity-50"
           >
             {isSubmitting ? (
-              <Loader2 size={18} className="animate-spin" />
+              <Loader2 size={15} className="animate-spin" />
             ) : (
-              <CheckCircle2 size={18} />
+              <CheckCircle2 size={15} />
             )}
-            <span>Hoàn tất & Lưu phiếu nhập kho</span>
+            <span>Lưu phiếu nhập</span>
           </button>
         </div>
+      </div>
+
+      <form onSubmit={handleSubmit(onSubmit, onError)}>
+        <div className="grid grid-cols-1 lg:grid-cols-15 gap-5 items-start">
+          
+          <div className="lg:col-span-11 space-y-5">
+            <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
+                <div className="flex items-center gap-2">
+                  <Layers size={16} className="text-[#00A96E]" />
+                  <h2 className="text-sm font-bold text-slate-800">
+                    Chi tiết sản phẩm nhập
+                  </h2>
+                  <span className="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-semibold">
+                    {fields.length}
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setIsVariantModalOpen(true)}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#00A96E] hover:bg-[#008f5d] text-white rounded-lg text-xs font-bold shadow-xs transition-colors cursor-pointer shrink-0"
+                >
+                  <Plus size={14} />
+                  <span>Chọn sản phẩm nhập</span>
+                </button>
+              </div>
+
+              {fields.length === 0 ? (
+                <EmptyState
+                  icon={Layers}
+                  title="Chưa có sản phẩm nào trong phiếu nhập"
+                  content='Bấm nút "Chọn sản phẩm nhập" để tìm kiếm và thêm các biến thể hàng hóa cần nhập kho.'
+                />
+              ) : (
+                <PurchaseItems
+                  fields={fields}
+                  watchItems={watchItems}
+                  register={register}
+                  remove={remove}
+                />
+              )}
+            </div>
+
+            
+          </div>
+
+          <div className="lg:col-span-4 space-y-5 lg:sticky lg:top-4">
+            
+            <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm space-y-4">
+              <h2 className="text-sm font-bold text-slate-800 flex items-center gap-2 border-b border-slate-100 pb-3">
+                <Building2 size={16} className="text-[#00A96E]" />
+                <span>Thông tin nhà cung cấp</span>
+              </h2>
+
+              <div className="space-y-4">
+                <div>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <label className="text-xs font-semibold text-slate-700">
+                      Nhà cung cấp
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => setIsSupplierModalOpen(true)}
+                      className="text-[11px] font-bold text-[#00A96E] hover:underline flex items-center gap-0.5 cursor-pointer"
+                    >
+                      <Plus size={12} /> Thêm nhanh
+                    </button>
+                  </div>
+                  <SupplierSelect
+                    register={register}
+                    name="supplier_id"
+                    error={errors.supplier_id}
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                    Ngày nhập kho <span className="text-red-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <Calendar
+                      size={14}
+                      className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+                    />
+                    <input
+                      type="date"
+                      {...register("received_at", {
+                        required: "Vui lòng chọn ngày nhập hàng",
+                      })}
+                      className="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs font-medium text-slate-800 outline-none focus:bg-white focus:border-slate-600 transition-all cursor-pointer"
+                    />
+                  </div>
+                  {errors.received_at && (
+                    <span className="text-[11px] text-red-500 mt-1 block">
+                      {errors.received_at.message}
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm space-y-4">
+              <h2 className="text-sm font-bold text-slate-800 flex items-center gap-2 border-b border-slate-100 pb-3">
+                <FileText size={16} className="text-[#00A96E]" />
+                <span>Tổng kết phiếu nhập</span>
+              </h2>
+
+              <div className="space-y-3 text-xs">
+                <div className="flex items-center justify-between text-slate-600">
+                  <span>Số loại mặt hàng:</span>
+                  <span className="font-bold text-slate-800">{fields.length} mặt hàng</span>
+                </div>
+
+                <div className="flex items-center justify-between text-slate-600">
+                  <span>Tổng số lượng nhập:</span>
+                  <span className="font-bold text-slate-800">{totalQuantity} chiếc</span>
+                </div>
+
+                <div className="border-t border-dashed border-slate-200 pt-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-slate-700">Tổng tiền hàng:</span>
+                    <span className="text-lg font-black text-[#00A96E] font-mono">
+                      {formatPrice(totalAmount)}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between text-slate-600 pt-1">
+                  <span className="font-semibold text-slate-700">Cần trả nhà cung cấp:</span>
+                  <span className="text-sm font-bold text-slate-900 font-mono">
+                    {formatPrice(totalAmount)}
+                  </span>
+                </div>
+              </div>
+
+              <div className="pt-3 border-t border-slate-100 space-y-2">
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 bg-[#00A96E] hover:bg-[#008f5d] active:scale-[0.99] text-white rounded-lg text-xs font-bold shadow-sm transition-all cursor-pointer disabled:opacity-50"
+                >
+                  {isSubmitting ? (
+                    <Loader2 size={16} className="animate-spin" />
+                  ) : (
+                    <CheckCircle2 size={16} />
+                  )}
+                  <span>Hoàn tất & Lưu phiếu</span>
+                </button>
+
+                <Link
+                  to="/staff/purchase-receipts"
+                  className="w-full inline-flex items-center justify-center py-2 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold transition-colors"
+                >
+                  Hủy thao tác
+                </Link>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
       </form>
+
       {isVariantModalOpen && (
         <ProductVariantSupplier
           append={append}
@@ -288,4 +358,5 @@ const PurchaseReceiptCreate = () => {
     </div>
   );
 };
+
 export default PurchaseReceiptCreate;
